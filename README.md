@@ -124,43 +124,53 @@ module "vm" {
   admin_password      = "${var.vm_admin_password}"
 
   vm_image = {
-    publisher = "MicrosoftSQLServer"
-    offer     = "sql2014sp3-ws2012r2"
-    sku       = "standard"
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2019-Datacenter-with-Containers"
     version   = "latest"
   }
 }
+```
+
+## Ansible usage
+
+The created virtual machine can be used with Ansible this way.
+
+```bash
+ansible all -i <private_ip_address>, -m win_ping -e ansible_user=<vm_username> -e ansible_password==<vm_password> -e ansible_connection=winrm -e ansible_winrm_server_cert_validation=ignore
 ```
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| admin\_password |  | string | n/a | yes |
-| admin\_username |  | string | n/a | yes |
-| availability\_set\_id |  | string | n/a | yes |
+| admin\_password | Password for Virtual Machine administrator account | string | n/a | yes |
+| admin\_username | Username for Virtual Machine administrator account | string | n/a | yes |
+| availability\_set\_id | Id to the Vailability set in which host the Virtual Machine. | string | n/a | yes |
 | client\_name | Client name/account used in naming | string | n/a | yes |
-| custom\_name |  | string | n/a | yes |
+| custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | string | `""` | no |
+| delete\_data\_disks\_on\_termination | Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? | string | `"false"` | no |
+| delete\_os\_disk\_on\_termination | Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? | string | `"false"` | no |
 | environment | Project environment | string | n/a | yes |
 | extra\_tags |  | map | `<map>` | no |
-| key\_vault\_id |  | string | n/a | yes |
+| key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | string | n/a | yes |
 | location | Azure location. | string | n/a | yes |
 | location\_short | Short string for Azure location. | string | n/a | yes |
 | resource\_group\_name | Resource group name | string | n/a | yes |
 | stack | Project stack name | string | n/a | yes |
-| subnet\_id |  | string | n/a | yes |
-| vm\_image |  | map | `<map>` | no |
-| vm\_size |  | string | n/a | yes |
+| subnet\_id | Id of the Subnet in which create the Virtual Machine | string | n/a | yes |
+| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | map | `<map>` | no |
+| vm\_size | Size (SKU) of the Virtual Machin to create. | string | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| vm\_certificate\_key\_vault\_id |  |
-| vm\_id |  |
-| vm\_name |  |
-| vm\_private\_ip\_address |  |
-| vm\_public\_ip\_address |  |
+| vm\_id | Id of the Virtual machine |
+| vm\_name | Name of the Virtual machine |
+| vm\_private\_ip\_address | Private IP address of the Virtual machine |
+| vm\_public\_ip\_address | Public IP address of the Virtual machine |
+| vm\_winrm\_certificate\_key\_vault\_id | Id of the generated certificate in the input Key Vault |
 
 ## Related documentation
 

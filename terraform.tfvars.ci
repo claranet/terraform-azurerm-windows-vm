@@ -16,3 +16,4 @@ vm_image={
     sku       = "2019-Datacenter"
     version   = "latest"
 }
+certificate_validity_in_months="42"

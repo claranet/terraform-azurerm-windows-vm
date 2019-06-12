@@ -1,5 +1,5 @@
-resource "azurerm_key_vault_certificate" "certificate" {
-  name         = "${local.vm_name}-cert"
+resource "azurerm_key_vault_certificate" "winrm_certificate" {
+  name         = "winrm-${local.vm_name}-cert"
   key_vault_id = "${var.key_vault_id}"
 
   certificate_policy {
@@ -43,7 +43,7 @@ resource "azurerm_key_vault_certificate" "certificate" {
       ]
 
       subject            = "CN=${local.vm_name}"
-      validity_in_months = 12
+      validity_in_months = "${var.certificate_validity_in_months}"
     }
   }
 }

@@ -31,7 +31,7 @@ resource "azurerm_virtual_machine" "vm" {
     source_vault_id = "${var.key_vault_id}"
 
     vault_certificates {
-      certificate_url   = "${azurerm_key_vault_certificate.certificate.secret_id}"
+      certificate_url   = "${azurerm_key_vault_certificate.winrm_certificate.secret_id}"
       certificate_store = "My"
     }
   }
@@ -60,19 +60,24 @@ resource "azurerm_virtual_machine" "vm" {
   identity {
     type = "SystemAssigned"
   }
+}
+
+resource "null_resource" "winrm_connection_test" {
+  depends_on = ["azurerm_network_interface.nic", "azurerm_public_ip.public_ip", "azurerm_virtual_machine.vm"]
+
+  connection {
+    type     = "winrm"
+    user     = "${var.admin_username}"
+    password = "${var.admin_password}"
+    port     = 5986
+    https    = true
+    timeout  = "3m"
+
+    # NOTE: if you're using a real certificate, rather than a self-signed one, you'll want this set to `false`/to remove this.
+    insecure = true
+  }
 
   provisioner "remote-exec" {
-    connection {
-      user     = "${var.admin_username}"
-      password = "${var.admin_password}"
-      port     = 5986
-      https    = true
-      timeout  = "10m"
-
-      # NOTE: if you're using a real certificate, rather than a self-signed one, you'll want this set to `false`/to remove this.
-      insecure = true
-    }
-
     inline = [
       "cd C:\\claranet",
       "dir",

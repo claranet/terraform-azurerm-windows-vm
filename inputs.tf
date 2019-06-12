@@ -89,6 +89,13 @@ variable "delete_data_disks_on_termination" {
 }
 
 variable "extra_tags" {
-  type    = "map"
-  default = {}
+  description = "Extra tags to set on each created resource."
+  type        = "map"
+  default     = {}
+}
+
+variable "certificate_validity_in_months" {
+  description = "The created certificate validity in months"
+  type        = "string"
+  default     = "48"
 }
