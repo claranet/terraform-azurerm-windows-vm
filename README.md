@@ -38,10 +38,9 @@ module "azure-network-vnet" {
     
   environment      = "${var.environment}"
   location         = "${module.azure-region.location}"
-  location_short   = "${module.azure-region.location-short}"
+  location_short   = "${module.azure-region.location_short}"
   client_name      = "${var.client_name}"
   stack            = "${var.stack}"
-  custom_vnet_name = "${var.custom_vnet_name}"
 
   resource_group_name = "${module.rg.resource_group_name}"
   vnet_cidr           = ["10.10.0.0/16"]
@@ -106,6 +105,13 @@ module "key_vault" {
   admin_objects_ids = ["${local.keyvault_admin_objects_ids}"]
 }
 
+resource "azurerm_availability_set" "vm_avset" {
+  name                = "${var.stack}-${var.client_name}-${module.az-region.location_short}-${var.environment}-as"
+  location            = "${module.az-region.location}"
+  resource_group_name = "${module.rg.resource_group_name}"
+  managed             = "true"
+}
+
 module "vm" {
   source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/windows-virtual-machine.git?ref=vX.X.X"
 
@@ -122,6 +128,7 @@ module "vm" {
   custom_name         = "${local.vm_name}"
   admin_username      = "${var.vm_admin_username}"
   admin_password      = "${var.vm_admin_password}"
+  availability_set_id = "${azurerm_availability_set.vm_avset.id}"
 
   vm_image = {
     publisher = "MicrosoftWindowsServer"
@@ -137,7 +144,7 @@ module "vm" {
 The created virtual machine can be used with Ansible this way.
 
 ```bash
-ansible all -i <private_ip_address>, -m win_ping -e ansible_user=<vm_username> -e ansible_password==<vm_password> -e ansible_connection=winrm -e ansible_winrm_server_cert_validation=ignore
+ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e ansible_password==<vm_password> -e ansible_connection=winrm -e ansible_winrm_server_cert_validation=ignore
 ```
 
 ## Inputs

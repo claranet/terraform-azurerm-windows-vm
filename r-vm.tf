@@ -65,12 +65,17 @@ resource "azurerm_virtual_machine" "vm" {
 resource "null_resource" "winrm_connection_test" {
   depends_on = ["azurerm_network_interface.nic", "azurerm_public_ip.public_ip", "azurerm_virtual_machine.vm"]
 
+  triggers {
+    uuid = "${azurerm_virtual_machine.vm.id}"
+  }
+
   connection {
     type     = "winrm"
-    user     = "${var.admin_username}"
-    password = "${var.admin_password}"
+    host     = "${azurerm_public_ip.public_ip.ip_address}"
     port     = 5986
     https    = true
+    user     = "${var.admin_username}"
+    password = "${var.admin_password}"
     timeout  = "3m"
 
     # NOTE: if you're using a real certificate, rather than a self-signed one, you'll want this set to `false`/to remove this.
