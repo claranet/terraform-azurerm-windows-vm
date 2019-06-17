@@ -13,6 +13,11 @@ resource "azurerm_virtual_machine" "vm" {
   storage_image_reference = ["${var.vm_image}"]
   availability_set_id     = "${var.availability_set_id}"
 
+  boot_diagnostics {
+    enabled     = true
+    storage_uri = "https://${var.diagnotics_storage_account_name}.blob.core.windows.net"
+  }
+
   storage_os_disk {
     name              = "${local.vm_name}-osdisk"
     caching           = "ReadWrite"

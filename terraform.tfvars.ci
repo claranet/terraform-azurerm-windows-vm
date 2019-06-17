@@ -10,6 +10,7 @@ admin_username="claranet"
 admin_password="cl4r4n3t$$$"
 vm_size="Standard_B2s"
 availability_set_id="/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg-test/providers/Microsoft.Compute/availabilitySets/av-test"
+diagnotics_storage_account_name = "rgtest"
 vm_image={
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"

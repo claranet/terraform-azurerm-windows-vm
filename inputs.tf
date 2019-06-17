@@ -64,6 +64,11 @@ variable "availability_set_id" {
   type        = "string"
 }
 
+variable "diagnotics_storage_account_name" {
+  description = "Storage account name to store vm boot diagnostic"
+  type        = "string"
+}
+
 variable "vm_image" {
   description = "Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference"
   type        = "map"
