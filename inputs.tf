@@ -60,11 +60,11 @@ variable "custom_name" {
 }
 
 variable "availability_set_id" {
-  description = "Id to the Vailability set in which host the Virtual Machine."
+  description = "Id of the availability set in which host the Virtual Machine."
   type        = "string"
 }
 
-variable "diagnotics_storage_account_name" {
+variable "diagnostics_storage_account_name" {
   description = "Storage account name to store vm boot diagnostic"
   type        = "string"
 }

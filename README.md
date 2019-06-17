@@ -73,6 +73,22 @@ module "azure-network-subnet" {
   network_security_group_ids   = ["${module.network-security-group.network_security_group_id}"]
 }
 
+module "key_vault" {
+  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terrafo
+
+  client_name         = "${var.client_name}"
+  environment         = "${var.environment}"
+  location            = "${module.azure-region.location}"
+  location_short      = "${module.azure-region.location_short}"
+  resource_group_name = "${module.rg.resource_group_name}"
+  stack               = "${var.stack}"
+
+  # Mandatory for use with VM deployment
+  enabled_for_deployment = "true"
+
+  admin_objects_ids = ["${local.keyvault_admin_objects_ids}"]
+}
+
 resource "azurerm_network_security_rule" "winrm" {
   name = "Allow-winrm-rule"
 
@@ -96,23 +112,6 @@ resource "azurerm_availability_set" "vm_avset" {
   managed             = "true"
 }
 
-module "run_common" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/run-common.git?ref=vX.X.X"
-  
-  client_name    = "${var.client_name}"
-  location       = "${module.azure-region.location}"
-  location_short = "${module.azure-region.location_short}"
-  environment    = "${var.environment}"
-  stack          = "${var.stack}"
-
-  resource_group_name = "${module.rg.resource_group_name}"
-
-  tenant_id = "${var.azure_tenant_id}"
-
-  extra_tags = "${var.extra_tags}"
-}
-
-
 module "vm" {
   source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/windows-virtual-machine.git?ref=vX.X.X"
 
@@ -123,14 +122,14 @@ module "vm" {
   stack               = "${var.stack}"
   resource_group_name = "${module.rg.resource_group_name}"
 
-  key_vault_id                    = "${module.run_common.keyvault_id}"
-  subnet_id                       = "${element(module.azure-network-subnet.subnet_ids, 0)}"
-  vm_size                         = "Standard_B2s"
-  custom_name                     = "${local.vm_name}"
-  admin_username                  = "${var.vm_admin_username}"
-  admin_password                  = "${var.vm_admin_password}"
-  availability_set_id             = "${azurerm_availability_set.vm_avset.id}"
-  diagnotics_storage_account_name = "${module.run_common.logs_storage_account_name}"
+  key_vault_id                     = "${module.key_vault.key_vault_id}"
+  subnet_id                        = "${element(module.azure-network-subnet.subnet_ids, 0)}"
+  vm_size                          = "Standard_B2s"
+  custom_name                      = "${local.vm_name}"
+  admin_username                   = "${var.vm_admin_username}"
+  admin_password                   = "${var.vm_admin_password}"
+  availability_set_id              = "${azurerm_availability_set.vm_avset.id}"
+  diagnostics_storage_account_name = "${data.terraform_remote_state.run_common.logs_storage_account_name}"
 
   vm_image = {
     publisher = "MicrosoftWindowsServer"
@@ -155,13 +154,13 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 |------|-------------|:----:|:-----:|:-----:|
 | admin_password | Password for Virtual Machine administrator account | string | - | yes |
 | admin_username | Username for Virtual Machine administrator account | string | - | yes |
-| availability_set_id | Id to the Vailability set in which host the Virtual Machine. | string | - | yes |
+| availability_set_id | Id to the availability set in which host the Virtual Machine. | string | - | yes |
 | certificate_validity_in_months | The created certificate validity in months | string | `48` | no |
 | client_name | Client name/account used in naming | string | - | yes |
 | custom_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | string | `` | no |
 | delete_data_disks_on_termination | Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? | string | `false` | no |
 | delete_os_disk_on_termination | Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? | string | `false` | no |
-| diagnotics_storage_account_name | Storage account name to store vm boot diagnostic | string | - | yes |
+| diagnostics_storage_account_name | Storage account name to store vm boot diagnostic | string | - | yes |
 | environment | Project environment | string | - | yes |
 | extra_tags | Extra tags to set on each created resource. | map | `<map>` | no |
 | key_vault_id | Id of the Azure Key Vault to use for VM certificate | string | - | yes |

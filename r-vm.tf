@@ -15,7 +15,7 @@ resource "azurerm_virtual_machine" "vm" {
 
   boot_diagnostics {
     enabled     = true
-    storage_uri = "https://${var.diagnotics_storage_account_name}.blob.core.windows.net"
+    storage_uri = "https://${var.diagnostics_storage_account_name}.blob.core.windows.net"
   }
 
   storage_os_disk {
