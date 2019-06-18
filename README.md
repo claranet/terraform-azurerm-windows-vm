@@ -113,7 +113,7 @@ resource "azurerm_availability_set" "vm_avset" {
 }
 
 module "vm" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/windows-virtual-machine.git?ref=vX.X.X"
+  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/windows-vm.git?ref=vX.X.X"
 
   location            = "${module.azure-region.location}"
   location_short      = "${module.azure-region.location_short}"
