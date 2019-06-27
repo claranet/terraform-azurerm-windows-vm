@@ -152,25 +152,26 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| admin_password | Password for Virtual Machine administrator account | string | - | yes |
-| admin_username | Username for Virtual Machine administrator account | string | - | yes |
-| availability_set_id | Id to the availability set in which host the Virtual Machine. | string | - | yes |
-| certificate_validity_in_months | The created certificate validity in months | string | `48` | no |
-| client_name | Client name/account used in naming | string | - | yes |
-| custom_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | string | `` | no |
-| delete_data_disks_on_termination | Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? | string | `false` | no |
-| delete_os_disk_on_termination | Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? | string | `false` | no |
-| diagnostics_storage_account_name | Storage account name to store vm boot diagnostic | string | - | yes |
-| environment | Project environment | string | - | yes |
-| extra_tags | Extra tags to set on each created resource. | map | `<map>` | no |
-| key_vault_id | Id of the Azure Key Vault to use for VM certificate | string | - | yes |
-| location | Azure location. | string | - | yes |
-| location_short | Short string for Azure location. | string | - | yes |
-| resource_group_name | Resource group name | string | - | yes |
-| stack | Project stack name | string | - | yes |
-| subnet_id | Id of the Subnet in which create the Virtual Machine | string | - | yes |
-| vm_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | map | `<map>` | no |
-| vm_size | Size (SKU) of the Virtual Machin to create. | string | - | yes |
+| admin\_password | Password for Virtual Machine administrator account | string | n/a | yes |
+| admin\_username | Username for Virtual Machine administrator account | string | n/a | yes |
+| availability\_set\_id | Id of the availability set in which host the Virtual Machine. | string | n/a | yes |
+| certificate\_validity\_in\_months | The created certificate validity in months | string | `"48"` | no |
+| client\_name | Client name/account used in naming | string | n/a | yes |
+| custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | string | `""` | no |
+| custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | string | `""` | no |
+| delete\_data\_disks\_on\_termination | Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? | string | `"false"` | no |
+| delete\_os\_disk\_on\_termination | Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? | string | `"false"` | no |
+| diagnostics\_storage\_account\_name | Storage account name to store vm boot diagnostic | string | n/a | yes |
+| environment | Project environment | string | n/a | yes |
+| extra\_tags | Extra tags to set on each created resource. | map | `<map>` | no |
+| key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | string | n/a | yes |
+| location | Azure location. | string | n/a | yes |
+| location\_short | Short string for Azure location. | string | n/a | yes |
+| resource\_group\_name | Resource group name | string | n/a | yes |
+| stack | Project stack name | string | n/a | yes |
+| subnet\_id | Id of the Subnet in which create the Virtual Machine | string | n/a | yes |
+| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | map | `<map>` | no |
+| vm\_size | Size (SKU) of the Virtual Machin to create. | string | n/a | yes |
 
 ## Outputs
 
@@ -179,6 +180,7 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | vm\_id | Id of the Virtual machine |
 | vm\_name | Name of the Virtual machine |
 | vm\_private\_ip\_address | Private IP address of the Virtual machine |
+| vm\_public\_domain\_name\_label | Public DNS of the Virtual machine |
 | vm\_public\_ip\_address | Public IP address of the Virtual machine |
 | vm\_winrm\_certificate\_key\_vault\_id | Id of the generated certificate in the input Key Vault |
 

@@ -104,3 +104,9 @@ variable "certificate_validity_in_months" {
   type        = "string"
   default     = "48"
 }
+
+variable "custom_dns_label" {
+  description = "The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com"
+  type        = "string"
+  default     = ""
+}

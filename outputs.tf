@@ -13,6 +13,11 @@ output "vm_public_ip_address" {
   value       = "${azurerm_public_ip.public_ip.ip_address}"
 }
 
+output "vm_public_domain_name_label" {
+  description = "Public DNS of the Virtual machine"
+  value       = "${azurerm_public_ip.public_ip.domain_name_label}"
+}
+
 output "vm_private_ip_address" {
   description = "Private IP address of the Virtual machine"
   value       = "${azurerm_network_interface.nic.private_ip_address}"

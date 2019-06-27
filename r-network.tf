@@ -3,6 +3,7 @@ resource "azurerm_public_ip" "public_ip" {
   location            = "${var.location}"
   resource_group_name = "${var.resource_group_name}"
   allocation_method   = "Static"
+  domain_name_label   = "${coalesce(var.custom_dns_label, local.vm_name)}"
 
   tags = "${merge(local.default_tags, var.extra_tags)}"
 }
