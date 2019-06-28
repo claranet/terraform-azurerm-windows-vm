@@ -182,7 +182,9 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | vm\_private\_ip\_address | Private IP address of the Virtual machine |
 | vm\_public\_domain\_name\_label | Public DNS of the Virtual machine |
 | vm\_public\_ip\_address | Public IP address of the Virtual machine |
+| vm\_winrm\_certificate\_data | The raw Key Vault Certificate. |
 | vm\_winrm\_certificate\_key\_vault\_id | Id of the generated certificate in the input Key Vault |
+| vm\_winrm\_certificate\_thumbprint | The X509 Thumbprint of the Key Vault Certificate returned as hex string. |
 
 ## Related documentation
 
