@@ -1,6 +1,6 @@
 resource "azurerm_key_vault_certificate" "winrm_certificate" {
   name         = "winrm-${local.vm_name}-cert"
-  key_vault_id = "${var.key_vault_id}"
+  key_vault_id = var.key_vault_id
 
   certificate_policy {
     issuer_parameters {
@@ -43,7 +43,7 @@ resource "azurerm_key_vault_certificate" "winrm_certificate" {
       ]
 
       subject            = "CN=${local.vm_name}"
-      validity_in_months = "${var.certificate_validity_in_months}"
+      validity_in_months = var.certificate_validity_in_months
     }
   }
 }

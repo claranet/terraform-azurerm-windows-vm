@@ -1,17 +1,24 @@
 resource "azurerm_virtual_machine" "vm" {
-  name                  = "${local.vm_name}"
-  location              = "${var.location}"
-  resource_group_name   = "${var.resource_group_name}"
-  network_interface_ids = ["${azurerm_network_interface.nic.id}"]
-  vm_size               = "${var.vm_size}"
+  name                  = local.vm_name
+  location              = var.location
+  resource_group_name   = var.resource_group_name
+  network_interface_ids = [azurerm_network_interface.nic.id]
+  vm_size               = var.vm_size
 
-  tags = "${merge(local.default_tags, var.extra_tags)}"
+  tags = merge(local.default_tags, var.extra_tags)
 
-  delete_os_disk_on_termination    = "${var.delete_os_disk_on_termination}"
-  delete_data_disks_on_termination = "${var.delete_data_disks_on_termination}"
+  delete_os_disk_on_termination    = var.delete_os_disk_on_termination
+  delete_data_disks_on_termination = var.delete_data_disks_on_termination
 
-  storage_image_reference = ["${var.vm_image}"]
-  availability_set_id     = "${var.availability_set_id}"
+  storage_image_reference {
+    id        = lookup(var.vm_image, "id", null)
+    offer     = lookup(var.vm_image, "offer", null)
+    publisher = lookup(var.vm_image, "publisher", null)
+    sku       = lookup(var.vm_image, "sku", null)
+    version   = lookup(var.vm_image, "version", null)
+  }
+
+  availability_set_id = var.availability_set_id
 
   boot_diagnostics {
     enabled     = true
@@ -26,17 +33,17 @@ resource "azurerm_virtual_machine" "vm" {
   }
 
   os_profile {
-    computer_name  = "${local.vm_name}"
-    admin_username = "${var.admin_username}"
-    admin_password = "${var.admin_password}"
-    custom_data    = "${local.custom_data_content}"
+    computer_name  = local.vm_name
+    admin_username = var.admin_username
+    admin_password = var.admin_password
+    custom_data    = local.custom_data_content
   }
 
   os_profile_secrets {
-    source_vault_id = "${var.key_vault_id}"
+    source_vault_id = var.key_vault_id
 
     vault_certificates {
-      certificate_url   = "${azurerm_key_vault_certificate.winrm_certificate.secret_id}"
+      certificate_url   = azurerm_key_vault_certificate.winrm_certificate.secret_id
       certificate_store = "My"
     }
   }
@@ -58,7 +65,7 @@ resource "azurerm_virtual_machine" "vm" {
       pass         = "oobeSystem"
       component    = "Microsoft-Windows-Shell-Setup"
       setting_name = "FirstLogonCommands"
-      content      = "${file(format("%s/files/FirstLogonCommands.xml", path.module))}"
+      content      = file(format("%s/files/FirstLogonCommands.xml", path.module))
     }
   }
 
@@ -68,19 +75,23 @@ resource "azurerm_virtual_machine" "vm" {
 }
 
 resource "null_resource" "winrm_connection_test" {
-  depends_on = ["azurerm_network_interface.nic", "azurerm_public_ip.public_ip", "azurerm_virtual_machine.vm"]
+  depends_on = [
+    azurerm_network_interface.nic,
+    azurerm_public_ip.public_ip,
+    azurerm_virtual_machine.vm,
+  ]
 
-  triggers {
-    uuid = "${azurerm_virtual_machine.vm.id}"
+  triggers = {
+    uuid = azurerm_virtual_machine.vm.id
   }
 
   connection {
     type     = "winrm"
-    host     = "${azurerm_public_ip.public_ip.ip_address}"
+    host     = azurerm_public_ip.public_ip.ip_address
     port     = 5986
     https    = true
-    user     = "${var.admin_username}"
-    password = "${var.admin_password}"
+    user     = var.admin_username
+    password = var.admin_password
     timeout  = "3m"
 
     # NOTE: if you're using a real certificate, rather than a self-signed one, you'll want this set to `false`/to remove this.

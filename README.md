@@ -12,6 +12,7 @@ This code is mostly based on [Tom Harvey](https://github.com/tombuildsstuff) wor
 
 ## Requirements
 
+* Terraform >= 0.12
 * The port 5986 must be reachable
 * An Azure Key Vault configured with VM deployment enabled will be used
 
