@@ -131,6 +131,7 @@ module "vm" {
   admin_password                   = var.vm_admin_password
   availability_set_id              = azurerm_availability_set.vm_avset.id
   diagnostics_storage_account_name = data.terraform_remote_state.run_common.logs_storage_account_name
+  diagnostics_storage_account_key  = data.terraform_remote_state.run.outputs.logs_storage_account_primary_access_key
 
   vm_image = {
     publisher = "MicrosoftWindowsServer"
@@ -162,7 +163,8 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | string | `""` | no |
 | delete\_data\_disks\_on\_termination | Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? | string | `"false"` | no |
 | delete\_os\_disk\_on\_termination | Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? | string | `"false"` | no |
-| diagnostics\_storage\_account\_name | Storage account name to store vm boot diagnostic | string | n/a | yes |
+| diagnostics\_storage\_account\_key | Access key of the Storage Account in which store vm diagnostics | string | n/a | yes |
+| diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | string | n/a | yes |
 | environment | Project environment | string | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | map | `<map>` | no |
 | key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | string | n/a | yes |
