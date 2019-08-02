@@ -64,7 +64,7 @@ module "azure-network-subnet" {
   environment         = var.environment
   location_short      = module.azure-region.location_short
   client_name         = var.client_name
-  stack			      = var.stack
+  stack               = var.stack
 
   resource_group_name  = module.rg.resource_group_name
   virtual_network_name = module.azure-network-vnet.virtual_network_name
