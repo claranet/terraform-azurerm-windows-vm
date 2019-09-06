@@ -1,10 +1,13 @@
 locals {
   default_tags = {
-    env   = "${var.environment}"
-    stack = "${var.stack}"
+    env   = var.environment
+    stack = var.stack
   }
 
-  vm_name = "${coalesce(var.custom_name, format("%s-%s-vm", var.client_name, var.environment))}"
+  vm_name = coalesce(
+    var.custom_name,
+    format("%s-%s-vm", var.client_name, var.environment),
+  )
 
   custom_data_params = "Param($ComputerName = \"${local.vm_name}\")"
 
