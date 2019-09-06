@@ -1,4 +1,5 @@
 # Azure Windows Virtual Machine
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](LICENSE)
 
 This module creates a [Windows Virtual Machine](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/) with 
 [Windows Remote Management (WinRM)](https://docs.microsoft.com/en-us/windows/desktop/WinRM/portal) activated.
@@ -12,9 +13,10 @@ This code is mostly based on [Tom Harvey](https://github.com/tombuildsstuff) wor
 
 ## Requirements
 
-* Terraform >= 0.12
+* [Terraform](https://www.terraform.io/downloads.html) >= 0.12
+* [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.31
 * The port 5986 must be reachable
-* An Azure Key Vault configured with VM deployment enabled will be used
+* An [Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/) configured with VM deployment enabled will be used
 
 ## Usage
 
