@@ -115,3 +115,9 @@ variable "custom_dns_label" {
   type        = string
   default     = ""
 }
+
+variable "public_ip_sku" {
+  description = "Sku for the public IP attached to the VM."
+  type        = string
+  default     = "Basic"
+}

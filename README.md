@@ -168,14 +168,15 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | diagnostics\_storage\_account\_key | Access key of the Storage Account in which store vm diagnostics | string | n/a | yes |
 | diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | string | n/a | yes |
 | environment | Project environment | string | n/a | yes |
-| extra\_tags | Extra tags to set on each created resource. | map | `<map>` | no |
+| extra\_tags | Extra tags to set on each created resource. | map(string) | `{}` | no |
 | key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | string | n/a | yes |
 | location | Azure location. | string | n/a | yes |
 | location\_short | Short string for Azure location. | string | n/a | yes |
+| public\_ip\_sku | Sku for the public IP attached to the VM. | string | `"Basic"` | no |
 | resource\_group\_name | Resource group name | string | n/a | yes |
 | stack | Project stack name | string | n/a | yes |
 | subnet\_id | Id of the Subnet in which create the Virtual Machine | string | n/a | yes |
-| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | map | `<map>` | no |
+| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | map(string) | `{ "offer": "WindowsServer", "publisher": "MicrosoftWindowsServer", "sku": "2019-Datacenter", "version": "latest" }` | no |
 | vm\_size | Size (SKU) of the Virtual Machin to create. | string | n/a | yes |
 
 ## Outputs

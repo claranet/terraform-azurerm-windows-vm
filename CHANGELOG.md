@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * AZ-135: Allow to change IP sku
+
 # v2.0.1 - 2019-12-17
 
 Fixed
