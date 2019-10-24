@@ -1,7 +1,7 @@
 # Unreleased
 
 Added
-  * AZ-135: Allow to change IP sku
+  * AZ-135: Allow to change IP sku and attach to a load balancer
 
 # v2.0.1 - 2019-12-17
 

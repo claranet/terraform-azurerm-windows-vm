@@ -158,6 +158,7 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 |------|-------------|:----:|:-----:|:-----:|
 | admin\_password | Password for Virtual Machine administrator account | string | n/a | yes |
 | admin\_username | Username for Virtual Machine administrator account | string | n/a | yes |
+| attach\_load\_balancer | True to attach this VM to a load balancer | bool | `"false"` | no |
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | string | n/a | yes |
 | certificate\_validity\_in\_months | The created certificate validity in months | string | `"48"` | no |
 | client\_name | Client name/account used in naming | string | n/a | yes |
@@ -170,9 +171,10 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | environment | Project environment | string | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | map(string) | `{}` | no |
 | key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | string | n/a | yes |
+| load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | string | `"null"` | no |
 | location | Azure location. | string | n/a | yes |
 | location\_short | Short string for Azure location. | string | n/a | yes |
-| public\_ip\_sku | Sku for the public IP attached to the VM. | string | `"Basic"` | no |
+| public\_ip\_sku | Sku for the public IP attached to the VM. Can be null if no public IP needed. | string | `"Standard"` | no |
 | resource\_group\_name | Resource group name | string | n/a | yes |
 | stack | Project stack name | string | n/a | yes |
 | subnet\_id | Id of the Subnet in which create the Virtual Machine | string | n/a | yes |
@@ -185,6 +187,8 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 |------|-------------|
 | vm\_id | Id of the Virtual machine |
 | vm\_name | Name of the Virtual machine |
+| vm\_nic\_ip\_configuration\_name | Name of the IP Configuration for the Network Interface Configuration attached to the Virtual Machine |
+| vm\_nic\_name | Name of the Network Interface Configuration attached to the Virtual Machine |
 | vm\_private\_ip\_address | Private IP address of the Virtual machine |
 | vm\_public\_domain\_name\_label | Public DNS of the Virtual machine |
 | vm\_public\_ip\_address | Public IP address of the Virtual machine |

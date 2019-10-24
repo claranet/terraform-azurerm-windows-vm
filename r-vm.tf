@@ -75,6 +75,8 @@ resource "azurerm_virtual_machine" "vm" {
 }
 
 resource "null_resource" "winrm_connection_test" {
+  count = var.public_ip_sku == null ? 0 : 1
+
   depends_on = [
     azurerm_network_interface.nic,
     azurerm_public_ip.public_ip,
@@ -87,7 +89,7 @@ resource "null_resource" "winrm_connection_test" {
 
   connection {
     type     = "winrm"
-    host     = azurerm_public_ip.public_ip.ip_address
+    host     = join("", azurerm_public_ip.public_ip.*.ip_address)
     port     = 5986
     https    = true
     user     = var.admin_username

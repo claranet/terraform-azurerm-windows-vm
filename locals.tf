@@ -9,6 +9,8 @@ locals {
     format("%s-%s-vm", var.client_name, var.environment),
   )
 
+  ip_configuration_name = "configuration"
+
   custom_data_params = "Param($ComputerName = \"${local.vm_name}\")"
 
   custom_data_content = "${local.custom_data_params} ${file(format("%s/files/winrm.ps1", path.module))}"
