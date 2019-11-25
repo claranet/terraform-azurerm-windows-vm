@@ -109,8 +109,8 @@ resource "azurerm_network_security_rule" "winrm" {
 }
 
 resource "azurerm_availability_set" "vm_avset" {
-  name                = "${var.stack}-${var.client_name}-${module.az-region.location_short}-${var.environment}-as"
-  location            = module.az-region.location
+  name                = "${var.stack}-${var.client_name}-${module.azure-region.location_short}-${var.environment}-as"
+  location            = module.azure-region.location
   resource_group_name = module.rg.resource_group_name
   managed             = "true"
 }
