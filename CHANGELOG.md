@@ -1,3 +1,8 @@
+# v2.0.1 - 2019-12-17
+
+Fixed
+  * AZ-153: Fix XML Password containing special chars
+
 # v2.0.0 - 2019-09-06
 
 Breaking
