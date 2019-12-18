@@ -1,4 +1,4 @@
-# v2.1.0 - Unreleased
+# v2.1.0 - 2019-12-18
 
 Added
   * AZ-135: Allow to change IP sku and attach to a Load Balancer or Application Gateway 
