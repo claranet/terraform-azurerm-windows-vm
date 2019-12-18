@@ -1,7 +1,11 @@
-# Unreleased
+# v2.1.0 - Unreleased
 
 Added
   * AZ-135: Allow to change IP sku and attach to a Load Balancer or Application Gateway 
+  * AZ-119: Add CONTRIBUTING.md doc and `terraform-wrapper` usage with the module
+
+Changed
+  * AZ-119: Revamp README for public release
 
 # v2.0.1 - 2019-12-17
 

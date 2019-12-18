@@ -1,5 +1,5 @@
 # Azure Windows Virtual Machine
-[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](http://img.shields.io/badge/license-Apache%20V2-blue.svg)](LICENSE)
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/windows-vm/azurerm/)
 
 This module creates a [Windows Virtual Machine](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/) with 
 [Windows Remote Management (WinRM)](https://docs.microsoft.com/en-us/windows/desktop/WinRM/portal) activated.
@@ -13,22 +13,34 @@ This code is mostly based on [Tom Harvey](https://github.com/tombuildsstuff) wor
 
 ## Requirements
 
-* [Terraform](https://www.terraform.io/downloads.html) >= 0.12
-* [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.31
+* [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.32
 * The port 5986 must be reachable
 * An [Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/) configured with VM deployment enabled will be used
 
+## Terraform version compatibility
+
+| Module version | Terraform version |
+|----------------|-------------------|
+| >= 2.x.x       | 0.12.x            |
+| < 2.x.x        | 0.11.x            |
+
 ## Usage
+
+This module is optimized to work with the [Claranet terraform-wrapper](https://github.com/claranet/terraform-wrapper) tool
+which set some terraform variables in the environment needed by this module.
+More details about variables set by the `terraform-wrapper` available in the [documentation](https://github.com/claranet/terraform-wrapper#environment).
 
 ```hcl
 module "azure-region" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/modules/regions.git?ref=vX.X.X"
+  source  = "claranet/regions/azurerm"
+  version = "x.x.x"
 
   azure_region = var.azure_region
 }
 
 module "rg" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/modules/rg.git?ref=vX.X.X"
+  source  = "claranet/rg/azurerm"
+  version = "x.x.x"
 
   location    = module.azure-region.location
   client_name = var.client_name
@@ -37,7 +49,8 @@ module "rg" {
 }
 
 module "azure-network-vnet" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/modules/vnet.git?ref=vX.X.X"
+  source  = "claranet/vnet/azurerm"
+  version = "x.x.x"
     
   environment      = var.environment
   location         = module.azure-region.location
@@ -50,7 +63,8 @@ module "azure-network-vnet" {
 }
 
 module "network-security-group" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/modules/nsg.git?ref=vX.X.X"
+  source  = "claranet/nsg/azurerm"
+  version = "x.x.x"
 
   client_name         = var.client_name
   environment         = var.environment
@@ -61,7 +75,8 @@ module "network-security-group" {
 }
 
 module "azure-network-subnet" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/modules/subnet.git?ref=vX.X.X"
+  source  = "claranet/subnet/azurerm"
+  version = "x.x.x"
 
   environment         = var.environment
   location_short      = module.azure-region.location_short
@@ -77,7 +92,8 @@ module "azure-network-subnet" {
 }
 
 module "key_vault" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/keyvault.git?ref=vX.X.X"
+  source  = "claranet/keyvault/azurerm"
+  version = "x.x.x"
 
   client_name         = var.client_name
   environment         = var.environment
@@ -116,7 +132,8 @@ resource "azurerm_availability_set" "vm_avset" {
 }
 
 module "vm" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/cloudnative/projects/cloud/azure/terraform/features/windows-vm.git?ref=vX.X.X"
+  source  = "claranet/windows-vm/azurerm"
+  version = "x.x.x"
 
   location            = module.azure-region.location
   location_short      = module.azure-region.location_short
@@ -200,6 +217,6 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 
 ## Related documentation
 
-Terraform resource documentation: [https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html]
+Terraform resource documentation: [terraform.io/docs/providers/azurerm/r/virtual_machine.html](https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html)
 
-Microsoft Azure documentation: [https://docs.microsoft.com/en-us/azure/virtual-machines/windows/]
+Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/windows/](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/)
