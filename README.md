@@ -51,7 +51,7 @@ module "rg" {
 module "azure-network-vnet" {
   source  = "claranet/vnet/azurerm"
   version = "x.x.x"
-    
+
   environment      = var.environment
   location         = module.azure-region.location
   location_short   = module.azure-region.location_short
@@ -190,6 +190,7 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | environment | Project environment | string | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | map(string) | `{}` | no |
 | key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | string | n/a | yes |
+| license\_type | Specifies the BYOL Type for this Virtual Machine. | string | `null` | no |
 | load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | string | `"null"` | no |
 | location | Azure location. | string | n/a | yes |
 | location\_short | Short string for Azure location. | string | n/a | yes |
