@@ -33,3 +33,11 @@ resource "azurerm_network_interface_backend_address_pool_association" "lb_pool_a
   ip_configuration_name   = local.ip_configuration_name
   network_interface_id    = azurerm_network_interface.nic.id
 }
+
+resource "azurerm_network_interface_application_gateway_backend_address_pool_association" "appgw_pool_association" {
+  count = var.attach_application_gateway ? 1 : 0
+
+  backend_address_pool_id = var.application_gateway_backend_pool_id
+  ip_configuration_name   = local.ip_configuration_name
+  network_interface_id    = azurerm_network_interface.nic.id
+}

@@ -158,7 +158,9 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 |------|-------------|:----:|:-----:|:-----:|
 | admin\_password | Password for Virtual Machine administrator account | string | n/a | yes |
 | admin\_username | Username for Virtual Machine administrator account | string | n/a | yes |
-| attach\_load\_balancer | True to attach this VM to a load balancer | bool | `"false"` | no |
+| application\_gateway\_backend\_pool\_id | Id of the Application Gateway Backend Pool to attach the VM. | string | `"null"` | no |
+| attach\_application\_gateway | True to attach this VM to an Application Gateway | bool | `"false"` | no |
+| attach\_load\_balancer | True to attach this VM to a Load Balancer | bool | `"false"` | no |
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | string | n/a | yes |
 | certificate\_validity\_in\_months | The created certificate validity in months | string | `"48"` | no |
 | client\_name | Client name/account used in naming | string | n/a | yes |
@@ -174,7 +176,7 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | string | `"null"` | no |
 | location | Azure location. | string | n/a | yes |
 | location\_short | Short string for Azure location. | string | n/a | yes |
-| public\_ip\_sku | Sku for the public IP attached to the VM. Can be null if no public IP needed. | string | `"Standard"` | no |
+| public\_ip\_sku | Sku for the public IP attached to the VM. Can be `null` if no public IP needed. | string | `"Standard"` | no |
 | resource\_group\_name | Resource group name | string | n/a | yes |
 | stack | Project stack name | string | n/a | yes |
 | subnet\_id | Id of the Subnet in which create the Virtual Machine | string | n/a | yes |
