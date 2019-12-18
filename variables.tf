@@ -115,3 +115,33 @@ variable "custom_dns_label" {
   type        = string
   default     = ""
 }
+
+variable "public_ip_sku" {
+  description = "Sku for the public IP attached to the VM. Can be `null` if no public IP needed."
+  type        = string
+  default     = "Standard"
+}
+
+variable "attach_load_balancer" {
+  description = "True to attach this VM to a Load Balancer"
+  type        = bool
+  default     = false
+}
+
+variable "load_balancer_backend_pool_id" {
+  description = "Id of the Load Balancer Backend Pool to attach the VM."
+  type        = string
+  default     = null
+}
+
+variable "attach_application_gateway" {
+  description = "True to attach this VM to an Application Gateway"
+  type        = bool
+  default     = false
+}
+
+variable "application_gateway_backend_pool_id" {
+  description = "Id of the Application Gateway Backend Pool to attach the VM."
+  type        = string
+  default     = null
+}
