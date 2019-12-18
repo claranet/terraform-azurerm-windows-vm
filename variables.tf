@@ -145,3 +145,9 @@ variable "application_gateway_backend_pool_id" {
   type        = string
   default     = null
 }
+
+variable "license_type" {
+  description = "Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set."
+  type        = string
+  default     = null
+}
