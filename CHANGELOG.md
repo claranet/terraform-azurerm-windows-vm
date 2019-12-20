@@ -1,3 +1,8 @@
+# v2.2.0 - Unreleased
+
+Added
+  * AZ-162: Log Analytics Workspace link
+
 # v2.1.0 - 2019-12-18
 
 Added
