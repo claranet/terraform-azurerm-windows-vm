@@ -21,6 +21,8 @@ resource "azurerm_virtual_machine" "vm" {
 
   availability_set_id = var.availability_set_id
 
+  zones = var.zone_id == null ? null : [var.zone_id]
+
   boot_diagnostics {
     enabled     = true
     storage_uri = "https://${var.diagnostics_storage_account_name}.blob.core.windows.net"

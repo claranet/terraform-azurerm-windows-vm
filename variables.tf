@@ -62,6 +62,13 @@ variable "custom_name" {
 variable "availability_set_id" {
   description = "Id of the availability set in which host the Virtual Machine."
   type        = string
+  default     = null
+}
+
+variable "zone_id" {
+  description = "Index of the Availability Zone which the Virtual Machine should be allocated in."
+  type        = number
+  default     = null
 }
 
 variable "diagnostics_storage_account_name" {

@@ -166,11 +166,14 @@ module "vm" {
   custom_name                      = local.vm_name
   admin_username                   = var.vm_admin_username
   admin_password                   = var.vm_admin_password
-  availability_set_id              = azurerm_availability_set.vm_avset.id
   diagnostics_storage_account_name = data.terraform_remote_state.run_common.logs_storage_account_name
   diagnostics_storage_account_key  = data.terraform_remote_state.run.outputs.logs_storage_account_primary_access_key
   log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
   log_analytics_workspace_key      = module.logs.log_analytics_workspace_primary_key
+
+  availability_set_id              = azurerm_availability_set.vm_avset.id
+  # or use Availability Zone
+  # zone_id = 1
 
   vm_image = {
     publisher = "MicrosoftWindowsServer"
@@ -191,37 +194,37 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| admin\_password | Password for Virtual Machine administrator account | string | n/a | yes |
-| admin\_username | Username for Virtual Machine administrator account | string | n/a | yes |
-| application\_gateway\_backend\_pool\_id | Id of the Application Gateway Backend Pool to attach the VM. | string | `"null"` | no |
-| attach\_application\_gateway | True to attach this VM to an Application Gateway | bool | `"false"` | no |
-| attach\_load\_balancer | True to attach this VM to a Load Balancer | bool | `"false"` | no |
-| availability\_set\_id | Id of the availability set in which host the Virtual Machine. | string | n/a | yes |
-| certificate\_validity\_in\_months | The created certificate validity in months | string | `"48"` | no |
-| client\_name | Client name/account used in naming | string | n/a | yes |
-| custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | string | `""` | no |
-| custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | string | `""` | no |
-| delete\_data\_disks\_on\_termination | Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? | string | `"false"` | no |
-| delete\_os\_disk\_on\_termination | Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? | string | `"false"` | no |
-| diagnostics\_storage\_account\_key | Access key of the Storage Account in which store vm diagnostics | string | n/a | yes |
-| diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | string | n/a | yes |
-| environment | Project environment | string | n/a | yes |
-| extra\_tags | Extra tags to set on each created resource. | map(string) | `{}` | no |
-| key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | string | n/a | yes |
-| license\_type | Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set. | string | `"null"` | no |
-| load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | string | `"null"` | no |
-| location | Azure location. | string | n/a | yes |
-| location\_short | Short string for Azure location. | string | n/a | yes |
-| log\_analytics\_workspace\_guid | GUID of the Log Analytics Workspace to link with | string | n/a | yes |
-| log\_analytics\_workspace\_key | Access key of the Log Analytics Workspace to link with | string | n/a | yes |
-| public\_ip\_sku | Sku for the public IP attached to the VM. Can be `null` if no public IP needed. | string | `"Standard"` | no |
-| resource\_group\_name | Resource group name | string | n/a | yes |
-| stack | Project stack name | string | n/a | yes |
-| subnet\_id | Id of the Subnet in which create the Virtual Machine | string | n/a | yes |
-| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | map(string) | `{ "offer": "WindowsServer", "publisher": "MicrosoftWindowsServer", "sku": "2019-Datacenter", "version": "latest" }` | no |
-| vm\_size | Size (SKU) of the Virtual Machin to create. | string | n/a | yes |
+| Name | Description | Type | Default | Required ||------|-------------|------|---------|:-----:|
+| admin\_password | Password for Virtual Machine administrator account | `string` | n/a | yes |
+| admin\_username | Username for Virtual Machine administrator account | `string` | n/a | yes |
+| application\_gateway\_backend\_pool\_id | Id of the Application Gateway Backend Pool to attach the VM. | `string` | `"null"` | no |
+| attach\_application\_gateway | True to attach this VM to an Application Gateway | `bool` | `false` | no |
+| attach\_load\_balancer | True to attach this VM to a Load Balancer | `bool` | `false` | no |
+| availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `"null"` | no |
+| certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
+| client\_name | Client name/account used in naming | `string` | n/a | yes |
+| custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | `string` | `""` | no |
+| custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | `string` | `""` | no |
+| delete\_data\_disks\_on\_termination | Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? | `string` | `"false"` | no |
+| delete\_os\_disk\_on\_termination | Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? | `string` | `"false"` | no |
+| diagnostics\_storage\_account\_key | Access key of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
+| diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
+| environment | Project environment | `string` | n/a | yes |
+| extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
+| key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | `string` | n/a | yes |
+| license\_type | Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set. | `string` | `"null"` | no |
+| load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | `string` | `"null"` | no |
+| location | Azure location. | `string` | n/a | yes |
+| location\_short | Short string for Azure location. | `string` | n/a | yes |
+| log\_analytics\_workspace\_guid | GUID of the Log Analytics Workspace to link with | `string` | n/a | yes |
+| log\_analytics\_workspace\_key | Access key of the Log Analytics Workspace to link with | `string` | n/a | yes |
+| public\_ip\_sku | Sku for the public IP attached to the VM. Can be `null` if no public IP needed. | `string` | `"Standard"` | no |
+| resource\_group\_name | Resource group name | `string` | n/a | yes |
+| stack | Project stack name | `string` | n/a | yes |
+| subnet\_id | Id of the Subnet in which create the Virtual Machine | `string` | n/a | yes |
+| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}<br></pre> | no |
+| vm\_size | Size (SKU) of the Virtual Machin to create. | `string` | n/a | yes |
+| zone\_id | Index of the Availability Zone which the Virtual Machine should be allocated in. | `number` | `"null"` | no |
 
 ## Outputs
 

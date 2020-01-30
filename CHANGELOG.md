@@ -2,6 +2,7 @@
 
 Added
   * AZ-162: Log Analytics Workspace link
+  * AZ-174: Add Availability Zone option 
 
 # v2.1.0 - 2019-12-18
 
