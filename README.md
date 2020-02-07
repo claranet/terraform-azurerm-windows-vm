@@ -4,11 +4,15 @@
 This module creates a [Windows Virtual Machine](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/) with 
 [Windows Remote Management (WinRM)](https://docs.microsoft.com/en-us/windows/desktop/WinRM/portal) activated.
 
+The Windows Virtual Machine comes with:
+ * [Azure Diagnostics](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/diagnostics-extension-overview) activated and configured
+ * A link to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) for [logging](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-collect-azurevm) and [patching](https://docs.microsoft.com/en-us/azure/automation/automation-update-management) management
+ * An optional link to a [Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview) or [Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview)
+
 This code is mostly based on [Tom Harvey](https://github.com/tombuildsstuff) work: https://github.com/terraform-providers/terraform-provider-azurerm/tree/master/examples/virtual-machines/provisioners/windows
 
 ## Limitations
 
-* The Virtual Machine is public
 * A self-signed certificate is generated and associated
 
 ## Requirements
@@ -16,6 +20,7 @@ This code is mostly based on [Tom Harvey](https://github.com/tombuildsstuff) wor
 * [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.32
 * The port 5986 must be reachable
 * An [Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/) configured with VM deployment enabled will be used
+* An existing [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) is mandatory for patching ang logging management
 
 ## Terraform version compatibility
 
@@ -131,6 +136,19 @@ resource "azurerm_availability_set" "vm_avset" {
   managed             = "true"
 }
 
+module "logs" {
+  source  = "claranet/run-common/azurerm//modules/logs"
+  version = "x.x.x"
+
+  client_name    = var.client_name
+  location       = module.azure-region.location
+  location_short = module.azure-region.location_short
+  environment    = var.environment
+  stack          = var.stack
+
+  resource_group_name = module.rg.resource_group_name
+}
+
 module "vm" {
   source  = "claranet/windows-vm/azurerm"
   version = "x.x.x"
@@ -151,6 +169,8 @@ module "vm" {
   availability_set_id              = azurerm_availability_set.vm_avset.id
   diagnostics_storage_account_name = data.terraform_remote_state.run_common.logs_storage_account_name
   diagnostics_storage_account_key  = data.terraform_remote_state.run.outputs.logs_storage_account_primary_access_key
+  log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
+  log_analytics_workspace_key      = module.logs.log_analytics_workspace_primary_key
 
   vm_image = {
     publisher = "MicrosoftWindowsServer"
@@ -190,10 +210,12 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | environment | Project environment | string | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | map(string) | `{}` | no |
 | key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | string | n/a | yes |
-| license\_type | Specifies the BYOL Type for this Virtual Machine. | string | `null` | no |
+| license\_type | Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set. | string | `"null"` | no |
 | load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | string | `"null"` | no |
 | location | Azure location. | string | n/a | yes |
 | location\_short | Short string for Azure location. | string | n/a | yes |
+| log\_analytics\_workspace\_guid | GUID of the Log Analytics Workspace to link with | string | n/a | yes |
+| log\_analytics\_workspace\_key | Access key of the Log Analytics Workspace to link with | string | n/a | yes |
 | public\_ip\_sku | Sku for the public IP attached to the VM. Can be `null` if no public IP needed. | string | `"Standard"` | no |
 | resource\_group\_name | Resource group name | string | n/a | yes |
 | stack | Project stack name | string | n/a | yes |
