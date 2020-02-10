@@ -1,7 +1,11 @@
 locals {
   default_tags = {
-    env   = var.environment
-    stack = var.stack
+    env              = var.environment
+    stack            = var.stack
+    os_family        = "windows"
+    os_distribution  = "undefined"
+    os_version       = "undefined"
+    patch_management = "enabled"
   }
 
   vm_name = coalesce(
