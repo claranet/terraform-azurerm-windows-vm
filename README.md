@@ -11,6 +11,8 @@ The Windows Virtual Machine comes with:
 
 This code is mostly based on [Tom Harvey](https://github.com/tombuildsstuff) work: https://github.com/terraform-providers/terraform-provider-azurerm/tree/master/examples/virtual-machines/provisioners/windows
 
+Following tags are automatically set with default values: `env`, `stack`, `os_family`, `os_distribution`, `os_version`.
+
 ## Limitations
 
 * A self-signed certificate is generated and associated

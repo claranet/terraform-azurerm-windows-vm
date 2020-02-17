@@ -1,7 +1,10 @@
 locals {
   default_tags = {
-    env   = var.environment
-    stack = var.stack
+    env             = var.environment
+    stack           = var.stack
+    os_family       = "windows"
+    os_distribution = lookup(var.vm_image, "offer", "undefined")
+    os_version      = lookup(var.vm_image, "sku", "undefined")
   }
 
   vm_name = coalesce(
