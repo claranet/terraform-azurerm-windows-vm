@@ -6,7 +6,7 @@ resource "azurerm_virtual_machine" "vm" {
   vm_size               = var.vm_size
   license_type          = var.license_type
 
-  tags = merge(local.default_tags, var.extra_tags)
+  tags = merge(local.default_tags, local.default_vm_tags, var.extra_tags)
 
   delete_os_disk_on_termination    = var.delete_os_disk_on_termination
   delete_data_disks_on_termination = var.delete_data_disks_on_termination
