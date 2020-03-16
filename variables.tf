@@ -101,7 +101,7 @@ variable "storage_os_disk_config" {
 
 variable "storage_data_disk_config" {
   description = "Map to configure data storage disk. (Managed/Unmanaged, size...)"
-  type        = map(string)
+  type        = map(map(string))
   default     = {}
 }
 
