@@ -93,6 +93,18 @@ variable "vm_image" {
   }
 }
 
+variable "storage_os_disk_config" {
+  description = "Map to configure OS storage disk. (Managed/Unmanaged, size...)"
+  type        = map(string)
+  default     = {}
+}
+
+variable "storage_data_disk_config" {
+  description = "Map to configure data storage disk. (Managed/Unmanaged, size...)"
+  type        = map(string)
+  default     = {}
+}
+
 variable "delete_os_disk_on_termination" {
   description = "Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed?"
   type        = string
