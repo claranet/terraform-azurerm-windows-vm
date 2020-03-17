@@ -183,6 +183,22 @@ module "vm" {
     sku       = "2019-Datacenter-with-Containers"
     version   = "latest"
   }
+
+  # Use unmanaged disk if needed
+  # If those blocks are not defined, it will use managed_disks
+  storage_os_disk_config = {
+    vhd_uri      = "https://${module.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.disks.name}/${local.vm_name}-osdisk.vhd"
+    disk_size_gb = "150" # At least 127 Gb
+    os_type      = "Windows"
+  }
+
+  storage_data_disk_config = {
+    0 = { # Used to define lun parameter
+      vhd_uri      = "https://${module.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.disks.name}/${local.vm_name}-datadisk0.vhd"
+      disk_size_gb = "500"
+    }
+  }
+
 }
 ```
 
