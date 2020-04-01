@@ -4,6 +4,7 @@ Added
   * AZ-234: Add option to force Static private IP
   * AZ-234: Add option to assoc Network Security Group to the NIC
   * AZ-234: Output NIC ID
+  * AZ-222: Option to activate `enable_accelerated_networking` on NIC resource
 
 Fixed
   * AZ-167: Fix NIC configuration name

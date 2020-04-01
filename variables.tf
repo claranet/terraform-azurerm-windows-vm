@@ -51,6 +51,12 @@ variable "static_private_ip" {
   default     = null
 }
 
+variable "nic_enable_accelerated_networking" {
+  description = "Should Accelerated Networking be enabled? Defaults to `false`."
+  type        = bool
+  default     = false
+}
+
 variable "custom_ipconfig_name" {
   description = "Custom name for the IP config of the NIC. Should be suffixed by \"-nic-ipconfig\". Generated if not set."
   type        = string
