@@ -29,10 +29,25 @@ resource "azurerm_virtual_machine" "vm" {
   }
 
   storage_os_disk {
-    name              = "${local.vm_name}-osdisk"
-    caching           = "ReadWrite"
-    create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+    name              = lookup(var.storage_os_disk_config, "name", "${local.vm_name}-osdisk")
+    caching           = lookup(var.storage_os_disk_config, "caching", "ReadWrite")
+    create_option     = lookup(var.storage_os_disk_config, "create_option", "FromImage")
+    managed_disk_type = lookup(var.storage_os_disk_config, "managed_disk_type", lookup(var.storage_os_disk_config, "vhd_uri", null) == null ? "Standard_LRS" : null)
+    vhd_uri           = lookup(var.storage_os_disk_config, "vhd_uri", null)
+    os_type           = lookup(var.storage_os_disk_config, "os_type", null)
+    disk_size_gb      = lookup(var.storage_os_disk_config, "disk_size_gb", null)
+  }
+
+  dynamic "storage_data_disk" {
+    for_each = var.storage_data_disk_config
+    content {
+      name              = lookup(storage_data_disk.value, "name", "${local.vm_name}-datadisk${storage_data_disk.key}")
+      create_option     = lookup(storage_data_disk.value, "create_option", "Empty")
+      managed_disk_type = lookup(storage_data_disk.value, "managed_disk_type", lookup(storage_data_disk.value, "vhd_uri", null) == null ? "Standard_LRS" : null)
+      vhd_uri           = lookup(storage_data_disk.value, "vhd_uri", null)
+      disk_size_gb      = lookup(storage_data_disk.value, "disk_size_gb", null)
+      lun               = lookup(storage_data_disk.value, "lun", storage_data_disk.key)
+    }
   }
 
   os_profile {

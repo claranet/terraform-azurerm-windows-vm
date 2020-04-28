@@ -183,6 +183,22 @@ module "vm" {
     sku       = "2019-Datacenter-with-Containers"
     version   = "latest"
   }
+
+  # Use unmanaged disk if needed
+  # If those blocks are not defined, it will use managed_disks
+  storage_os_disk_config = {
+    vhd_uri      = "https://${module.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.disks.name}/${local.vm_name}-osdisk.vhd"
+    disk_size_gb = "150" # At least 127 Gb
+    os_type      = "Windows"
+  }
+
+  storage_data_disk_config = {
+    0 = { # Used to define lun parameter
+      vhd_uri      = "https://${module.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.disks.name}/${local.vm_name}-datadisk0.vhd"
+      disk_size_gb = "500"
+    }
+  }
+
 }
 ```
 
@@ -196,13 +212,14 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 
 ## Inputs
 
-| Name | Description | Type | Default | Required ||------|-------------|------|---------|:-----:|
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
 | admin\_password | Password for Virtual Machine administrator account | `string` | n/a | yes |
 | admin\_username | Username for Virtual Machine administrator account | `string` | n/a | yes |
-| application\_gateway\_backend\_pool\_id | Id of the Application Gateway Backend Pool to attach the VM. | `string` | `"null"` | no |
+| application\_gateway\_backend\_pool\_id | Id of the Application Gateway Backend Pool to attach the VM. | `string` | `null` | no |
 | attach\_application\_gateway | True to attach this VM to an Application Gateway | `bool` | `false` | no |
 | attach\_load\_balancer | True to attach this VM to a Load Balancer | `bool` | `false` | no |
-| availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `"null"` | no |
+| availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `null` | no |
 | certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | `string` | `""` | no |
@@ -214,8 +231,8 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
 | key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | `string` | n/a | yes |
-| license\_type | Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set. | `string` | `"null"` | no |
-| load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | `string` | `"null"` | no |
+| license\_type | Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set. | `string` | `null` | no |
+| load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | `string` | `null` | no |
 | location | Azure location. | `string` | n/a | yes |
 | location\_short | Short string for Azure location. | `string` | n/a | yes |
 | log\_analytics\_workspace\_guid | GUID of the Log Analytics Workspace to link with | `string` | n/a | yes |
@@ -223,10 +240,12 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | public\_ip\_sku | Sku for the public IP attached to the VM. Can be `null` if no public IP needed. | `string` | `"Standard"` | no |
 | resource\_group\_name | Resource group name | `string` | n/a | yes |
 | stack | Project stack name | `string` | n/a | yes |
+| storage\_data\_disk\_config | Map to configure data storage disk. (Managed/Unmanaged, size...) | `map(map(string))` | `{}` | no |
+| storage\_os\_disk\_config | Map to configure OS storage disk. (Managed/Unmanaged, size...) | `map(string)` | `{}` | no |
 | subnet\_id | Id of the Subnet in which create the Virtual Machine | `string` | n/a | yes |
-| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}<br></pre> | no |
+| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
 | vm\_size | Size (SKU) of the Virtual Machin to create. | `string` | n/a | yes |
-| zone\_id | Index of the Availability Zone which the Virtual Machine should be allocated in. | `number` | `"null"` | no |
+| zone\_id | Index of the Availability Zone which the Virtual Machine should be allocated in. | `number` | `null` | no |
 
 ## Outputs
 

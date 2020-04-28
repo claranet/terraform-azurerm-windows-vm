@@ -1,3 +1,8 @@
+# v2.3.0 - Unreleased
+
+Added
+  * AZ-210: Enabled unmanaged disk configuration
+
 # v2.2.0 - 2020-02-18
 
 Added
