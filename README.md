@@ -188,19 +188,10 @@ module "vm" {
 
   # Use unmanaged disk if needed
   # If those blocks are not defined, it will use managed_disks
-  storage_os_disk_config = {
-    vhd_uri      = "https://${module.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.disks.name}/${local.vm_name}-osdisk.vhd"
+  os_disk = {
     disk_size_gb = "150" # At least 127 Gb
-    os_type      = "Windows"
+    caching      = "ReadWrite"
   }
-
-  storage_data_disk_config = {
-    0 = { # Used to define lun parameter
-      vhd_uri      = "https://${module.storage_account.name}.blob.core.windows.net/${azurerm_storage_container.disks.name}/${local.vm_name}-datadisk0.vhd"
-      disk_size_gb = "500"
-    }
-  }
-
 }
 ```
 
@@ -227,8 +218,6 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | `string` | `""` | no |
 | custom\_ipconfig\_name | Custom name for the IP config of the NIC. Should be suffixed by "-nic-ipconfig". Generated if not set. | `string` | n/a | yes |
 | custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | `string` | `""` | no |
-| delete\_data\_disks\_on\_termination | Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? | `string` | `"false"` | no |
-| delete\_os\_disk\_on\_termination | Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? | `string` | `"false"` | no |
 | diagnostics\_storage\_account\_key | Access key of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
 | diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
 | environment | Project environment | `string` | n/a | yes |
@@ -251,6 +240,10 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | subnet\_id | Id of the Subnet in which create the Virtual Machine | `string` | `null` | no |
 | vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
 | vm\_size | Size (SKU) of the Virtual Machin to create. | `string` | n/a | yes |
+| storage\_os\_disk\_config | Map to configure OS storage disk. (Caching, size, storage account type...) | `map(string)` | `{}` | no |
+| subnet\_id | Id of the Subnet in which create the Virtual Machine | `string` | n/a | yes |
+| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html#source_image_reference | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
+| vm\_size | Size (SKU) of the Virtual Machine to create. | `string` | n/a | yes |
 | zone\_id | Index of the Availability Zone which the Virtual Machine should be allocated in. | `number` | `null` | no |
 
 ## Outputs
@@ -271,6 +264,6 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 
 ## Related documentation
 
-Terraform resource documentation: [terraform.io/docs/providers/azurerm/r/virtual_machine.html](https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html)
+Terraform resource documentation: [terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html](https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html)
 
 Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/windows/](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/)
