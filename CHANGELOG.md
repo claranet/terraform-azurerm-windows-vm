@@ -1,3 +1,8 @@
+# v2.x.x - Unreleased
+
+Changed
+  * AZ-206: Pin AzureRM version to be usable < 2.0
+
 # v2.3.0 - 2020-04-30
 
 Added
