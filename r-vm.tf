@@ -33,7 +33,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   computer_name  = local.vm_name
   admin_username = var.admin_username
   admin_password = var.admin_password
-  custom_data    = local.custom_data_content
+  custom_data    = base64encode(local.custom_data_content)
 
   secret {
     key_vault_id = var.key_vault_id
