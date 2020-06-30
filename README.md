@@ -96,8 +96,9 @@ module "azure-network-subnet" {
   virtual_network_name = module.azure-network-vnet.virtual_network_name
   subnet_cidr_list     = ["10.10.10.0/24"]
 
-  network_security_group_count = 1
-  network_security_group_ids   = [module.network-security-group.network_security_group_id]
+  network_security_group_ids   = {
+    "${var.stack}-${var.client_name}-${module.azure-region.location_short}-${var.environment}-subnet" = module.network-security-group.network_security_group_id
+  }
 }
 
 module "key_vault" {
@@ -188,7 +189,7 @@ module "vm" {
 
   # Use unmanaged disk if needed
   # If those blocks are not defined, it will use managed_disks
-  os_disk = {
+  storage_os_disk_config = {
     disk_size_gb = "150" # At least 127 Gb
     caching      = "ReadWrite"
   }
@@ -236,12 +237,8 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | stack | Project stack name | `string` | n/a | yes |
 | static\_private\_ip | Static private IP. Private IP is dynamic if not set. | `string` | `null` | no |
 | storage\_data\_disk\_config | Map to configure data storage disk. (Managed/Unmanaged, size...) | `map(map(string))` | `{}` | no |
-| storage\_os\_disk\_config | Map to configure OS storage disk. (Managed/Unmanaged, size...) | `map(string)` | `{}` | no |
-| subnet\_id | Id of the Subnet in which create the Virtual Machine | `string` | `null` | no |
-| vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/virtual_machine.html#storage_image_reference | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
-| vm\_size | Size (SKU) of the Virtual Machin to create. | `string` | n/a | yes |
 | storage\_os\_disk\_config | Map to configure OS storage disk. (Caching, size, storage account type...) | `map(string)` | `{}` | no |
-| subnet\_id | Id of the Subnet in which create the Virtual Machine | `string` | n/a | yes |
+| subnet\_id | Id of the Subnet in which create the Virtual Machine | `string` | `null` | no |
 | vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html#source_image_reference | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
 | vm\_size | Size (SKU) of the Virtual Machine to create. | `string` | n/a | yes |
 | zone\_id | Index of the Availability Zone which the Virtual Machine should be allocated in. | `number` | `null` | no |
