@@ -253,8 +253,9 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 
 | Name | Description |
 |------|-------------|
-| vm\_id | Id of the Virtual machine |
-| vm\_name | Name of the Virtual machine |
+| vm\_id | ID of the Virtual Machine |
+| vm\_name | Name of the Virtual Machine |
+| vm\_nic\_id | ID of the Network Interface Configuration attached to the Virtual Machine |
 | vm\_nic\_ip\_configuration\_name | Name of the IP Configuration for the Network Interface Configuration attached to the Virtual Machine |
 | vm\_nic\_name | Name of the Network Interface Configuration attached to the Virtual Machine |
 | vm\_private\_ip\_address | Private IP address of the Virtual machine |
