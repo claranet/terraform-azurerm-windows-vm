@@ -36,6 +36,18 @@ variable "key_vault_id" {
 variable "subnet_id" {
   description = "Id of the Subnet in which create the Virtual Machine"
   type        = string
+  default     = null
+}
+
+variable "nic_nsg_id" {
+  description = "NSG ID to associate on the Network Interface. No association if null."
+  type        = string
+  default     = null
+}
+
+variable "custom_ipconfig_name" {
+  description = "Custom name for the IP config of the NIC. Should be suffixed by \"-nic-ipconfig\". Generated if not set."
+  type        = string
 }
 
 variable "admin_username" {
