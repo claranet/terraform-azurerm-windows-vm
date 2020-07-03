@@ -45,6 +45,12 @@ variable "nic_nsg_id" {
   default     = null
 }
 
+variable "static_private_ip" {
+  description = "Static private IP. Private IP is dynamic if not set."
+  type        = string
+  default     = null
+}
+
 variable "custom_ipconfig_name" {
   description = "Custom name for the IP config of the NIC. Should be suffixed by \"-nic-ipconfig\". Generated if not set."
   type        = string
