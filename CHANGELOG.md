@@ -5,10 +5,8 @@ Added
   * AZ-234: Add option to assoc Network Security Group to the NIC
   * AZ-234: Output NIC ID
 
-# v2.3.1 - 2020-07-09
-
-Changed
-  * AZ-206: Pin AzureRM version to be usable < 2.0
+Fixed
+  * AZ-167: Fix NIC configuration name
 
 # v2.3.0 - 2020-07-03
 
