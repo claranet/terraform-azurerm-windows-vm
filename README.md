@@ -19,17 +19,19 @@ Following tags are automatically set with default values: `env`, `stack`, `os_fa
 
 ## Requirements
 
-* [AzureRM Terraform provider](https://www.terraform.io/docs/providers/azurerm/) >= 1.32
+* Powershell CLI installed with pwsh executable available
+* [Azure powershell module](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps) installed
 * The port 5986 must be reachable
 * An [Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/) configured with VM deployment enabled will be used
 * An existing [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) is mandatory for patching ang logging management
 
-## Terraform version compatibility
+## Version compatibility
 
-| Module version | Terraform version |
-|----------------|-------------------|
-| >= 2.x.x       | 0.12.x            |
-| < 2.x.x        | 0.11.x            |
+| Module version    | Terraform version | AzureRM version |
+|-------------------|-------------------|-----------------|
+| >= 3.x.x          | 0.12.x            | >= 2.0          |
+| >= 2.x.x, < 3.x.x | 0.12.x            | <  2.0          |
+| <  2.x.x          | 0.11.x            | <  2.0          |
 
 ## Usage
 
