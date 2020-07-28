@@ -213,6 +213,7 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | application\_gateway\_backend\_pool\_id | Id of the Application Gateway Backend Pool to attach the VM. | `string` | `null` | no |
 | attach\_application\_gateway | True to attach this VM to an Application Gateway | `bool` | `false` | no |
 | attach\_load\_balancer | True to attach this VM to a Load Balancer | `bool` | `false` | no |
+| attach\_nsg | True to attach this VM to a Network Security Group | `bool` | `false` | no |
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `null` | no |
 | certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |

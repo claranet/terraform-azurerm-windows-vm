@@ -18,8 +18,6 @@ resource "azurerm_network_interface" "nic" {
 
   enable_accelerated_networking = var.nic_enable_accelerated_networking
 
-  network_security_group_id = var.nic_nsg_id
-
   ip_configuration {
     name                          = local.ip_configuration_name
     subnet_id                     = var.subnet_id
@@ -29,6 +27,13 @@ resource "azurerm_network_interface" "nic" {
   }
 
   tags = merge(local.default_tags, var.extra_tags)
+}
+
+resource "azurerm_network_interface_security_group_association" "nic_nsg_association" {
+  count = var.attach_nsg ? 1 : 0
+
+  network_interface_id      = azurerm_network_interface.nic.id
+  network_security_group_id = var.nic_nsg_id
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "lb_pool_association" {
