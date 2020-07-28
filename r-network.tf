@@ -30,7 +30,7 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_network_interface_security_group_association" "nic_nsg_association" {
-  count = var.attach_nsg ? 1 : 0
+  count = var.nic_nsg_id == null ? 0 : 1
 
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = var.nic_nsg_id
