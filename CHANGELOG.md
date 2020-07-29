@@ -1,4 +1,4 @@
-# v2.4.0 - Unrelased
+# v2.4.0 - 2020-07-29
 
 Added
   * AZ-234: Add option to force Static private IP
