@@ -43,6 +43,11 @@ output "vm_nic_name" {
   value       = azurerm_network_interface.nic.name
 }
 
+output "vm_nic_id" {
+  description = "ID of the Network Interface Configuration attached to the Virtual Machine"
+  value       = azurerm_network_interface.nic.id
+}
+
 output "vm_nic_ip_configuration_name" {
   description = "Name of the IP Configuration for the Network Interface Configuration attached to the Virtual Machine"
   value       = local.ip_configuration_name
