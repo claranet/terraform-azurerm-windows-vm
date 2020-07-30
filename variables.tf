@@ -39,12 +39,6 @@ variable "subnet_id" {
   default     = null
 }
 
-variable "attach_nsg" {
-  description = "True to attach this VM to a Network Security Group"
-  type        = bool
-  default     = false
-}
-
 variable "nic_nsg_id" {
   description = "NSG ID to associate on the Network Interface. No association if null."
   type        = string
