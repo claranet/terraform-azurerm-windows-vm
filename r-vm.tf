@@ -1,18 +1,14 @@
-resource "azurerm_virtual_machine" "vm" {
+resource "azurerm_windows_virtual_machine" "vm" {
   name                  = local.vm_name
   location              = var.location
   resource_group_name   = var.resource_group_name
   network_interface_ids = [azurerm_network_interface.nic.id]
-  vm_size               = var.vm_size
+  size                  = var.vm_size
   license_type          = var.license_type
 
   tags = merge(local.default_tags, local.default_vm_tags, var.extra_tags)
 
-  delete_os_disk_on_termination    = var.delete_os_disk_on_termination
-  delete_data_disks_on_termination = var.delete_data_disks_on_termination
-
-  storage_image_reference {
-    id        = lookup(var.vm_image, "id", null)
+  source_image_reference {
     offer     = lookup(var.vm_image, "offer", null)
     publisher = lookup(var.vm_image, "publisher", null)
     sku       = lookup(var.vm_image, "sku", null)
@@ -21,70 +17,46 @@ resource "azurerm_virtual_machine" "vm" {
 
   availability_set_id = var.availability_set_id
 
-  zones = var.zone_id == null ? null : [var.zone_id]
+  zone = var.zone_id == null ? null : var.zone_id
 
   boot_diagnostics {
-    enabled     = true
-    storage_uri = "https://${var.diagnostics_storage_account_name}.blob.core.windows.net"
+    storage_account_uri = "https://${var.diagnostics_storage_account_name}.blob.core.windows.net"
   }
 
-  storage_os_disk {
-    name              = lookup(var.storage_os_disk_config, "name", "${local.vm_name}-osdisk")
-    caching           = lookup(var.storage_os_disk_config, "caching", "ReadWrite")
-    create_option     = lookup(var.storage_os_disk_config, "create_option", "FromImage")
-    managed_disk_type = lookup(var.storage_os_disk_config, "managed_disk_type", lookup(var.storage_os_disk_config, "vhd_uri", null) == null ? "Standard_LRS" : null)
-    vhd_uri           = lookup(var.storage_os_disk_config, "vhd_uri", null)
-    os_type           = lookup(var.storage_os_disk_config, "os_type", null)
-    disk_size_gb      = lookup(var.storage_os_disk_config, "disk_size_gb", null)
+  os_disk {
+    name                 = lookup(var.storage_os_disk_config, "name", "${local.vm_name}-osdisk")
+    caching              = lookup(var.storage_os_disk_config, "caching", "ReadWrite")
+    storage_account_type = lookup(var.storage_os_disk_config, "storage_account_type", "Standard_LRS")
+    disk_size_gb         = lookup(var.storage_os_disk_config, "disk_size_gb", null)
   }
 
-  dynamic "storage_data_disk" {
-    for_each = var.storage_data_disk_config
-    content {
-      name              = lookup(storage_data_disk.value, "name", "${local.vm_name}-datadisk${storage_data_disk.key}")
-      create_option     = lookup(storage_data_disk.value, "create_option", "Empty")
-      managed_disk_type = lookup(storage_data_disk.value, "managed_disk_type", lookup(storage_data_disk.value, "vhd_uri", null) == null ? "Standard_LRS" : null)
-      vhd_uri           = lookup(storage_data_disk.value, "vhd_uri", null)
-      disk_size_gb      = lookup(storage_data_disk.value, "disk_size_gb", null)
-      lun               = lookup(storage_data_disk.value, "lun", storage_data_disk.key)
+  computer_name  = local.vm_name
+  admin_username = var.admin_username
+  admin_password = var.admin_password
+  custom_data    = base64encode(local.custom_data_content)
+
+  secret {
+    key_vault_id = var.key_vault_id
+
+    certificate {
+      url   = azurerm_key_vault_certificate.winrm_certificate.secret_id
+      store = "My"
     }
   }
 
-  os_profile {
-    computer_name  = local.vm_name
-    admin_username = var.admin_username
-    admin_password = var.admin_password
-    custom_data    = local.custom_data_content
+  provision_vm_agent       = true
+  enable_automatic_updates = true
+
+  # Auto-Login's required to configure WinRM
+  additional_unattend_content {
+    setting = "AutoLogon"
+    content = "<AutoLogon><Password><Value>${local.admin_password_encoded}</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>${var.admin_username}</Username></AutoLogon>"
   }
 
-  os_profile_secrets {
-    source_vault_id = var.key_vault_id
-
-    vault_certificates {
-      certificate_url   = azurerm_key_vault_certificate.winrm_certificate.secret_id
-      certificate_store = "My"
-    }
-  }
-
-  os_profile_windows_config {
-    provision_vm_agent        = true
-    enable_automatic_upgrades = true
-
-    # Auto-Login's required to configure WinRM
-    additional_unattend_config {
-      pass         = "oobeSystem"
-      component    = "Microsoft-Windows-Shell-Setup"
-      setting_name = "AutoLogon"
-      content      = "<AutoLogon><Password><Value>${local.admin_password_encoded}</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>${var.admin_username}</Username></AutoLogon>"
-    }
-
-    # Unattend config is to enable basic auth in WinRM, required for the provisioner stage.
-    additional_unattend_config {
-      pass         = "oobeSystem"
-      component    = "Microsoft-Windows-Shell-Setup"
-      setting_name = "FirstLogonCommands"
-      content      = file(format("%s/files/FirstLogonCommands.xml", path.module))
-    }
+  # Unattend config is to enable basic auth in WinRM, required for the provisioner stage.
+  additional_unattend_content {
+    setting = "FirstLogonCommands"
+    content = file(format("%s/files/FirstLogonCommands.xml", path.module))
   }
 
   identity {
@@ -98,11 +70,11 @@ resource "null_resource" "winrm_connection_test" {
   depends_on = [
     azurerm_network_interface.nic,
     azurerm_public_ip.public_ip,
-    azurerm_virtual_machine.vm,
+    azurerm_windows_virtual_machine.vm,
   ]
 
   triggers = {
-    uuid = azurerm_virtual_machine.vm.id
+    uuid = azurerm_windows_virtual_machine.vm.id
   }
 
   connection {
