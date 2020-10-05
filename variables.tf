@@ -116,12 +116,7 @@ variable "zone_id" {
 }
 
 variable "diagnostics_storage_account_name" {
-  description = "Name of the Storage Account in which store vm diagnostics"
-  type        = string
-}
-
-variable "diagnostics_storage_account_key" {
-  description = "Access key of the Storage Account in which store vm diagnostics"
+  description = "Name of the Storage Account in which store Virtual Machine boot diagnostics"
   type        = string
 }
 
@@ -233,5 +228,10 @@ variable "log_analytics_workspace_key" {
 
 variable "backup_policy_id" {
   description = "Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup)"
+  type        = string
+}
+
+variable "azure_monitor_data_collection_rule_id" {
+  description = "Data Collection Rule ID from Azure Monitor for metrics and logs collection"
   type        = string
 }

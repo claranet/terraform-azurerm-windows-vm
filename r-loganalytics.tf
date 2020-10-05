@@ -1,5 +1,5 @@
 resource "azurerm_virtual_machine_extension" "log_extension" {
-  name = "${local.vm_name}-logextension"
+  name = "${azurerm_windows_virtual_machine.vm.name}-logextension"
 
   publisher                  = "Microsoft.EnterpriseCloud.Monitoring"
   type                       = "MicrosoftMonitoringAgent"
