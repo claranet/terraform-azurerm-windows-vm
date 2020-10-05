@@ -8,6 +8,7 @@ The Windows Virtual Machine comes with:
  * [Azure Diagnostics](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/diagnostics-extension-overview) activated and configured
  * A link to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) for [logging](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-collect-azurevm) and [patching](https://docs.microsoft.com/en-us/azure/automation/automation-update-management) management
  * An optional link to a [Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview) or [Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview)
+ * A link to the [Recovery Vault](https://docs.microsoft.com/en-us/azure/backup/backup-azure-recovery-services-vault-overview) and one of its policies to back up the virtual machine
 
 This code is mostly based on [Tom Harvey](https://github.com/tombuildsstuff) work: https://github.com/terraform-providers/terraform-provider-azurerm/tree/master/examples/virtual-machines/provisioners/windows
 
@@ -154,6 +155,20 @@ module "logs" {
   resource_group_name = module.rg.resource_group_name
 }
 
+module "backup" {
+  source  = "claranet/run-iaas/azurerm//modules/backup"
+  version = "x.x.x"
+
+  client_name    = var.client_name
+  location       = module.azure-region.location
+  location_short = module.azure-region.location_short
+  environment    = var.environment
+  stack          = var.stack
+
+  resource_group_name        = module.rg.resource_group_name
+  log_analytics_workspace_id = module.logs.log_analytics_workspace_id
+}
+
 module "vm" {
   source  = "claranet/windows-vm/azurerm"
   version = "x.x.x"
@@ -176,7 +191,10 @@ module "vm" {
   log_analytics_workspace_guid     = module.logs.log_analytics_workspace_guid
   log_analytics_workspace_key      = module.logs.log_analytics_workspace_primary_key
 
-  availability_set_id              = azurerm_availability_set.vm_avset.id
+  # Set to null to deactivate backup
+  backup_policy_id = module.backup.vm_backup_policy_id
+
+  availability_set_id = azurerm_availability_set.vm_avset.id
   # or use Availability Zone
   # zone_id = 1
 
@@ -214,6 +232,7 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | attach\_application\_gateway | True to attach this VM to an Application Gateway | `bool` | `false` | no |
 | attach\_load\_balancer | True to attach this VM to a Load Balancer | `bool` | `false` | no |
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `null` | no |
+| backup\_policy\_id | Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup) | `string` | n/a | yes |
 | certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | `string` | `""` | no |

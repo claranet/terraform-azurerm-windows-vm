@@ -193,3 +193,8 @@ variable "log_analytics_workspace_key" {
   description = "Access key of the Log Analytics Workspace to link with"
   type        = string
 }
+
+variable "backup_policy_id" {
+  description = "Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup)"
+  type        = string
+}
