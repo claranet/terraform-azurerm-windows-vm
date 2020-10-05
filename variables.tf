@@ -60,6 +60,7 @@ variable "nic_enable_accelerated_networking" {
 variable "custom_ipconfig_name" {
   description = "Custom name for the IP config of the NIC. Should be suffixed by \"-nic-ipconfig\". Generated if not set."
   type        = string
+  default     = null
 }
 
 variable "admin_username" {

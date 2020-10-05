@@ -1,3 +1,8 @@
+# Unreleased
+
+Fixed
+  * AZ-234: Fix `custom_ipconfig_name` variable with default null value
+
 # v3.0.0 - 2020-07-30
 
 Breaking
