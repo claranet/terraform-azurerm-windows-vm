@@ -217,7 +217,7 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | `string` | `""` | no |
-| custom\_ipconfig\_name | Custom name for the IP config of the NIC. Should be suffixed by "-nic-ipconfig". Generated if not set. | `string` | n/a | yes |
+| custom\_ipconfig\_name | Custom name for the IP config of the NIC. Should be suffixed by "-nic-ipconfig". Generated if not set. | `string` | `null` | no |
 | custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | `string` | `""` | no |
 | diagnostics\_storage\_account\_key | Access key of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
 | diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
