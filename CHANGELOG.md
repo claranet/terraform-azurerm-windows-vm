@@ -1,4 +1,4 @@
-# Unreleased
+# v3.1.0 - 2020-10-16
 
 Added
   * AZ-308: Backup configuration options
