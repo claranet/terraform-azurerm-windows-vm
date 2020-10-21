@@ -8,7 +8,7 @@ resource "azurerm_public_ip" "public_ip" {
   domain_name_label   = coalesce(var.custom_dns_label, local.vm_name)
   sku                 = var.public_ip_sku
 
-  tags = merge(local.default_tags, var.extra_tags)
+  tags = merge(local.default_tags, var.extra_tags, var.public_ip_extra_tags)
 }
 
 resource "azurerm_network_interface" "nic" {
@@ -26,7 +26,7 @@ resource "azurerm_network_interface" "nic" {
     public_ip_address_id          = var.public_ip_sku == null ? null : join("", azurerm_public_ip.public_ip.*.id)
   }
 
-  tags = merge(local.default_tags, var.extra_tags)
+  tags = merge(local.default_tags, var.extra_tags, var.nic_extra_tags)
 }
 
 resource "azurerm_network_interface_security_group_association" "nic_nsg_association" {

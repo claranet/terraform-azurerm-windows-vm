@@ -39,6 +39,12 @@ variable "subnet_id" {
   default     = null
 }
 
+variable "nic_extra_tags" {
+  description = "Extra tags to set on the network interface."
+  type        = map(string)
+  default     = {}
+}
+
 variable "nic_nsg_id" {
   description = "NSG ID to associate on the Network Interface. No association if null."
   type        = string
@@ -118,6 +124,12 @@ variable "vm_image" {
   }
 }
 
+variable "os_disk_extra_tags" {
+  description = "Extra tags to set on the OS disk."
+  type        = map(string)
+  default     = {}
+}
+
 variable "storage_os_disk_config" {
   description = "Map to configure OS storage disk. (Caching, size, storage account type...)"
   type        = map(string)
@@ -146,6 +158,12 @@ variable "custom_dns_label" {
   description = "The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com"
   type        = string
   default     = ""
+}
+
+variable "public_ip_extra_tags" {
+  description = "Extra tags to set on the Public IP."
+  type        = map(string)
+  default     = {}
 }
 
 variable "public_ip_sku" {

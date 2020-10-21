@@ -97,3 +97,17 @@ resource "null_resource" "winrm_connection_test" {
     ]
   }
 }
+
+module "vm_os_disk_tagging" {
+  source  = "claranet/tagging/azurerm"
+  version = "4.0.0"
+
+  nb_resources = 1
+  resource_ids = [data.azurerm_managed_disk.vm_os_disk.id]
+  behavior     = "merge" # Must be "merge" or "overwrite"
+
+  tags = merge(local.default_tags, var.extra_tags, var.os_disk_extra_tags)
+}
+
+
+
