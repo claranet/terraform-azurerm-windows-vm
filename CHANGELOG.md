@@ -2,6 +2,7 @@
 
 Added
   * AZ-333: Add custom tags on Nic, Pub IP and os disk
+  * AZ-322: Allow retrieving certificates from Key Vault
 
 # v3.1.0 - 2020-10-16
 

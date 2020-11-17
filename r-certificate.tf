@@ -47,3 +47,37 @@ resource "azurerm_key_vault_certificate" "winrm_certificate" {
     }
   }
 }
+
+resource "azurerm_key_vault_access_policy" "vm" {
+  key_vault_id = var.key_vault_id
+
+  object_id = azurerm_windows_virtual_machine.vm.identity[0].principal_id
+  tenant_id = data.azurerm_client_config.current.tenant_id
+
+  secret_permissions = ["get", "list"]
+}
+
+resource "azurerm_virtual_machine_extension" "keyvault_certificates" {
+  count = var.key_vault_certificates_names != [] ? 1 : 0
+
+  name = "${azurerm_windows_virtual_machine.vm.name}-keyvaultextension"
+
+  publisher                  = "Microsoft.Azure.KeyVault"
+  type                       = "KeyVaultForWindows"
+  type_handler_version       = "1.0"
+  auto_upgrade_minor_version = true
+
+  virtual_machine_id = azurerm_windows_virtual_machine.vm.id
+
+  settings = jsonencode({
+    secretsManagementSettings : {
+      pollingIntervalInS       = tostring(var.key_vault_certificates_polling_rate)
+      certificateStoreName     = var.key_vault_certificates_store_name,
+      certificateStoreLocation = "LocalMachine",
+      requiredInitialSync      = true
+      observedCertificates     = formatlist("https://%s.vault.azure.net/secrets/%s", local.key_vault_name, var.key_vault_certificates_names)
+    }
+  })
+
+  depends_on = [azurerm_key_vault_access_policy.vm]
+}

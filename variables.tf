@@ -33,6 +33,24 @@ variable "key_vault_id" {
   type        = string
 }
 
+variable "key_vault_certificates_names" {
+  description = "List of Azure Key Vault certificates names to install in the VM"
+  type        = list(string)
+  default     = []
+}
+
+variable "key_vault_certificates_polling_rate" {
+  description = "Polling rate (in seconds) for Key Vault certificates retrieval"
+  type        = number
+  default     = 300
+}
+
+variable "key_vault_certificates_store_name" {
+  description = "Name of the cetrificate store on which install the Key Vault certificates"
+  type        = string
+  default     = "MY"
+}
+
 variable "subnet_id" {
   description = "Id of the Subnet in which create the Virtual Machine"
   type        = string
