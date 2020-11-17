@@ -1,3 +1,8 @@
+# v3.2.0 - unreleased
+
+Added
+  * AZ-333: Add custom tags on Nic, Pub IP and os disk
+
 # v3.1.0 - 2020-10-16
 
 Added
