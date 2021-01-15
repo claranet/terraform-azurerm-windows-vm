@@ -245,8 +245,8 @@ ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
 | key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM | `list(string)` | `[]` | no |
-| key\_vault\_certificates\_polling\_rate | Polling rate (in seconds) for Key Vault certificates retrieval | `number` | `3600` | no |
-| key\_vault\_certificates\_store\_name | Name of the cetrificate store on which install the Key Vault certificates | `string` | `"My"` | no |
+| key\_vault\_certificates\_polling\_rate | Polling rate (in seconds) for Key Vault certificates retrieval | `number` | `300` | no |
+| key\_vault\_certificates\_store\_name | Name of the cetrificate store on which install the Key Vault certificates | `string` | `"MY"` | no |
 | key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | `string` | n/a | yes |
 | license\_type | Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set. | `string` | `null` | no |
 | load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | `string` | `null` | no |

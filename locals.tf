@@ -10,10 +10,8 @@ locals {
     os_version      = lookup(var.vm_image, "sku", "undefined")
   }
 
-  vm_name = coalesce(
-    var.custom_name,
-    format("%s-%s-vm", var.client_name, var.environment),
-  )
+  default_name = lower("${var.client_name}-${var.environment}")
+  vm_name      = coalesce(var.custom_name, "${local.default_name}-vm")
 
   ip_configuration_name = coalesce(var.custom_ipconfig_name, "${local.vm_name}-nic-ipconfig")
 
