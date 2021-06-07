@@ -1,4 +1,4 @@
-# Unreleased
+# v4.1.1 - 2021-06-08
 
 Fixed
   * AZ-505: Fix variable type for `storage_data_disk_config`
