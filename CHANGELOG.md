@@ -1,5 +1,8 @@
 # Unreleased
 
+Fixed
+  * AZ-510: Fix creation condition for keyvault extension 
+
 Added
   * AZ-509: Add managed data disk
 

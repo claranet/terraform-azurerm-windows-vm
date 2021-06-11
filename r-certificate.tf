@@ -58,7 +58,7 @@ resource "azurerm_key_vault_access_policy" "vm" {
 }
 
 resource "azurerm_virtual_machine_extension" "keyvault_certificates" {
-  count = var.key_vault_certificates_names != [] ? 1 : 0
+  count = var.key_vault_certificates_names == null ? 0 : 1
 
   name = "${azurerm_windows_virtual_machine.vm.name}-keyvaultextension"
 

@@ -31,7 +31,7 @@ variable "key_vault_id" {
 variable "key_vault_certificates_names" {
   description = "List of Azure Key Vault certificates names to install in the VM"
   type        = list(string)
-  default     = []
+  default     = null
 }
 
 variable "key_vault_certificates_polling_rate" {

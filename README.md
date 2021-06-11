@@ -294,7 +294,7 @@ Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/
 | diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
-| key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM | `list(string)` | `[]` | no |
+| key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM | `list(string)` | `null` | no |
 | key\_vault\_certificates\_polling\_rate | Polling rate (in seconds) for Key Vault certificates retrieval | `number` | `300` | no |
 | key\_vault\_certificates\_store\_name | Name of the cetrificate store on which install the Key Vault certificates | `string` | `"MY"` | no |
 | key\_vault\_id | Id of the Azure Key Vault to use for VM certificate | `string` | n/a | yes |
