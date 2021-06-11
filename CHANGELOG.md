@@ -1,3 +1,8 @@
+# v4.1.2 - 2021-06-11
+
+Added
+  * AZ-508: Add `source_image_id` as a mutex of `source_image_reference`
+
 # v4.1.1 - 2021-06-08
 
 Fixed
