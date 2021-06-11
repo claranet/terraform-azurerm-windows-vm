@@ -142,6 +142,12 @@ variable "vm_image" {
   }
 }
 
+variable "vm_image_id" {
+  description = "The ID of the Image which this Virtual Machine should be created from. This variable cannot be used if `vm_image` is already defined."
+  type        = string
+  default     = null
+}
+
 variable "os_disk_extra_tags" {
   description = "Extra tags to set on the OS disk."
   type        = map(string)
