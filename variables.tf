@@ -143,7 +143,7 @@ variable "vm_image" {
 }
 
 variable "vm_image_id" {
-  description = "The ID of the Image which this Virtual Machine should be created from. This variable cannot be used if `vm_image` is already defined."
+  description = "The ID of the Image which this Virtual Machine should be created from. This variable supersedes the `vm_image` variable if not null."
   type        = string
   default     = null
 }
