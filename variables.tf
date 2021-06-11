@@ -155,11 +155,11 @@ variable "storage_os_disk_config" {
   default     = {}
 }
 
-#variable "storage_data_disk_config" {
-#  description = "Map to configure data storage disk. (Managed/Unmanaged, size...)"
-#  type        = map(any)
-#  default     = {}
-#}
+variable "storage_data_disk_config" {
+  description = "Map to configure data storage disk. (Managed/Unmanaged, size...)"
+  type        = map(any)
+  default     = {}
+}
 
 variable "extra_tags" {
   description = "Extra tags to set on each created resource."
