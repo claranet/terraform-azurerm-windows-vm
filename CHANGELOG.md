@@ -1,7 +1,7 @@
 # Unreleased
 
 Added
-* AZ-509: Add managed disk
+  * AZ-509: Add managed data disk
 
 Changed
   * AZ-546: CLean module, remove unused variables
