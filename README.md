@@ -213,6 +213,14 @@ module "vm" {
     disk_size_gb = "150" # At least 127 Gb
     caching      = "ReadWrite"
   }
+
+  storage_data_disk_config = {
+    app = {
+      disk_size_gb         = 256
+      lun                  = 0
+      storage_account_type = "Premium_LRS"
+    }
+  }
 }
 ```
 
