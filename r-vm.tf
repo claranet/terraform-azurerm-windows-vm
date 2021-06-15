@@ -8,11 +8,16 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
   tags = merge(local.default_tags, local.default_vm_tags, var.extra_tags)
 
-  source_image_reference {
-    offer     = lookup(var.vm_image, "offer", null)
-    publisher = lookup(var.vm_image, "publisher", null)
-    sku       = lookup(var.vm_image, "sku", null)
-    version   = lookup(var.vm_image, "version", null)
+  source_image_id = var.vm_image_id
+
+  dynamic "source_image_reference" {
+    for_each = var.vm_image_id == null ? ["fake"] : []
+    content {
+      offer     = lookup(var.vm_image, "offer", null)
+      publisher = lookup(var.vm_image, "publisher", null)
+      sku       = lookup(var.vm_image, "sku", null)
+      version   = lookup(var.vm_image, "version", null)
+    }
   }
 
   availability_set_id = var.availability_set_id
