@@ -137,6 +137,6 @@ resource "azurerm_virtual_machine_data_disk_attachment" "disk-attach" {
   managed_disk_id    = azurerm_managed_disk.disk[each.key].id
   virtual_machine_id = azurerm_windows_virtual_machine.vm.id
 
-  lun     = lookup(each.value, "lun", each.key)
+  lun     = lookup(each.value, "lun")
   caching = lookup(each.value, "caching", "ReadWrite")
 }

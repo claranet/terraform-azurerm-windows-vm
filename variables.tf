@@ -156,7 +156,7 @@ variable "storage_os_disk_config" {
 }
 
 variable "storage_data_disk_config" {
-  description = "Map to configure data storage disk. (Managed/Unmanaged, size...)"
+  description = "Map of data disks to attach to the Virtual Machine. Map attributes: `storage_account_type` (optional, defaults to `Standard_LRS`), `create_option` (optional, defaults to `Empty`), `disk_size_gb`, `lun` & `caching` (optional, defaults to `ReadWrite`). See [virtual_machine_data_disk_attachment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) & [managed_disk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_disk)"
   type        = map(any)
   default     = {}
 }
