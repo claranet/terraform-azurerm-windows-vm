@@ -1,12 +1,3 @@
-data "template_file" "diagnostics" {
-  template = file(format("%s/files/diagnostics.json", path.module))
-
-  vars = {
-    resource_id  = azurerm_windows_virtual_machine.vm.id
-    storage_name = var.diagnostics_storage_account_name
-  }
-}
-
 resource "azurerm_virtual_machine_extension" "diagnostics" {
   name = "${azurerm_windows_virtual_machine.vm.name}-diagnosticsextension"
 
@@ -17,7 +8,10 @@ resource "azurerm_virtual_machine_extension" "diagnostics" {
 
   virtual_machine_id = azurerm_windows_virtual_machine.vm.id
 
-  settings = data.template_file.diagnostics.rendered
+  settings = templatefile(format("%s/files/diagnostics.json", path.module), {
+    resource_id  = azurerm_windows_virtual_machine.vm.id
+    storage_name = var.diagnostics_storage_account_name
+  })
 
   protected_settings = <<SETTINGS
   {

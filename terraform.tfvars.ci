@@ -19,8 +19,8 @@ vm_image={
 }
 certificate_validity_in_months="42"
 attach_load_balancer=true
-load_balancer_backend_pool_id=/subscriptions//resourceGroups//providers/Microsoft.Network/loadBalancers/test-lb/backendAddressPools/testBackendAddressPool
+load_balancer_backend_pool_id="/subscriptions/resourceGroups//providers/Microsoft.Network/loadBalancers/test-lb/backendAddressPools/testBackendAddressPool"
 attach_application_gateway=true
-application_gateway_backend_pool_id=/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg-test/providers/Microsoft.Network/applicationGateways/test-appgw/backendAddressPools/test-backend-address-pool
-log_analytics_workspace_guid=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee
-log_analytics_workspace_key=myscretkeybase64encoded==
+application_gateway_backend_pool_id="/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg-test/providers/Microsoft.Network/applicationGateways/test-appgw/backendAddressPools/test-backend-address-pool"
+log_analytics_workspace_guid="aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+log_analytics_workspace_key="myscretkeybase64encoded=="
