@@ -114,5 +114,29 @@ module "vm_os_disk_tagging" {
   tags = merge(local.default_tags, var.extra_tags, var.os_disk_extra_tags)
 }
 
+resource "azurerm_managed_disk" "disk" {
+  for_each = var.storage_data_disk_config
 
+  location            = var.location
+  resource_group_name = var.resource_group_name
 
+  name = lookup(each.value, "name", "${local.vm_name}-datadisk-${each.key}")
+
+  zones                = var.zone_id == null ? null : [var.zone_id]
+  storage_account_type = lookup(each.value, "storage_account_type", "Standard_LRS")
+
+  create_option = lookup(each.value, "create_option", "Empty")
+  disk_size_gb  = lookup(each.value, "disk_size_gb", null)
+
+  tags = merge(local.default_tags, local.default_vm_tags, var.extra_tags, lookup(each.value, "extra_tags", {}))
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "disk_attach" {
+  for_each = var.storage_data_disk_config
+
+  managed_disk_id    = azurerm_managed_disk.disk[each.key].id
+  virtual_machine_id = azurerm_windows_virtual_machine.vm.id
+
+  lun     = lookup(each.value, "lun")
+  caching = lookup(each.value, "caching", "ReadWrite")
+}
