@@ -1,13 +1,13 @@
-# Unreleased
-
-Fixed
-  * AZ-510: Fix creation condition for keyvault extension 
+# v4.2.0 - 2021-08-06
 
 Added
   * AZ-509: Add managed data disk
 
 Changed
-  * AZ-546: CLean module, remove unused variables
+  * AZ-546: Clean module, remove unused variables
+
+Fixed
+  * AZ-510: Fix creation condition for keyvault extension
 
 # v4.1.2 - 2021-06-11
 
