@@ -1,3 +1,8 @@
+# Unreleased
+
+Changed
+  * AZ-546: CLean module, remove unused variables
+
 # v4.1.2 - 2021-06-11
 
 Added
