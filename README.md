@@ -238,12 +238,6 @@ The created virtual machine can be used with Ansible this way.
 ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e ansible_password==<vm_password> -e ansible_connection=winrm -e ansible_winrm_server_cert_validation=ignore
 ```
 
-## Related documentation
-
-Terraform resource documentation: [terraform.io/docs/providers/azurerm/r/windows\_virtual\_machine.html](https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html)
-
-Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/windows/](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/)
-
 <!-- BEGIN_TF_DOCS -->
 ## Providers
 
@@ -342,3 +336,6 @@ Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/
 | vm\_winrm\_certificate\_key\_vault\_id | Id of the generated certificate in the input Key Vault |
 | vm\_winrm\_certificate\_thumbprint | The X509 Thumbprint of the Key Vault Certificate returned as hex string. |
 <!-- END_TF_DOCS -->
+## Related documentation
+
+Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/windows/](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/)
