@@ -1,4 +1,3 @@
-<!-- BEGIN_TF_DOCS -->
 # Azure Windows Virtual Machine
 [![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/windows-vm/azurerm/)
 
@@ -31,7 +30,8 @@ Following tags are automatically set with default values: `env`, `stack`, `os_fa
 ## Version compatibility
 
 | Module version | Terraform version | AzureRM version |
-|----------------|-------------------| --------------- |
+| -------------- | ----------------- | --------------- |
+| >= 5.x.x       | 0.15.x & 1.0.x    | >= 2.0          |
 | >= 4.x.x       | 0.13.x            | >= 2.0          |
 | >= 3.x.x       | 0.12.x            | >= 2.0          |
 | >= 2.x.x       | 0.12.x            | < 2.0           |
@@ -238,12 +238,7 @@ The created virtual machine can be used with Ansible this way.
 ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e ansible_password==<vm_password> -e ansible_connection=winrm -e ansible_winrm_server_cert_validation=ignore
 ```
 
-## Related documentation
-
-Terraform resource documentation: [terraform.io/docs/providers/azurerm/r/windows\_virtual\_machine.html](https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html)
-
-Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/windows/](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/)
-
+<!-- BEGIN_TF_DOCS -->
 ## Providers
 
 | Name | Version |
@@ -341,3 +336,6 @@ Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/
 | vm\_winrm\_certificate\_key\_vault\_id | Id of the generated certificate in the input Key Vault |
 | vm\_winrm\_certificate\_thumbprint | The X509 Thumbprint of the Key Vault Certificate returned as hex string. |
 <!-- END_TF_DOCS -->
+## Related documentation
+
+Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/windows/](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/)
