@@ -3,7 +3,7 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
 
   publisher                  = "Microsoft.Azure.Monitor"
   type                       = "AzureMonitorWindowsAgent"
-  type_handler_version       = "1.0"
+  type_handler_version       = var.azure_monitor_agent_version
   auto_upgrade_minor_version = "true"
 
   virtual_machine_id = azurerm_windows_virtual_machine.vm.id

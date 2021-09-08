@@ -5,7 +5,6 @@ This module creates a [Windows Virtual Machine](https://docs.microsoft.com/en-us
 [Windows Remote Management (WinRM)](https://docs.microsoft.com/en-us/windows/desktop/WinRM/portal) activated.
 
 The Windows Virtual Machine comes with:
-* [Azure Diagnostics](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/diagnostics-extension-overview) activated and configured
 * [Azure Monitor Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/azure-monitor-agent-overview) activated and configured
 * A link to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) for [logging](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-collect-azurevm) and [patching](https://docs.microsoft.com/en-us/azure/automation/automation-update-management) management
 * An optional link to a [Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview) or [Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview)
@@ -305,6 +304,7 @@ module "vm" {
 | attach\_application\_gateway | True to attach this VM to an Application Gateway | `bool` | `false` | no |
 | attach\_load\_balancer | True to attach this VM to a Load Balancer | `bool` | `false` | no |
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `null` | no |
+| azure\_monitor\_agent\_version | Azure Monitor Agent extension version | `string` | `"1.1.2"` | no |
 | azure\_monitor\_data\_collection\_rule\_id | Data Collection Rule ID from Azure Monitor for metrics and logs collection | `string` | n/a | yes |
 | backup\_policy\_id | Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup) | `string` | n/a | yes |
 | certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
@@ -357,6 +357,7 @@ module "vm" {
 | vm\_winrm\_certificate\_key\_vault\_id | Id of the generated certificate in the input Key Vault |
 | vm\_winrm\_certificate\_thumbprint | The X509 Thumbprint of the Key Vault Certificate returned as hex string. |
 <!-- END_TF_DOCS -->
+
 ## Related documentation
 
 Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/windows/](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/)
