@@ -241,3 +241,9 @@ variable "azure_monitor_agent_version" {
   type        = string
   default     = "1.1.2"
 }
+
+variable "log_analytics_agent_version" {
+  description = "Azure Log Analytics extension version"
+  type        = string
+  default     = "1.0"
+}
