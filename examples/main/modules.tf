@@ -142,6 +142,11 @@ module "az_vm_backup" {
   stack          = var.stack
 
   resource_group_name = module.rg.resource_group_name
+
+  logs_destinations_ids = [
+    module.run_common.logs_storage_account_id,
+    module.run_common.log_analytics_workspace_id
+  ]
 }
 
 module "vm" {
