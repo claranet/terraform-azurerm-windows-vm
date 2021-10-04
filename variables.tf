@@ -116,7 +116,12 @@ variable "zone_id" {
 }
 
 variable "diagnostics_storage_account_name" {
-  description = "Name of the Storage Account in which store Virtual Machine boot diagnostics"
+  description = "Name of the Storage Account in used for Virtual Machine diagnostics"
+  type        = string
+}
+
+variable "diagnostics_storage_account_key" {
+  description = "Access key of the Storage Account used for Virtual Machine diagnostics. Used only with legacy monitoring agent, set to `null` if not needed."
   type        = string
 }
 
@@ -231,8 +236,14 @@ variable "backup_policy_id" {
   type        = string
 }
 
+variable "use_legacy_monitoring_agent" {
+  description = "True to use the legacy monitoring agent instead of Azure Monitor Agent"
+  type        = bool
+  default     = false
+}
+
 variable "azure_monitor_data_collection_rule_id" {
-  description = "Data Collection Rule ID from Azure Monitor for metrics and logs collection"
+  description = "Data Collection Rule ID from Azure Monitor for metrics and logs collection. Used with new monitoring agent, set to `null` if legacy agent is used."
   type        = string
 }
 
