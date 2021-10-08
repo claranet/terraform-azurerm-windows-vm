@@ -206,7 +206,8 @@ module "az_vm_backup" {
 }
 
 module "az_monitor" {
-  source = "git::ssh://git@git.fr.clara.net/claranet/projects/cloud/azure/terraform/modules/run-iaas.git//modules/vm-monitoring?ref=AZ-302-vm-monitor"
+  source  = "claranet/run-iaas/azurerm//modules/vm-monitoring"
+  version = "x.x.x"
 
   client_name    = var.client_name
   location       = module.azure_region.location

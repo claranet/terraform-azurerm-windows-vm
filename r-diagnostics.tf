@@ -1,5 +1,5 @@
 resource "azurerm_virtual_machine_extension" "diagnostics" {
-  for_each = var.use_legacy_monitoring_agent ? ["enabled"] : []
+  for_each = toset(var.use_legacy_monitoring_agent ? ["enabled"] : [])
 
   name = "${azurerm_windows_virtual_machine.vm.name}-diagnosticsextension"
 
@@ -24,7 +24,7 @@ SETTINGS
 }
 
 resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
-  for_each = var.use_legacy_monitoring_agent ? [] : ["enabled"]
+  for_each = toset(var.use_legacy_monitoring_agent ? [] : ["enabled"])
 
   name = "${azurerm_windows_virtual_machine.vm.name}-azmonitorextension"
 
@@ -37,7 +37,7 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
 }
 
 resource "null_resource" "azure_monitor_link" {
-  for_each = var.use_legacy_monitoring_agent ? [] : ["enabled"]
+  for_each = toset(var.use_legacy_monitoring_agent ? [] : ["enabled"])
 
   provisioner "local-exec" {
     command = <<EOC
