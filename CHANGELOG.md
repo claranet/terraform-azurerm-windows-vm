@@ -1,7 +1,11 @@
 # Unreleased
 
+Breaking
+  * AZ-302: Replace diagnostics agent with Azure Monitor agent
+
 Changed
   * AZ-572: Revamp examples and improve CI
+  * AZ-302: Bump Log Analytics version to latest and allow override
 
 # v4.2.1 - 2021-08-27
 

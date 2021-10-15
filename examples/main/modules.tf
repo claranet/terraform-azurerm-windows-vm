@@ -149,6 +149,24 @@ module "az_vm_backup" {
   ]
 }
 
+module "az_monitor" {
+  source  = "claranet/run-iaas/azurerm//modules/vm-monitoring"
+  version = "x.x.x"
+
+  client_name    = var.client_name
+  location       = module.azure_region.location
+  location_short = module.azure_region.location_short
+  environment    = var.environment
+  stack          = var.stack
+
+  resource_group_name        = module.rg.resource_group_name
+  log_analytics_workspace_id = module.run_common.log_analytics_workspace_id
+
+  extra_tags = {
+    foo = "bar"
+  }
+}
+
 module "vm" {
   source  = "claranet/windows-vm/azurerm"
   version = "x.x.x"
@@ -165,10 +183,11 @@ module "vm" {
   admin_username = var.vm_administrator_login
   admin_password = var.vm_administrator_password
 
-  diagnostics_storage_account_name = module.run_common.logs_storage_account_name
-  diagnostics_storage_account_key  = module.run_common.logs_storage_account_primary_access_key
-  log_analytics_workspace_guid     = module.run_common.log_analytics_workspace_guid
-  log_analytics_workspace_key      = module.run_common.log_analytics_workspace_primary_key
+  diagnostics_storage_account_name      = module.run_common.logs_storage_account_name
+  diagnostics_storage_account_key       = null # used by legacy agent only
+  azure_monitor_data_collection_rule_id = module.az_monitor.data_collection_rule_id
+  log_analytics_workspace_guid          = module.run_common.log_analytics_workspace_guid
+  log_analytics_workspace_key           = module.run_common.log_analytics_workspace_primary_key
 
   # Set to null to deactivate backup
   backup_policy_id = module.az_vm_backup.vm_backup_policy_id
