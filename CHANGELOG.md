@@ -1,3 +1,8 @@
+# Unreleased
+
+Changed
+  * AZ-606: Remove VM Tags on disk
+
 # v4.3.0 - 2021-10-15
 
 Breaking
@@ -92,13 +97,13 @@ Added
 
 Added
   * AZ-162: Log Analytics Workspace link
-  * AZ-174: Add Availability Zone option 
+  * AZ-174: Add Availability Zone option
   * AZ-180: Additional default tags
 
 # v2.1.0 - 2019-12-18
 
 Added
-  * AZ-135: Allow to change IP sku and attach to a Load Balancer or Application Gateway 
+  * AZ-135: Allow to change IP sku and attach to a Load Balancer or Application Gateway
   * AZ-119: Add CONTRIBUTING.md doc and `terraform-wrapper` usage with the module
   * AZ-161: Allow to configure license-type
 

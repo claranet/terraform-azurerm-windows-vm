@@ -128,7 +128,7 @@ resource "azurerm_managed_disk" "disk" {
   create_option = lookup(each.value, "create_option", "Empty")
   disk_size_gb  = lookup(each.value, "disk_size_gb", null)
 
-  tags = merge(local.default_tags, local.default_vm_tags, var.extra_tags, lookup(each.value, "extra_tags", {}))
+  tags = merge(local.default_tags, var.extra_tags, lookup(each.value, "extra_tags", {}))
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "disk_attach" {
