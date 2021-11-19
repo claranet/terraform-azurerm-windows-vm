@@ -281,7 +281,7 @@ module "vm" {
 
 | Name | Version |
 |------|---------|
-| azurerm | >= 2.0 |
+| azurerm | >= 2.83 |
 | null | ~> 3.0 |
 
 ## Modules
@@ -334,6 +334,7 @@ module "vm" {
 | custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | `string` | `""` | no |
 | diagnostics\_storage\_account\_key | Access key of the Storage Account used for Virtual Machine diagnostics. Used only with legacy monitoring agent, set to `null` if not needed. | `string` | n/a | yes |
 | diagnostics\_storage\_account\_name | Name of the Storage Account in used for Virtual Machine diagnostics | `string` | n/a | yes |
+| enable\_azure\_monitor\_extension\_auto\_upgrade | Automatically update extension when publisher releases a new version of the extension | `bool` | `false` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
 | key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM | `list(string)` | `null` | no |
