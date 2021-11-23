@@ -253,7 +253,7 @@ variable "azure_monitor_agent_version" {
   default     = "1.1.2"
 }
 
-variable "enable_azure_monitor_extension_auto_upgrade" {
+variable "azure_monitor_extension_auto_upgrade_enabled" {
   description = "Automatically update extension when publisher releases a new version of the extension"
   type        = bool
   default     = false

@@ -1,7 +1,7 @@
 # Unreleased
 
 Added
-  * AZ-608: Add `enable_azure_monitor_extension_auto_upgrade`
+  * AZ-608: Add variable `azure_monitor_extension_auto_upgrade_enabled`
 
 Changed
   * AZ-606: Remove VM Tags on disk

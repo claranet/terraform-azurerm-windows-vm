@@ -326,6 +326,7 @@ module "vm" {
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `null` | no |
 | azure\_monitor\_agent\_version | Azure Monitor Agent extension version | `string` | `"1.1.2"` | no |
 | azure\_monitor\_data\_collection\_rule\_id | Data Collection Rule ID from Azure Monitor for metrics and logs collection. Used with new monitoring agent, set to `null` if legacy agent is used. | `string` | n/a | yes |
+| azure\_monitor\_extension\_auto\_upgrade\_enabled | Automatically update extension when publisher releases a new version of the extension | `bool` | `false` | no |
 | backup\_policy\_id | Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup) | `string` | n/a | yes |
 | certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
@@ -334,7 +335,6 @@ module "vm" {
 | custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | `string` | `""` | no |
 | diagnostics\_storage\_account\_key | Access key of the Storage Account used for Virtual Machine diagnostics. Used only with legacy monitoring agent, set to `null` if not needed. | `string` | n/a | yes |
 | diagnostics\_storage\_account\_name | Name of the Storage Account in used for Virtual Machine diagnostics | `string` | n/a | yes |
-| enable\_azure\_monitor\_extension\_auto\_upgrade | Automatically update extension when publisher releases a new version of the extension | `bool` | `false` | no |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
 | key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM | `list(string)` | `null` | no |
