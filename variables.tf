@@ -253,6 +253,12 @@ variable "azure_monitor_agent_version" {
   default     = "1.1.2"
 }
 
+variable "azure_monitor_agent_auto_upgrade_enabled" {
+  description = "Automatically update agent when publisher releases a new version of the agent"
+  type        = bool
+  default     = false
+}
+
 variable "log_analytics_agent_version" {
   description = "Azure Log Analytics extension version"
   type        = string
