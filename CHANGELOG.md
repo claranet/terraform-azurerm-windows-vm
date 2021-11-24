@@ -1,11 +1,11 @@
-# Unreleased
+# v4.4.0 - 2021-11-24
 
 Added
   * AZ-608: Add variable `azure_monitor_agent_auto_upgrade_enabled`
 
 Changed
-  * AZ-606: Remove VM Tags on disk
-  * AZ-608: Change provider min version to 2.83. `automatic_upgrade_enabled` option was implemented in this version in `azurerm_virtual_machine_extension`
+  * AZ-606: Remove VM Tags on data attached disks
+  * AZ-608: Change Azure provider minimum version to `v2.83`. `automatic_upgrade_enabled` option was implemented by this provider version in `azurerm_virtual_machine_extension` resource
 
 # v4.3.0 - 2021-10-15
 
