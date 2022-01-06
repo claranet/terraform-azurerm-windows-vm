@@ -266,7 +266,7 @@ variable "log_analytics_agent_version" {
 }
 
 variable "os_disk_tagging_enabled" {
-  description = "Should OS disk tagging be enabled ? Defaults to `true`."
+  description = "Should OS disk tagging be enabled? Defaults to `true`."
   type        = bool
   default     = true
 }
