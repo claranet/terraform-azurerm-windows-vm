@@ -1,4 +1,8 @@
-# Unreleased
+# v5.0.0 - unrelased
+
+Breaking
+  * AZ-515: Option to use Azure CAF naming provider to name resources
+  * AZ-515: Require Terraform 0.13+
 
 Changed
   * AZ-610: Optional OS disk tagging

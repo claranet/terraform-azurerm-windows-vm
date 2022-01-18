@@ -153,10 +153,11 @@ module "key_vault" {
   source  = "claranet/keyvault/azurerm"
   version = "x.x.x"
 
-  client_name = var.client_name
-  environment = var.environment
-  location    = module.azure_region.location
-  stack       = var.stack
+  client_name    = var.client_name
+  environment    = var.environment
+  location       = module.azure_region.location
+  location_short = module.azure_region.location_short
+  stack          = var.stack
 
   resource_group_name = module.rg.resource_group_name
 
@@ -228,6 +229,7 @@ module "vm" {
   version = "x.x.x"
 
   location            = module.azure_region.location
+  location_short      = module.azure_region.location_short
   client_name         = var.client_name
   environment         = var.environment
   stack               = var.stack
@@ -281,6 +283,7 @@ module "vm" {
 
 | Name | Version |
 |------|---------|
+| azurecaf | ~> 1.1 |
 | azurerm | >= 2.83 |
 | null | ~> 3.0 |
 
@@ -288,12 +291,16 @@ module "vm" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| vm\_os\_disk\_tagging | claranet/tagging/azurerm | 4.0.0 |
+| vm\_os\_disk\_tagging | claranet/tagging/azurerm | 4.0.2 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [azurecaf_name.disk](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/resources/name) | resource |
+| [azurecaf_name.nic](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/resources/name) | resource |
+| [azurecaf_name.pub_ip](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/resources/name) | resource |
+| [azurecaf_name.vm](https://registry.terraform.io/providers/aztfmod/azurecaf/latest/docs/resources/name) | resource |
 | [azurerm_backup_protected_vm.backup](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/backup_protected_vm) | resource |
 | [azurerm_key_vault_access_policy.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_certificate.winrm_certificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
@@ -331,10 +338,12 @@ module "vm" {
 | certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | `string` | `""` | no |
-| custom\_ipconfig\_name | Custom name for the IP config of the NIC. Should be suffixed by "-nic-ipconfig". Generated if not set. | `string` | `null` | no |
-| custom\_name | Custom name for the Virtual Machine. Should be suffixed by "-vm". Generated if not set. | `string` | `""` | no |
+| custom\_ipconfig\_name | Custom name for the IP config of the NIC. Generated if not set. | `string` | `null` | no |
+| custom\_name | Custom name for the Virtual Machine. Generated if not set. | `string` | `""` | no |
+| custom\_nic\_name | Custom name for the NIC interface. Generated if not set. | `string` | `null` | no |
+| custom\_public\_ip\_name | Custom name for public IP. Generated if not set. | `string` | `null` | no |
 | diagnostics\_storage\_account\_key | Access key of the Storage Account used for Virtual Machine diagnostics. Used only with legacy monitoring agent, set to `null` if not needed. | `string` | n/a | yes |
-| diagnostics\_storage\_account\_name | Name of the Storage Account in used for Virtual Machine diagnostics | `string` | n/a | yes |
+| diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
 | environment | Project environment | `string` | n/a | yes |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
 | key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM | `list(string)` | `null` | no |
@@ -344,12 +353,16 @@ module "vm" {
 | license\_type | Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set. | `string` | `null` | no |
 | load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | `string` | `null` | no |
 | location | Azure location. | `string` | n/a | yes |
+| location\_short | Short string for Azure location. | `string` | n/a | yes |
 | log\_analytics\_agent\_version | Azure Log Analytics extension version | `string` | `"1.0"` | no |
 | log\_analytics\_workspace\_guid | GUID of the Log Analytics Workspace to link with | `string` | n/a | yes |
 | log\_analytics\_workspace\_key | Access key of the Log Analytics Workspace to link with | `string` | n/a | yes |
+| name\_prefix | Optional prefix for the generated name | `string` | `""` | no |
+| name\_suffix | Optional suffix for the generated name | `string` | `""` | no |
 | nic\_enable\_accelerated\_networking | Should Accelerated Networking be enabled? Defaults to `false`. | `bool` | `false` | no |
 | nic\_extra\_tags | Extra tags to set on the network interface. | `map(string)` | `{}` | no |
 | nic\_nsg\_id | NSG ID to associate on the Network Interface. No association if null. | `string` | `null` | no |
+| os\_disk\_custom\_name | Custom name for OS disk. Generated if not set. | `string` | `null` | no |
 | os\_disk\_extra\_tags | Extra tags to set on the OS disk. | `map(string)` | `{}` | no |
 | os\_disk\_tagging\_enabled | Should OS disk tagging be enabled? Defaults to `true`. | `bool` | `true` | no |
 | public\_ip\_extra\_tags | Extra tags to set on the Public IP. | `map(string)` | `{}` | no |
@@ -360,6 +373,7 @@ module "vm" {
 | storage\_data\_disk\_config | Map of data disks to attach to the Virtual Machine. Map attributes: `storage_account_type` (optional, defaults to `Standard_LRS`), `create_option` (optional, defaults to `Empty`), `disk_size_gb`, `lun` & `caching` (optional, defaults to `ReadWrite`). See [virtual\_machine\_data\_disk\_attachment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) & [managed\_disk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_disk) | `map(any)` | `{}` | no |
 | storage\_os\_disk\_config | Map to configure OS storage disk. (Caching, size, storage account type...) | `map(string)` | `{}` | no |
 | subnet\_id | Id of the Subnet in which create the Virtual Machine | `string` | `null` | no |
+| use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
 | use\_legacy\_monitoring\_agent | True to use the legacy monitoring agent instead of Azure Monitor Agent | `bool` | `false` | no |
 | vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html#source_image_reference | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
 | vm\_image\_id | The ID of the Image which this Virtual Machine should be created from. This variable supersedes the `vm_image` variable if not null. | `string` | `null` | no |

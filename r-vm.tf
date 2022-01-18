@@ -1,7 +1,8 @@
 resource "azurerm_windows_virtual_machine" "vm" {
-  name                  = local.vm_name
-  location              = var.location
-  resource_group_name   = var.resource_group_name
+  name                = local.vm_name
+  location            = var.location
+  resource_group_name = var.resource_group_name
+
   network_interface_ids = [azurerm_network_interface.nic.id]
   size                  = var.vm_size
   license_type          = var.license_type
@@ -29,7 +30,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 
   os_disk {
-    name                 = lookup(var.storage_os_disk_config, "name", "${local.vm_name}-osdisk")
+    name                 = lookup(var.storage_os_disk_config, "name", local.vm_os_disk_name)
     caching              = lookup(var.storage_os_disk_config, "caching", "ReadWrite")
     storage_account_type = lookup(var.storage_os_disk_config, "storage_account_type", "Standard_LRS")
     disk_size_gb         = lookup(var.storage_os_disk_config, "disk_size_gb", null)
@@ -84,7 +85,7 @@ resource "null_resource" "winrm_connection_test" {
 
   connection {
     type     = "winrm"
-    host     = join("", azurerm_public_ip.public_ip.*.ip_address)
+    host     = join("", azurerm_public_ip.public_ip[*].ip_address)
     port     = 5986
     https    = true
     user     = var.admin_username
@@ -105,7 +106,7 @@ resource "null_resource" "winrm_connection_test" {
 
 module "vm_os_disk_tagging" {
   source  = "claranet/tagging/azurerm"
-  version = "4.0.0"
+  version = "4.0.2"
 
   nb_resources = var.os_disk_tagging_enabled ? 1 : 0
   resource_ids = [data.azurerm_managed_disk.vm_os_disk.id]
@@ -120,7 +121,7 @@ resource "azurerm_managed_disk" "disk" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  name = lookup(each.value, "name", "${local.vm_name}-datadisk-${each.key}")
+  name = lookup(each.value, "name", var.use_caf_naming ? azurecaf_name.disk[each.key].result : "${local.vm_name}-datadisk${each.key}")
 
   zones                = var.zone_id == null ? null : [var.zone_id]
   storage_account_type = lookup(each.value, "storage_account_type", "Standard_LRS")

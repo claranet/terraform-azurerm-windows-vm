@@ -1,7 +1,7 @@
 resource "azurerm_public_ip" "public_ip" {
   count = var.public_ip_sku == null ? 0 : 1
 
-  name                = "${local.vm_name}-pubip"
+  name                = local.vm_pub_ip_name
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
@@ -12,7 +12,7 @@ resource "azurerm_public_ip" "public_ip" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  name                = "${local.vm_name}-nic"
+  name                = local.vm_nic_name
   location            = var.location
   resource_group_name = var.resource_group_name
 
@@ -23,7 +23,7 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = var.static_private_ip == null ? "Dynamic" : "Static"
     private_ip_address            = var.static_private_ip
-    public_ip_address_id          = var.public_ip_sku == null ? null : join("", azurerm_public_ip.public_ip.*.id)
+    public_ip_address_id          = var.public_ip_sku == null ? null : join("", azurerm_public_ip.public_ip[*].id)
   }
 
   tags = merge(local.default_tags, var.extra_tags, var.nic_extra_tags)
