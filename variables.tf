@@ -264,3 +264,9 @@ variable "log_analytics_agent_version" {
   type        = string
   default     = "1.0"
 }
+
+variable "os_disk_tagging_enabled" {
+  description = "Should OS disk tagging be enabled? Defaults to `true`."
+  type        = bool
+  default     = true
+}
