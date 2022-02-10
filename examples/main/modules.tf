@@ -97,10 +97,11 @@ module "key_vault" {
   source  = "claranet/keyvault/azurerm"
   version = "x.x.x"
 
-  client_name = var.client_name
-  environment = var.environment
-  location    = module.azure_region.location
-  stack       = var.stack
+  client_name    = var.client_name
+  environment    = var.environment
+  location       = module.azure_region.location
+  location_short = module.azure_region.location_short
+  stack          = var.stack
 
   resource_group_name = module.rg.resource_group_name
 
@@ -172,6 +173,7 @@ module "vm" {
   version = "x.x.x"
 
   location            = module.azure_region.location
+  location_short      = module.azure_region.location_short
   client_name         = var.client_name
   environment         = var.environment
   stack               = var.stack

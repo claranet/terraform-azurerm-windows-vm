@@ -3,6 +3,11 @@ variable "location" {
   type        = string
 }
 
+variable "location_short" {
+  description = "Short string for Azure location."
+  type        = string
+}
+
 variable "client_name" {
   description = "Client name/account used in naming"
   type        = string
@@ -76,12 +81,6 @@ variable "nic_enable_accelerated_networking" {
   default     = false
 }
 
-variable "custom_ipconfig_name" {
-  description = "Custom name for the IP config of the NIC. Should be suffixed by \"-nic-ipconfig\". Generated if not set."
-  type        = string
-  default     = null
-}
-
 variable "admin_username" {
   description = "Username for Virtual Machine administrator account"
   type        = string
@@ -97,12 +96,6 @@ variable "vm_size" {
   type        = string
 }
 
-variable "custom_name" {
-  description = "Custom name for the Virtual Machine. Should be suffixed by \"-vm\". Generated if not set."
-  type        = string
-  default     = ""
-}
-
 variable "availability_set_id" {
   description = "Id of the availability set in which host the Virtual Machine."
   type        = string
@@ -113,16 +106,6 @@ variable "zone_id" {
   description = "Index of the Availability Zone which the Virtual Machine should be allocated in."
   type        = number
   default     = null
-}
-
-variable "diagnostics_storage_account_name" {
-  description = "Name of the Storage Account in used for Virtual Machine diagnostics"
-  type        = string
-}
-
-variable "diagnostics_storage_account_key" {
-  description = "Access key of the Storage Account used for Virtual Machine diagnostics. Used only with legacy monitoring agent, set to `null` if not needed."
-  type        = string
 }
 
 variable "vm_image" {
@@ -165,6 +148,12 @@ variable "extra_tags" {
   description = "Extra tags to set on each created resource."
   type        = map(string)
   default     = {}
+}
+
+variable "os_disk_tagging_enabled" {
+  description = "Should OS disk tagging be enabled? Defaults to `true`."
+  type        = bool
+  default     = true
 }
 
 variable "certificate_validity_in_months" {
@@ -221,52 +210,7 @@ variable "license_type" {
   default     = null
 }
 
-variable "log_analytics_workspace_guid" {
-  description = "GUID of the Log Analytics Workspace to link with"
-  type        = string
-}
-
-variable "log_analytics_workspace_key" {
-  description = "Access key of the Log Analytics Workspace to link with"
-  type        = string
-}
-
 variable "backup_policy_id" {
   description = "Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup)"
   type        = string
-}
-
-variable "use_legacy_monitoring_agent" {
-  description = "True to use the legacy monitoring agent instead of Azure Monitor Agent"
-  type        = bool
-  default     = false
-}
-
-variable "azure_monitor_data_collection_rule_id" {
-  description = "Data Collection Rule ID from Azure Monitor for metrics and logs collection. Used with new monitoring agent, set to `null` if legacy agent is used."
-  type        = string
-}
-
-variable "azure_monitor_agent_version" {
-  description = "Azure Monitor Agent extension version"
-  type        = string
-  default     = "1.1.2"
-}
-
-variable "azure_monitor_agent_auto_upgrade_enabled" {
-  description = "Automatically update agent when publisher releases a new version of the agent"
-  type        = bool
-  default     = false
-}
-
-variable "log_analytics_agent_version" {
-  description = "Azure Log Analytics extension version"
-  type        = string
-  default     = "1.0"
-}
-
-variable "os_disk_tagging_enabled" {
-  description = "Should OS disk tagging be enabled? Defaults to `true`."
-  type        = bool
-  default     = true
 }
