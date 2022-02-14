@@ -342,6 +342,7 @@ module "vm" {
 | custom\_name | Custom name for the Virtual Machine. Generated if not set. | `string` | `""` | no |
 | custom\_nic\_name | Custom name for the NIC interface. Generated if not set. | `string` | `null` | no |
 | custom\_public\_ip\_name | Custom name for public IP. Generated if not set. | `string` | `null` | no |
+| default\_tags\_enabled | Option to enable or disable default tags. | `bool` | `true` | no |
 | diagnostics\_storage\_account\_key | Access key of the Storage Account used for Virtual Machine diagnostics. Used only with legacy monitoring agent, set to `null` if not needed. | `string` | n/a | yes |
 | diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
 | environment | Project environment | `string` | n/a | yes |
