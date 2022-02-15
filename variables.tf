@@ -57,12 +57,6 @@ variable "subnet_id" {
   default     = null
 }
 
-variable "nic_extra_tags" {
-  description = "Extra tags to set on the network interface."
-  type        = map(string)
-  default     = {}
-}
-
 variable "nic_nsg_id" {
   description = "NSG ID to associate on the Network Interface. No association if null."
   type        = string
@@ -126,12 +120,6 @@ variable "vm_image_id" {
   default     = null
 }
 
-variable "os_disk_extra_tags" {
-  description = "Extra tags to set on the OS disk."
-  type        = map(string)
-  default     = {}
-}
-
 variable "storage_os_disk_config" {
   description = "Map to configure OS storage disk. (Caching, size, storage account type...)"
   type        = map(string)
@@ -141,12 +129,6 @@ variable "storage_os_disk_config" {
 variable "storage_data_disk_config" {
   description = "Map of data disks to attach to the Virtual Machine. Map attributes: `storage_account_type` (optional, defaults to `Standard_LRS`), `create_option` (optional, defaults to `Empty`), `disk_size_gb`, `lun` & `caching` (optional, defaults to `ReadWrite`). See [virtual_machine_data_disk_attachment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) & [managed_disk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_disk)"
   type        = map(any)
-  default     = {}
-}
-
-variable "extra_tags" {
-  description = "Extra tags to set on each created resource."
-  type        = map(string)
   default     = {}
 }
 
@@ -166,12 +148,6 @@ variable "custom_dns_label" {
   description = "The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com"
   type        = string
   default     = ""
-}
-
-variable "public_ip_extra_tags" {
-  description = "Extra tags to set on the Public IP."
-  type        = map(string)
-  default     = {}
 }
 
 variable "public_ip_sku" {
