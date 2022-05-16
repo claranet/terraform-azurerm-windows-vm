@@ -54,7 +54,7 @@ resource "azurerm_key_vault_access_policy" "vm" {
   object_id = azurerm_windows_virtual_machine.vm.identity[0].principal_id
   tenant_id = data.azurerm_client_config.current.tenant_id
 
-  secret_permissions = ["get", "list"]
+  secret_permissions = ["Get", "List"]
 }
 
 resource "azurerm_virtual_machine_extension" "keyvault_certificates" {
