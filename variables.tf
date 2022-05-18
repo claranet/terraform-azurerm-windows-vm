@@ -156,6 +156,12 @@ variable "public_ip_sku" {
   default     = "Standard"
 }
 
+variable "public_ip_zones" {
+  description = "Zones for public IP attached to the VM. Can be `null` if no zone distpatch."
+  type        = list(number)
+  default     = [1, 2, 3]
+}
+
 variable "attach_load_balancer" {
   description = "True to attach this VM to a Load Balancer"
   type        = bool
