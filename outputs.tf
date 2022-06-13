@@ -52,3 +52,15 @@ output "vm_nic_ip_configuration_name" {
   description = "Name of the IP Configuration for the Network Interface Configuration attached to the Virtual Machine"
   value       = local.ip_configuration_name
 }
+
+output "vm_admin_username" {
+  description = "Windows Virtual Machine administrator account username"
+  value       = var.admin_username
+  sensitive   = true
+}
+
+output "vm_admin_password" {
+  description = "Windows Virtual Machine administrator account password"
+  value       = var.admin_password
+  sensitive   = true
+}

@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * AZ-770: Add Terraform module info in output
+
 # v6.0.0 - 2022-05-18
 
 Breaking
