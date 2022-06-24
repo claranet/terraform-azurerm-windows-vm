@@ -386,6 +386,9 @@ module "vm" {
 
 | Name | Description |
 |------|-------------|
+| terraform\_module | Information about this Terraform module |
+| vm\_admin\_password | Windows Virtual Machine administrator account password |
+| vm\_admin\_username | Windows Virtual Machine administrator account username |
 | vm\_id | Id of the Virtual machine |
 | vm\_name | Name of the Virtual machine |
 | vm\_nic\_id | ID of the Network Interface Configuration attached to the Virtual Machine |
