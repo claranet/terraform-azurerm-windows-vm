@@ -1,4 +1,4 @@
-# Unreleased
+# v6.0.2 - 2022-07-29
 
 Fixed
   * AZ-810: Fix os disk datasource which don't find disks with custom name
