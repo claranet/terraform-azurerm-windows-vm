@@ -312,6 +312,7 @@ module "vm" {
 | [azurerm_network_interface_security_group_association.nic_nsg_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_security_group_association) | resource |
 | [azurerm_public_ip.public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_virtual_machine_data_disk_attachment.disk_attach](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) | resource |
+| [azurerm_virtual_machine_extension.aad_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension) | resource |
 | [azurerm_virtual_machine_extension.azure_monitor_agent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension) | resource |
 | [azurerm_virtual_machine_extension.diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension) | resource |
 | [azurerm_virtual_machine_extension.keyvault_certificates](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension) | resource |
@@ -325,6 +326,8 @@ module "vm" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| aad\_login\_enabled | Enable login against Azure Active Directory | `bool` | `false` | no |
+| aad\_login\_extension\_version | VM Extension version for Azure Active Directory Login extension | `string` | `"1.0"` | no |
 | admin\_password | Password for Virtual Machine administrator account | `string` | n/a | yes |
 | admin\_username | Username for Virtual Machine administrator account | `string` | n/a | yes |
 | application\_gateway\_backend\_pool\_id | Id of the Application Gateway Backend Pool to attach the VM. | `string` | `null` | no |
