@@ -4,5 +4,6 @@ resource "azurerm_virtual_machine_extension" "aad_login" {
   type                       = "AADLoginForWindows"
   type_handler_version       = var.aad_login_extension_version
   virtual_machine_id         = azurerm_windows_virtual_machine.vm.id
-  auto_upgrade_minor_version = true
+  auto_upgrade_minor_version = false
+  automatic_upgrade_enabled  = false
 }
