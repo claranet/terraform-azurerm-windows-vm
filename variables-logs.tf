@@ -31,9 +31,9 @@ variable "azure_monitor_data_collection_rule_id" {
 }
 
 variable "azure_monitor_agent_version" {
-  description = "Azure Monitor Agent extension version"
+  description = "Azure Monitor Agent extension version (https://docs.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions)."
   type        = string
-  default     = "1.1.2"
+  default     = "1.7" # July 2022
 }
 
 variable "azure_monitor_agent_auto_upgrade_enabled" {

@@ -140,8 +140,8 @@ variable "os_disk_tagging_enabled" {
 
 variable "certificate_validity_in_months" {
   description = "The created certificate validity in months"
-  type        = string
-  default     = "48"
+  type        = number
+  default     = 48
 }
 
 variable "custom_dns_label" {

@@ -332,10 +332,10 @@ module "vm" {
 | attach\_load\_balancer | True to attach this VM to a Load Balancer | `bool` | `false` | no |
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `null` | no |
 | azure\_monitor\_agent\_auto\_upgrade\_enabled | Automatically update agent when publisher releases a new version of the agent | `bool` | `false` | no |
-| azure\_monitor\_agent\_version | Azure Monitor Agent extension version | `string` | `"1.1.2"` | no |
+| azure\_monitor\_agent\_version | Azure Monitor Agent extension version (https://docs.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions). | `string` | `"1.7"` | no |
 | azure\_monitor\_data\_collection\_rule\_id | Data Collection Rule ID from Azure Monitor for metrics and logs collection. Used with new monitoring agent, set to `null` if legacy agent is used. | `string` | n/a | yes |
 | backup\_policy\_id | Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup) | `string` | n/a | yes |
-| certificate\_validity\_in\_months | The created certificate validity in months | `string` | `"48"` | no |
+| certificate\_validity\_in\_months | The created certificate validity in months | `number` | `48` | no |
 | client\_name | Client name/account used in naming | `string` | n/a | yes |
 | custom\_computer\_name | Custom name for the Virtual Machine Hostname. Based on `custom_name` if not set. | `string` | `""` | no |
 | custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com | `string` | `""` | no |
