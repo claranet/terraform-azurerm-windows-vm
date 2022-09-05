@@ -30,8 +30,8 @@ variable "custom_computer_name" {
   default     = ""
 
   validation {
-    condition     = length(var.custom_computer_name) < 16
-    error_message = "The `custom_computer_name` value must be 15 characters long (Windows constraint)."
+    condition     = var.custom_computer_name == "" || (can(regex("^[a-zA-Z0-9-]{1,15}$", var.custom_computer_name)) && !can(regex("^[0-9-]", var.custom_computer_name)))
+    error_message = "The `custom_computer_name` value must be 15 characters long and with allowed characters (Windows constraint)."
   }
 }
 
