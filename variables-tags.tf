@@ -27,3 +27,9 @@ variable "public_ip_extra_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "extension_extra_tags" {
+  description = "Extra tags to set on the VM extensions."
+  type        = map(string)
+  default     = {}
+}

@@ -19,4 +19,6 @@ SETTINGS
     "workspaceKey": "${var.log_analytics_workspace_key}"
   }
 SETTINGS
+
+  tags = merge(local.default_tags, var.extra_tags, var.extension_extra_tags)
 }
