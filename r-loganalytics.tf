@@ -20,5 +20,5 @@ SETTINGS
   }
 SETTINGS
 
-  tags = merge(local.default_tags, var.extra_tags, var.extension_extra_tags)
+  tags = merge(local.default_tags, var.extra_tags, var.extensions_extra_tags)
 }

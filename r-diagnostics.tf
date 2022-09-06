@@ -22,7 +22,7 @@ resource "azurerm_virtual_machine_extension" "diagnostics" {
   }
 SETTINGS
 
-  tags = merge(local.default_tags, var.extra_tags, var.extension_extra_tags)
+  tags = merge(local.default_tags, var.extra_tags, var.extensions_extra_tags)
 }
 
 resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
@@ -38,7 +38,7 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
 
   virtual_machine_id = azurerm_windows_virtual_machine.vm.id
 
-  tags = merge(local.default_tags, var.extra_tags, var.extension_extra_tags)
+  tags = merge(local.default_tags, var.extra_tags, var.extensions_extra_tags)
 }
 
 resource "null_resource" "azure_monitor_link" {
