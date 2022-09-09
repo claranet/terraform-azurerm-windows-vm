@@ -3,6 +3,7 @@
 Changed
   * AZ-838: Change `storage_os_disk_config.storage_account_type` attribute default value to `Premium_ZRS`
   * AZ-838: Bump Azure Monitor extension version to latest `v1.7.0.0` (July 2022, for reference: https://docs.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions)
+  * AZ-807: Use native resource for Data Collection Rule link
 
 Added
   * AZ-838: Add `custom_computer_name` variable (customize Windows hostname)

@@ -41,20 +41,10 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
   tags = merge(local.default_tags, var.extra_tags, var.extensions_extra_tags)
 }
 
-resource "null_resource" "azure_monitor_link" {
+resource "azurerm_monitor_data_collection_rule_association" "dcr" {
   for_each = toset(var.use_legacy_monitoring_agent ? [] : ["enabled"])
 
-  provisioner "local-exec" {
-    command = <<EOC
-      az rest --subscription ${data.azurerm_client_config.current.subscription_id} \
-              --method PUT \
-              --url https://management.azure.com${azurerm_windows_virtual_machine.vm.id}/providers/Microsoft.Insights/dataCollectionRuleAssociations/${azurerm_windows_virtual_machine.vm.name}-dcrassociation?api-version=2019-11-01-preview \
-              --body '{"properties":{"dataCollectionRuleId": "${var.azure_monitor_data_collection_rule_id}"}}'
-EOC
-  }
-
-  triggers = {
-    dcr_id = var.azure_monitor_data_collection_rule_id
-    vm_id  = azurerm_windows_virtual_machine.vm.id
-  }
+  name                    = format("%s-dcrassociation", azurerm_windows_virtual_machine.vm.name)
+  target_resource_id      = azurerm_windows_virtual_machine.vm.id
+  data_collection_rule_id = var.azure_monitor_data_collection_rule_id
 }
