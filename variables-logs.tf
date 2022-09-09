@@ -1,5 +1,5 @@
 variable "diagnostics_storage_account_name" {
-  description = "Name of the Storage Account in which store vm diagnostics"
+  description = "Name of the Storage Account in which store vm diagnostics."
   type        = string
 }
 
@@ -10,18 +10,18 @@ variable "diagnostics_storage_account_key" {
 
 ## Logs & monitoring variables
 variable "use_legacy_monitoring_agent" {
-  description = "True to use the legacy monitoring agent instead of Azure Monitor Agent"
+  description = "True to use the legacy monitoring agent instead of Azure Monitor Agent."
   type        = bool
   default     = false
 }
 
 variable "log_analytics_workspace_guid" {
-  description = "GUID of the Log Analytics Workspace to link with"
+  description = "GUID of the Log Analytics Workspace to link with."
   type        = string
 }
 
 variable "log_analytics_workspace_key" {
-  description = "Access key of the Log Analytics Workspace to link with"
+  description = "Access key of the Log Analytics Workspace to link with."
   type        = string
 }
 
@@ -37,13 +37,13 @@ variable "azure_monitor_agent_version" {
 }
 
 variable "azure_monitor_agent_auto_upgrade_enabled" {
-  description = "Automatically update agent when publisher releases a new version of the agent"
+  description = "Automatically update agent when publisher releases a new version of the agent."
   type        = bool
   default     = false
 }
 
 variable "log_analytics_agent_version" {
-  description = "Azure Log Analytics extension version"
+  description = "Azure Log Analytics extension version."
   type        = string
   default     = "1.0"
 }
