@@ -79,5 +79,7 @@ resource "azurerm_virtual_machine_extension" "keyvault_certificates" {
     }
   })
 
+  tags = merge(local.default_tags, var.extra_tags, var.extensions_extra_tags)
+
   depends_on = [azurerm_key_vault_access_policy.vm]
 }

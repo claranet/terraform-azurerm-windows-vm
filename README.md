@@ -347,6 +347,7 @@ module "vm" {
 | diagnostics\_storage\_account\_key | Access key of the Storage Account used for Virtual Machine diagnostics. Used only with legacy monitoring agent, set to `null` if not needed. | `string` | n/a | yes |
 | diagnostics\_storage\_account\_name | Name of the Storage Account in which store vm diagnostics | `string` | n/a | yes |
 | environment | Project environment | `string` | n/a | yes |
+| extensions\_extra\_tags | Extra tags to set on the VM extensions. | `map(string)` | `{}` | no |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
 | key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM | `list(string)` | `null` | no |
 | key\_vault\_certificates\_polling\_rate | Polling rate (in seconds) for Key Vault certificates retrieval | `number` | `300` | no |
