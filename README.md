@@ -345,10 +345,10 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| aad\_login\_admin\_objects\_ids | Active Directory objects IDs to allow to connect as an admin user on Windows VM. | `list(string)` | `[]` | no |
+| aad\_login\_admin\_objects\_ids | Azure Active Directory objects IDs allowed to connect as administrator on the VM. | `list(string)` | `[]` | no |
 | aad\_login\_enabled | Enable login against Azure Active Directory. | `bool` | `false` | no |
 | aad\_login\_extension\_version | VM Extension version for Azure Active Directory Login extension. | `string` | `"1.0"` | no |
-| aad\_login\_user\_objects\_ids | Active Directory objects IDs to allow to connect as a standard user on Windows VM. | `list(string)` | `[]` | no |
+| aad\_login\_user\_objects\_ids | Azure Active Directory objects IDs allowed to connect as standard user on the VM. | `list(string)` | `[]` | no |
 | admin\_password | Password for Virtual Machine administrator account. | `string` | n/a | yes |
 | admin\_username | Username for Virtual Machine administrator account. | `string` | n/a | yes |
 | application\_gateway\_backend\_pool\_id | Id of the Application Gateway Backend Pool to attach the VM. | `string` | `null` | no |

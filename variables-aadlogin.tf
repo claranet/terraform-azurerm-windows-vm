@@ -11,13 +11,14 @@ variable "aad_login_extension_version" {
 }
 
 variable "aad_login_user_objects_ids" {
-  description = "Active Directory objects IDs to allow to connect as a standard user on Windows VM."
+  description = "Azure Active Directory objects IDs allowed to connect as standard user on the VM."
   type        = list(string)
   default     = []
 }
 
 variable "aad_login_admin_objects_ids" {
-  description = "Active Directory objects IDs to allow to connect as an admin user on Windows VM."
+  description = "Azure Active Directory objects IDs allowed to connect as administrator on the VM."
+
   type        = list(string)
   default     = []
 }
