@@ -31,7 +31,7 @@ variable "custom_computer_name" {
 
   validation {
     condition     = var.custom_computer_name == "" || (can(regex("^[a-zA-Z0-9-]{1,15}$", var.custom_computer_name)) && !can(regex("^[0-9-]", var.custom_computer_name)))
-    error_message = "The `custom_computer_name` value must be 15 characters long and with allowed characters (Windows constraint)."
+    error_message = "The `custom_computer_name` value must be 15 characters long at most and can contain only allowed characters (Windows constraint) [a-zA-Z0-9-]{1,15} ."
   }
 }
 
