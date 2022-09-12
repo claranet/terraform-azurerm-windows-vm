@@ -19,6 +19,6 @@ variable "aad_login_user_objects_ids" {
 variable "aad_login_admin_objects_ids" {
   description = "Azure Active Directory objects IDs allowed to connect as administrator on the VM."
 
-  type        = list(string)
-  default     = []
+  type    = list(string)
+  default = []
 }
