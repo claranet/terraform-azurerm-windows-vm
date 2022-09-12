@@ -1,3 +1,8 @@
+# Unreleased
+
+Changed
+  * AZ-838: Change `storage_os_disk_config.storage_account_type` attribute default value to `Premium_ZRS`
+
 # v6.0.2 - 2022-07-29
 
 Fixed

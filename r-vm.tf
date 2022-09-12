@@ -32,7 +32,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   os_disk {
     name                 = lookup(var.storage_os_disk_config, "name", local.vm_os_disk_name)
     caching              = lookup(var.storage_os_disk_config, "caching", "ReadWrite")
-    storage_account_type = lookup(var.storage_os_disk_config, "storage_account_type", "Standard_LRS")
+    storage_account_type = lookup(var.storage_os_disk_config, "storage_account_type", "Premium_ZRS")
     disk_size_gb         = lookup(var.storage_os_disk_config, "disk_size_gb", null)
   }
 
