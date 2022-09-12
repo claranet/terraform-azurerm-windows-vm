@@ -8,6 +8,7 @@ Changed
 Added
   * AZ-838: Add `custom_computer_name` variable (customize Windows hostname)
   * AZ-838: Add tags on deployed VM extensions and add `extensions_extra_tags` parameter
+  * AZ-833: Add AADLogin capability
 
 # v6.0.2 - 2022-07-29
 

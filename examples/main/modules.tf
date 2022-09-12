@@ -219,4 +219,21 @@ module "vm" {
       storage_account_type = "Premium_LRS"
     }
   }
+
+  aad_login_enabled = true
+  aad_login_user_objects_ids = [
+    data.azuread_group.vm_users_group.object_id
+  ]
+
+  aad_login_admin_objects_ids = [
+    data.azuread_group.vm_admins_group.object_id
+  ]
+}
+
+data "azuread_group" "vm_admins_group" {
+  display_name = "Virtual Machines Admins"
+}
+
+data "azuread_group" "vm_users_group" {
+  display_name = "Virtual Machines Users"
 }
