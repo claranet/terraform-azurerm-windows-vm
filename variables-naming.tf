@@ -58,3 +58,9 @@ variable "os_disk_custom_name" {
   type        = string
   default     = null
 }
+
+variable "custom_dcr_name" {
+  description = "Custom name for Data collection rule association"
+  type        = string
+  default     = null
+}

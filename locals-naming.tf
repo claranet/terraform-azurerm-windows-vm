@@ -9,4 +9,5 @@ locals {
   vm_pub_ip_name        = coalesce(var.custom_public_ip_name, azurecaf_name.pub_ip.result)
   vm_nic_name           = coalesce(var.custom_nic_name, azurecaf_name.nic.result)
   ip_configuration_name = coalesce(var.custom_ipconfig_name, "${local.vm_name}-nic-ipconfig")
+  dcr_name              = coalesce(var.custom_dcr_name, format(var.use_caf_naming ? "dcra-%s" : "%s-dcrassociation", azurerm_windows_virtual_machine.vm.name))
 }
