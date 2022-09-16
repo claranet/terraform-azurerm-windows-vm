@@ -1,4 +1,4 @@
-# Unreleased
+# v6.2.0 - 2022-09-16
 
 Added
   * AZ-807: Custom name for Data Collection Rule link resource
