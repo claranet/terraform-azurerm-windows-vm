@@ -1,3 +1,8 @@
+# Unreleased
+
+Added
+  * AZ-845 Add `patch_mode` and `hotpatching_enabled` options
+
 # v6.2.0 - 2022-09-16
 
 Added

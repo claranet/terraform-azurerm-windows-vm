@@ -68,6 +68,10 @@ resource "azurerm_windows_virtual_machine" "vm" {
   identity {
     type = "SystemAssigned"
   }
+
+  patch_mode          = var.patch_mode
+  hotpatching_enabled = var.hotpatching_enabled
+
 }
 
 resource "null_resource" "winrm_connection_test" {
