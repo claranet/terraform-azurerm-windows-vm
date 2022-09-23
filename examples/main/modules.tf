@@ -194,6 +194,8 @@ module "vm" {
   # Set to null to deactivate backup
   backup_policy_id = module.az_vm_backup.vm_backup_policy_id
 
+  patch_mode = "AutomaticByPlatform"
+
   availability_set_id = azurerm_availability_set.vm_avset.id
   # or use Availability Zone
   # zone_id = 1

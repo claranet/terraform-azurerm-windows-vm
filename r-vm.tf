@@ -69,8 +69,9 @@ resource "azurerm_windows_virtual_machine" "vm" {
     type = "SystemAssigned"
   }
 
-  patch_mode          = var.patch_mode
-  hotpatching_enabled = var.hotpatching_enabled
+  patch_mode            = var.patch_mode
+  patch_assessment_mode = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
+  hotpatching_enabled   = var.hotpatching_enabled
 
 }
 

@@ -198,7 +198,7 @@ variable "backup_policy_id" {
 }
 
 variable "patch_mode" {
-  description = "Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are Manual, `AutomaticByOS` and `AutomaticByPlatform`."
+  description = "Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are Manual, `AutomaticByOS` and `AutomaticByPlatform`. It also active path assessment when set to `AutomaticByPlatform`"
   type        = string
   default     = "AutomaticByOS"
 }
