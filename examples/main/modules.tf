@@ -191,6 +191,7 @@ module "vm" {
   log_analytics_workspace_guid          = module.run_common.log_analytics_workspace_guid
   log_analytics_workspace_key           = module.run_common.log_analytics_workspace_primary_key
 
+
   # Set to null to deactivate backup
   backup_policy_id = module.az_vm_backup.vm_backup_policy_id
 
