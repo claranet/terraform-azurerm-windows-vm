@@ -57,13 +57,13 @@ More details about variables set by the `terraform-wrapper` available in the [do
 
 ```hcl
 module "azure_region" {
-  source  = "claranet/regions/azurerm"
+  source = "claranet/regions/azurerm"
 
   azure_region = var.azure_region
 }
 
 module "rg" {
-  source  = "claranet/rg/azurerm"
+  source = "claranet/rg/azurerm"
 
   location    = module.azure_region.location
   client_name = var.client_name
@@ -72,7 +72,7 @@ module "rg" {
 }
 
 module "azure_network_vnet" {
-  source  = "claranet/vnet/azurerm"
+  source = "claranet/vnet/azurerm"
 
   environment    = var.environment
   location       = module.azure_region.location
@@ -85,7 +85,7 @@ module "azure_network_vnet" {
 }
 
 module "azure_network_subnet" {
-  source  = "claranet/subnet/azurerm"
+  source = "claranet/subnet/azurerm"
 
   environment    = var.environment
   location_short = module.azure_region.location_short
@@ -102,7 +102,7 @@ module "azure_network_subnet" {
 }
 
 module "network_security_group" {
-  source  = "claranet/nsg/azurerm"
+  source = "claranet/nsg/azurerm"
 
   client_name         = var.client_name
   environment         = var.environment
@@ -113,7 +113,7 @@ module "network_security_group" {
 }
 
 module "azure_network_route_table" {
-  source  = "claranet/route-table/azurerm"
+  source = "claranet/route-table/azurerm"
 
   client_name         = var.client_name
   environment         = var.environment
@@ -131,7 +131,7 @@ resource "azurerm_availability_set" "vm_avset" {
 }
 
 module "run_common" {
-  source  = "claranet/run-common/azurerm"
+  source = "claranet/run-common/azurerm"
 
   client_name         = var.client_name
   location            = module.azure_region.location
@@ -145,7 +145,7 @@ module "run_common" {
 }
 
 module "key_vault" {
-  source  = "claranet/keyvault/azurerm"
+  source = "claranet/keyvault/azurerm"
 
   client_name    = var.client_name
   environment    = var.environment
@@ -183,7 +183,7 @@ resource "azurerm_network_security_rule" "winrm" {
 }
 
 module "az_vm_backup" {
-  source  = "claranet/run-iaas/azurerm//modules/backup"
+  source = "claranet/run-iaas/azurerm//modules/backup"
 
   location       = module.azure_region.location
   location_short = module.azure_region.location_short
@@ -200,7 +200,7 @@ module "az_vm_backup" {
 }
 
 module "az_monitor" {
-  source  = "claranet/run-iaas/azurerm//modules/vm-monitoring"
+  source = "claranet/run-iaas/azurerm//modules/vm-monitoring"
 
   client_name    = var.client_name
   location       = module.azure_region.location
@@ -217,7 +217,7 @@ module "az_monitor" {
 }
 
 module "vm" {
-  source  = "../"
+  source = "../"
 
   location            = module.azure_region.location
   location_short      = module.azure_region.location_short
