@@ -252,6 +252,8 @@ module "vm" {
   # Set to null to deactivate backup
   backup_policy_id = module.az_vm_backup.vm_backup_policy_id
 
+  patch_mode = "AutomaticByPlatform"
+
   availability_set_id = azurerm_availability_set.vm_avset.id
   # or use Availability Zone
   # zone_id = 1
@@ -302,7 +304,7 @@ data "azuread_group" "vm_users_group" {
 | Name | Version |
 |------|---------|
 | azurecaf | ~> 1.1 |
-| azurerm | ~> 3.22 |
+| azurerm | ~> 3.24 |
 | null | ~> 3.0 |
 
 ## Modules
@@ -375,6 +377,7 @@ data "azuread_group" "vm_users_group" {
 | environment | Project environment. | `string` | n/a | yes |
 | extensions\_extra\_tags | Extra tags to set on the VM extensions. | `map(string)` | `{}` | no |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
+| hotpatching\_enabled | Should the VM be patched without requiring a reboot? Possible values are `true` or `false`. | `bool` | `false` | no |
 | key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM. | `list(string)` | `null` | no |
 | key\_vault\_certificates\_polling\_rate | Polling rate (in seconds) for Key Vault certificates retrieval. | `number` | `300` | no |
 | key\_vault\_certificates\_store\_name | Name of the cetrificate store on which install the Key Vault certificates. | `string` | `"MY"` | no |
@@ -394,6 +397,7 @@ data "azuread_group" "vm_users_group" {
 | os\_disk\_custom\_name | Custom name for OS disk. Generated if not set. | `string` | `null` | no |
 | os\_disk\_extra\_tags | Extra tags to set on the OS disk. | `map(string)` | `{}` | no |
 | os\_disk\_tagging\_enabled | Should OS disk tagging be enabled? Defaults to `true`. | `bool` | `true` | no |
+| patch\_mode | Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are Manual, `AutomaticByOS` and `AutomaticByPlatform`. It also active path assessment when set to `AutomaticByPlatform` | `string` | `"AutomaticByOS"` | no |
 | public\_ip\_extra\_tags | Extra tags to set on the Public IP. | `map(string)` | `{}` | no |
 | public\_ip\_sku | Sku for the public IP attached to the VM. Can be `null` if no public IP needed. | `string` | `"Standard"` | no |
 | public\_ip\_zones | Zones for public IP attached to the VM. Can be `null` if no zone distpatch. | `list(number)` | <pre>[<br>  1,<br>  2,<br>  3<br>]</pre> | no |

@@ -196,3 +196,15 @@ variable "backup_policy_id" {
   description = "Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup)."
   type        = string
 }
+
+variable "patch_mode" {
+  description = "Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are Manual, `AutomaticByOS` and `AutomaticByPlatform`. It also active path assessment when set to `AutomaticByPlatform`"
+  type        = string
+  default     = "AutomaticByOS"
+}
+
+variable "hotpatching_enabled" {
+  description = "Should the VM be patched without requiring a reboot? Possible values are `true` or `false`."
+  type        = bool
+  default     = false
+}
