@@ -1,3 +1,8 @@
+# Unreleased
+
+Fixed
+  * AZ-859 Add requirements for new patch management (preview)
+
 # v7.0.0 - 2022-09-30
 
 Breaking
