@@ -1,4 +1,4 @@
-# Unreleased
+# v7.0.1 - 2022-10-07
 
 Fixed
   * AZ-859: Add requirements for new patch management (preview)
