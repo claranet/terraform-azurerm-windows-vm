@@ -1,4 +1,4 @@
-# Unreleased
+# v7.1.0 - 2022-10-07
 
 Breaking
   * AZ-870: Allow more than 15 characters on VM resource name, keep it for hostname
