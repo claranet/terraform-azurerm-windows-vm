@@ -1,3 +1,8 @@
+# Unreleased
+
+Breaking
+  * AZ-870: Allow more than 15 characters on VM resource name, keep it for hostname
+
 # v7.0.1 - 2022-10-07
 
 Fixed
@@ -6,7 +11,7 @@ Fixed
 # v7.0.0 - 2022-09-30
 
 Breaking
-  * AZ-840: Update to Terraform `1.3` 
+  * AZ-840: Update to Terraform `1.3`
 
 Added
   * AZ-845: Add `patch_mode` and `hotpatching_enabled` options
