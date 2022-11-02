@@ -24,7 +24,7 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = var.static_private_ip == null ? "Dynamic" : "Static"
     private_ip_address            = var.static_private_ip
-    public_ip_address_id          = var.public_ip_sku == null ? null : join("", azurerm_public_ip.public_ip[*].id)
+    public_ip_address_id          = one(azurerm_public_ip.public_ip[*].id)
   }
 
   tags = merge(local.default_tags, var.extra_tags, var.nic_extra_tags)
