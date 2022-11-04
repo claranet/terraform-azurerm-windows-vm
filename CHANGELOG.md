@@ -4,7 +4,8 @@ Fixed
   * AZ-883: Lint code, fix deprecated HCL syntax
 
 Added
-  * AZ-895: Add output : `vm_hostname`
+  * AZ-895: Add output `vm_hostname`
+  * AZ-857: Support for `user-data`
 
 # v7.1.0 - 2022-10-07
 

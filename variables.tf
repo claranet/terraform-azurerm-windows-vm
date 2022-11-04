@@ -208,3 +208,9 @@ variable "hotpatching_enabled" {
   type        = bool
   default     = false
 }
+
+variable "user_data" {
+  description = "The Base64-Encoded User Data which should be used for this Virtual Machine."
+  type        = string
+  default     = null
+}

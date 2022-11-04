@@ -11,6 +11,8 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
   source_image_id = var.vm_image_id
 
+  user_data = var.user_data
+
   dynamic "source_image_reference" {
     for_each = var.vm_image_id == null ? ["fake"] : []
     content {
