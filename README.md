@@ -1,3 +1,42 @@
+# Azure Windows Virtual Machine
+[![Changelog](https://img.shields.io/badge/changelog-release-green.svg)](CHANGELOG.md) [![Notice](https://img.shields.io/badge/notice-copyright-yellow.svg)](NOTICE) [![Apache V2 License](https://img.shields.io/badge/license-Apache%20V2-orange.svg)](LICENSE) [![TF Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/claranet/windows-vm/azurerm/)
+
+This module creates a [Windows Virtual Machine](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/) with
+[Windows Remote Management (WinRM)](https://docs.microsoft.com/en-us/windows/desktop/WinRM/portal) activated.
+
+The Windows Virtual Machine comes with:
+* [Azure Monitor Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/azure-monitor-agent-overview) activated and configured
+* A link to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) for [logging](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-collect-azurevm) and [patching](https://docs.microsoft.com/en-us/azure/automation/automation-update-management) management
+* An optional link to a [Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview) or [Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview)
+* A link to the [Recovery Vault](https://docs.microsoft.com/en-us/azure/backup/backup-azure-recovery-services-vault-overview) and one of its policies to back up the virtual machine
+* Optional certificates [retrieved from Azure Key Vault](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/key-vault-windows#extension-schema)
+
+This code is mostly based on [Tom Harvey](https://github.com/tombuildsstuff) work: https://github.com/terraform-providers/terraform-provider-azurerm/tree/master/examples/virtual-machines/provisioners/windows
+
+Following tags are automatically set with default values: `env`, `stack`, `os_family`, `os_distribution`, `os_version`.
+
+## Limitations
+
+* A self-signed certificate is generated and associated
+
+## Requirements
+
+* Powershell CLI installed with pwsh executable available
+* [Azure powershell module](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps) installed
+* The port 5986 must be reachable
+* An [Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/) configured with VM deployment enabled will be used
+* An existing [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) is mandatory for patching management
+* An existing [Azure Monitor Data Collection Rule](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collection-rule-overview) is mandatory for monitoring ang logging management with Azure Monitor Agent
+* [Microsoft.Compute/InGuestAutoAssessmentVMPreview](https://learn.microsoft.com/en-us/azure/update-center/enable-machines?tabs=portal-periodic) must be activated on the subscription to use `patch_mode = "AutomaticByPlatform"` patching option.
+
+## Ansible usage
+
+The created virtual machine can be used with Ansible this way.
+
+```bash
+ansible all -i <public_ip_address>, -m win_ping -e ansible_user=<vm_username> -e ansible_password==<vm_password> -e ansible_connection=winrm -e ansible_winrm_server_cert_validation=ignore
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Global versioning rule for Claranet Azure modules
 
@@ -211,7 +250,6 @@ module "vm" {
   log_analytics_workspace_guid          = module.run_common.log_analytics_workspace_guid
   log_analytics_workspace_key           = module.run_common.log_analytics_workspace_primary_key
 
-
   # Set to null to deactivate backup
   backup_policy_id = module.az_vm_backup.vm_backup_policy_id
 
@@ -372,24 +410,7 @@ data "azuread_group" "vm_users_group" {
 | storage\_os\_disk\_config | Map to configure OS storage disk. (Caching, size, storage account type...). | `map(string)` | `{}` | no |
 | subnet\_id | Id of the Subnet in which create the Virtual Machine. | `string` | `null` | no |
 | use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
-<<<<<<< HEAD
 | use\_legacy\_monitoring\_agent | True to use the legacy monitoring agent instead of Azure Monitor Agent. | `bool` | `false` | no |
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-| user\_data\_file | Script file consumme by user data | `string` | `null` | no |
-=======
-| use\_legacy\_monitoring\_agent | True to use the legacy monitoring agent instead of Azure Monitor Agent. | `bool` | `null` | no |
-| user\_data\_file | Path to file script use for user data. | `string` | `false` | no |
->>>>>>> d1b65d6 (AZ-857-Windows-VM_ADD-user-data)
-=======
->>>>>>> 82bc34c (AZ-857-Windows-VM_ADD-user-data)
-=======
-| user\_data\_file | Script file consumme by user data | `string` | `null` | no |
->>>>>>> 01ebe3a (AZ-857-Windows-VM_ADD-user-data)
-=======
-| user\_data\_file\_path | Userdata content as a base64 encoded string. | `string` | `null` | no |
->>>>>>> 083908b (AZ-857-Windows-VM_ADD-user-data: add differents corrections)
 | vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html#source_image_reference. | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
 | vm\_image\_id | The ID of the Image which this Virtual Machine should be created from. This variable supersedes the `vm_image` variable if not null. | `string` | `null` | no |
 | vm\_size | Size (SKU) of the Virtual Machine to create. | `string` | n/a | yes |
@@ -415,3 +436,7 @@ data "azuread_group" "vm_users_group" {
 | vm\_winrm\_certificate\_key\_vault\_id | Id of the generated certificate in the input Key Vault |
 | vm\_winrm\_certificate\_thumbprint | The X509 Thumbprint of the Key Vault Certificate returned as hex string. |
 <!-- END_TF_DOCS -->
+
+## Related documentation
+
+Microsoft Azure documentation: [docs.microsoft.com/en-us/azure/virtual-machines/windows/](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/)
