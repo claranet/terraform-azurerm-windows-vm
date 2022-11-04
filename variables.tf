@@ -197,7 +197,6 @@ variable "backup_policy_id" {
   type        = string
 }
 
-
 variable "patch_mode" {
   description = "Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are Manual, `AutomaticByOS` and `AutomaticByPlatform`. It also active path assessment when set to `AutomaticByPlatform`"
   type        = string
@@ -209,7 +208,6 @@ variable "hotpatching_enabled" {
   type        = bool
   default     = false
 }
-
 
 variable "user_data_file_path" {
   description = "Userdata content as a base64 encoded string."

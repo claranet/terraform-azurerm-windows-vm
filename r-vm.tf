@@ -11,12 +11,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
   source_image_id = var.vm_image_id
 
-<<<<<<< HEAD
-  user_data = var.user_data_file == null ? null : var.user_data_file
-=======
   user_data = var.user_data_file_path
-
->>>>>>> 083908b (AZ-857-Windows-VM_ADD-user-data: add differents corrections)
 
   dynamic "source_image_reference" {
     for_each = var.vm_image_id == null ? ["fake"] : []
