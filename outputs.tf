@@ -69,3 +69,8 @@ output "vm_admin_password" {
   value       = var.admin_password
   sensitive   = true
 }
+
+output "maintenance_configurations_assignments" {
+  description = "Maintenance configurations assignments configurations."
+  value       = azapi_resource.maintenance_configurations
+}

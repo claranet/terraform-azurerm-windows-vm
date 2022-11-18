@@ -304,6 +304,7 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Version |
 |------|---------|
+| azapi | ~> 0.1 |
 | azurecaf | ~> 1.2, >= 1.2.22 |
 | azurerm | ~> 3.24 |
 | null | ~> 3.0 |
@@ -318,6 +319,7 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Type |
 |------|------|
+| [azapi_resource.maintenance_configurations](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_backup_protected_vm.backup](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/backup_protected_vm) | resource |
 | [azurerm_key_vault_access_policy.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_certificate.winrm_certificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
@@ -391,6 +393,7 @@ data "azuread_group" "vm_users_group" {
 | log\_analytics\_agent\_version | Azure Log Analytics extension version. | `string` | `"1.0"` | no |
 | log\_analytics\_workspace\_guid | GUID of the Log Analytics Workspace to link with. | `string` | n/a | yes |
 | log\_analytics\_workspace\_key | Access key of the Log Analytics Workspace to link with. | `string` | n/a | yes |
+| maintenance\_configuration\_ids | List of maintenance configurations to attach to this VM. | `list(string)` | `[]` | no |
 | name\_prefix | Optional prefix for the generated name. | `string` | `""` | no |
 | name\_suffix | Optional suffix for the generated name. | `string` | `""` | no |
 | nic\_enable\_accelerated\_networking | Should Accelerated Networking be enabled? Defaults to `false`. | `bool` | `false` | no |
@@ -421,6 +424,7 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Description |
 |------|-------------|
+| maintenance\_configurations\_assignments | Maintenance configurations assignments configurations. |
 | terraform\_module | Information about this Terraform module |
 | vm\_admin\_password | Windows Virtual Machine administrator account password |
 | vm\_admin\_username | Windows Virtual Machine administrator account username |
