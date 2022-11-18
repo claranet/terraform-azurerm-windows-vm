@@ -1,4 +1,4 @@
-resource "azurecaf_name" "vm" {
+data "azurecaf_name" "vm" {
   name          = var.stack
   resource_type = "azurerm_linux_virtual_machine"
   prefixes      = var.name_prefix == "" ? null : [local.name_prefix]
@@ -8,7 +8,7 @@ resource "azurecaf_name" "vm" {
   separator     = "-"
 }
 
-resource "azurecaf_name" "hostname" {
+data "azurecaf_name" "hostname" {
   name          = var.stack
   resource_type = "azurerm_windows_virtual_machine"
   prefixes      = var.name_prefix == "" ? null : [local.name_prefix]
@@ -18,7 +18,7 @@ resource "azurecaf_name" "hostname" {
   separator     = "-"
 }
 
-resource "azurecaf_name" "pub_ip" {
+data "azurecaf_name" "pub_ip" {
   name          = var.stack
   resource_type = "azurerm_public_ip"
   prefixes      = var.name_prefix == "" ? null : [local.name_prefix]
@@ -28,7 +28,7 @@ resource "azurecaf_name" "pub_ip" {
   separator     = "-"
 }
 
-resource "azurecaf_name" "nic" {
+data "azurecaf_name" "nic" {
   name          = var.stack
   resource_type = "azurerm_network_interface"
   prefixes      = var.name_prefix == "" ? null : [local.name_prefix]
@@ -38,7 +38,7 @@ resource "azurecaf_name" "nic" {
   separator     = "-"
 }
 
-resource "azurecaf_name" "disk" {
+data "azurecaf_name" "disk" {
   for_each = var.storage_data_disk_config
 
   name          = var.stack
