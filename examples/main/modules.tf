@@ -168,6 +168,31 @@ module "az_monitor" {
   }
 }
 
+module "update_management" {
+  source  = "claranet/run-iaas/azurerm//modules/update-center"
+  version = "x.x.x"
+
+  resource_group_name = module.rg.resource_group_name
+  stack               = var.stack
+  environment         = var.environment
+  location            = module.azure_region.location
+
+  auto_assessment_enabled = true
+  auto_assessment_scopes  = [module.rg.resource_group_id]
+  maintenance_configurations = [
+    {
+      configuration_name = "Donald"
+      start_date_time    = "2021-08-21 04:00"
+      recur_every        = "1Day"
+    },
+    {
+      configuration_name = "Hammer"
+      start_date_time    = "1900-01-01 03:00"
+      recur_every        = "1Week"
+    }
+  ]
+}
+
 module "vm" {
   source  = "claranet/windows-vm/azurerm"
   version = "x.x.x"
@@ -194,7 +219,9 @@ module "vm" {
   # Set to null to deactivate backup
   backup_policy_id = module.az_vm_backup.vm_backup_policy_id
 
-  patch_mode = "AutomaticByPlatform"
+  patch_mode                    = "AutomaticByPlatform"
+  maintenance_configuration_ids = [module.update_management.maintenance_configurations["Donald"].id, module.update_management.maintenance_configurations["Hammer"].id]
+
 
   availability_set_id = azurerm_availability_set.vm_avset.id
   # or use Availability Zone
