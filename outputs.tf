@@ -72,5 +72,5 @@ output "vm_admin_password" {
 
 output "maintenance_configurations_assignments" {
   description = "Maintenance configurations assignments configurations."
-  value       = azapi_resource.maintenance_configurations
+  value       = azurerm_maintenance_assignment_virtual_machine.maintenance_configurations
 }

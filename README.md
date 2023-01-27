@@ -331,9 +331,8 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Version |
 |------|---------|
-| azapi | ~> 1.0 |
 | azurecaf | ~> 1.2, >= 1.2.22 |
-| azurerm | ~> 3.24 |
+| azurerm | ~> 3.39 |
 | null | ~> 3.0 |
 
 ## Modules
@@ -346,10 +345,10 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Type |
 |------|------|
-| [azapi_resource.maintenance_configurations](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_backup_protected_vm.backup](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/backup_protected_vm) | resource |
 | [azurerm_key_vault_access_policy.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_certificate.winrm_certificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
+| [azurerm_maintenance_assignment_virtual_machine.maintenance_configurations](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/maintenance_assignment_virtual_machine) | resource |
 | [azurerm_managed_disk.disk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_disk) | resource |
 | [azurerm_monitor_data_collection_rule_association.dcr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_data_collection_rule_association) | resource |
 | [azurerm_network_interface.nic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface) | resource |
