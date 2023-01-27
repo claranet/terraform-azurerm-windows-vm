@@ -169,7 +169,7 @@ module "az_monitor" {
 }
 
 module "update_management" {
-  source  = "claranet/run-iaas/azurerm//modules/update-center"
+  source  = "claranet/run/azurerm//modules/update-center"
   version = "x.x.x"
 
   resource_group_name = module.rg.resource_group_name
