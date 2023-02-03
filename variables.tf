@@ -214,3 +214,9 @@ variable "user_data" {
   type        = string
   default     = null
 }
+
+variable "maintenance_configuration_ids" {
+  description = "List of maintenance configurations to attach to this VM."
+  type        = list(string)
+  default     = []
+}

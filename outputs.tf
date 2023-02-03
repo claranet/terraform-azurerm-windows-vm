@@ -69,3 +69,8 @@ output "vm_admin_password" {
   value       = var.admin_password
   sensitive   = true
 }
+
+output "maintenance_configurations_assignments" {
+  description = "Maintenance configurations assignments configurations."
+  value       = azurerm_maintenance_assignment_virtual_machine.maintenance_configurations
+}
