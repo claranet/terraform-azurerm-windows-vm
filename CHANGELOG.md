@@ -1,3 +1,8 @@
+# Unreleased
+
+Changed
+  * AZ-1018: Added `name_suffix` to storage disk default naming
+
 # v7.4.0 - 2023-02-03
 
 Added
