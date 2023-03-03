@@ -1,4 +1,4 @@
-# Unreleased
+# v7.5.0 - 2023-03-03
 
 Changed
   * AZ-1019: Bump `os_tagging` module
