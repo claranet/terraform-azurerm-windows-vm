@@ -113,7 +113,7 @@ resource "null_resource" "winrm_connection_test" {
 
 module "vm_os_disk_tagging" {
   source  = "claranet/tagging/azurerm"
-  version = "4.0.2"
+  version = "6.0.1"
 
   nb_resources = var.os_disk_tagging_enabled ? 1 : 0
   resource_ids = [data.azurerm_managed_disk.vm_os_disk.id]

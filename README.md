@@ -346,7 +346,7 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| vm\_os\_disk\_tagging | claranet/tagging/azurerm | 4.0.2 |
+| vm\_os\_disk\_tagging | claranet/tagging/azurerm | 6.0.1 |
 
 ## Resources
 
