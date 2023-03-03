@@ -1,3 +1,9 @@
+# Unreleased
+
+Changed
+  * AZ-1019: Bump `os_tagging` module
+  * AZ-1018: Added `name_suffix` to storage disk default naming
+
 # v7.4.0 - 2023-02-03
 
 Added
