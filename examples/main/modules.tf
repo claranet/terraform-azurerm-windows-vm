@@ -79,7 +79,7 @@ resource "azurerm_availability_set" "vm_avset" {
 }
 
 module "run_common" {
-  source  = "claranet/run-common/azurerm"
+  source  = "claranet/run/azurerm"
   version = "x.x.x"
 
   client_name         = var.client_name
