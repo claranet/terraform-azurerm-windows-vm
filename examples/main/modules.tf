@@ -57,6 +57,9 @@ module "network_security_group" {
   resource_group_name = module.rg.resource_group_name
   location            = module.azure_region.location
   location_short      = module.azure_region.location_short
+
+  winrm_inbound_allowed = true
+  allowed_winrm_source  = [var.admin_ip_addresses] # "*"
 }
 
 module "azure_network_route_table" {
@@ -134,22 +137,6 @@ module "key_vault" {
     module.run.logs_storage_account_id,
     module.run.log_analytics_workspace_id
   ]
-}
-
-resource "azurerm_network_security_rule" "winrm" {
-  name = "Allow-winrm-rule"
-
-  resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network_security_group.network_security_group_name
-
-  priority                   = 100
-  direction                  = "Inbound"
-  access                     = "Allow"
-  protocol                   = "Tcp"
-  source_port_range          = "*"
-  destination_port_range     = "5986"
-  source_address_prefixes    = [var.admin_ip_addresses]
-  destination_address_prefix = "*"
 }
 
 module "vm" {
