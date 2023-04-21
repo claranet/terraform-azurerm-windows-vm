@@ -180,29 +180,8 @@ module "run" {
 
   recovery_vault_cross_region_restore_enabled = true
   vm_backup_daily_policy_retention            = 31
-}
 
-module "key_vault" {
-  source  = "claranet/keyvault/azurerm"
-  version = "x.x.x"
-
-  client_name    = var.client_name
-  environment    = var.environment
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  stack          = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-
-  # Mandatory for use with VM deployment
-  enabled_for_deployment = true
-
-  admin_objects_ids = var.keyvault_admin_objects_ids
-
-  logs_destinations_ids = [
-    module.run.logs_storage_account_id,
-    module.run.log_analytics_workspace_id
-  ]
+  keyvault_enabled_for_deployment = true
 }
 
 module "vm" {
@@ -216,7 +195,7 @@ module "vm" {
   stack               = var.stack
   resource_group_name = module.rg.resource_group_name
 
-  key_vault_id   = module.key_vault.key_vault_id
+  key_vault_id   = module.run.keyvault_id
   subnet_id      = module.azure_network_subnet.subnet_id
   vm_size        = "Standard_B2s"
   admin_username = var.vm_administrator_login
@@ -229,7 +208,7 @@ module "vm" {
   log_analytics_workspace_key           = module.run.log_analytics_workspace_primary_key
 
   # Set to null to deactivate backup
-  backup_policy_id = module.az_vm_backup.vm_backup_policy_id
+  backup_policy_id = module.run.vm_backup_policy_id
 
   patch_mode                    = "AutomaticByPlatform"
   maintenance_configuration_ids = [module.run.maintenance_configurations["Donald"].id, module.run.maintenance_configurations["Hammer"].id]
