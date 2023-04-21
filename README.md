@@ -144,7 +144,7 @@ resource "azurerm_availability_set" "vm_avset" {
   managed             = true
 }
 
-module "run_common" {
+module "run" {
   source  = "claranet/run/azurerm"
   version = "x.x.x"
 
@@ -155,8 +155,28 @@ module "run_common" {
   stack               = var.stack
   resource_group_name = module.rg.resource_group_name
 
-  tenant_id                        = var.azure_tenant_id
-  monitoring_function_splunk_token = null
+  monitoring_function_enabled = false
+  vm_monitoring_enabled       = true
+  backup_vm_enabled           = true
+  update_center_enabled       = true
+
+  update_center_periodic_assessment_enabled = true
+  update_center_periodic_assessment_scopes  = [module.rg.resource_group_id]
+  update_center_maintenance_configurations = [
+    {
+      configuration_name = "Donald"
+      start_date_time    = "2021-08-21 04:00"
+      recur_every        = "1Day"
+    },
+    {
+      configuration_name = "Hammer"
+      start_date_time    = "1900-01-01 03:00"
+      recur_every        = "1Week"
+    }
+  ]
+
+  recovery_vault_cross_region_restore_enabled = true
+  vm_backup_daily_policy_retention            = 31
 }
 
 module "key_vault" {
@@ -172,13 +192,13 @@ module "key_vault" {
   resource_group_name = module.rg.resource_group_name
 
   # Mandatory for use with VM deployment
-  enabled_for_deployment = "true"
+  enabled_for_deployment = true
 
   admin_objects_ids = var.keyvault_admin_objects_ids
 
   logs_destinations_ids = [
-    module.run_common.logs_storage_account_id,
-    module.run_common.log_analytics_workspace_id
+    module.run.logs_storage_account_id,
+    module.run.log_analytics_workspace_id
   ]
 }
 
@@ -198,67 +218,6 @@ resource "azurerm_network_security_rule" "winrm" {
   destination_address_prefix = "*"
 }
 
-module "az_vm_backup" {
-  source  = "claranet/run-iaas/azurerm//modules/backup"
-  version = "x.x.x"
-
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  client_name    = var.client_name
-  environment    = var.environment
-  stack          = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-
-  logs_destinations_ids = [
-    module.run_common.logs_storage_account_id,
-    module.run_common.log_analytics_workspace_id
-  ]
-}
-
-module "az_monitor" {
-  source  = "claranet/run-iaas/azurerm//modules/vm-monitoring"
-  version = "x.x.x"
-
-  client_name    = var.client_name
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  environment    = var.environment
-  stack          = var.stack
-
-  resource_group_name        = module.rg.resource_group_name
-  log_analytics_workspace_id = module.run_common.log_analytics_workspace_id
-
-  extra_tags = {
-    foo = "bar"
-  }
-}
-
-module "update_management" {
-  source  = "claranet/run/azurerm//modules/update-center"
-  version = "x.x.x"
-
-  resource_group_name = module.rg.resource_group_name
-  stack               = var.stack
-  environment         = var.environment
-  location            = module.azure_region.location
-
-  auto_assessment_enabled = true
-  auto_assessment_scopes  = [module.rg.resource_group_id]
-  maintenance_configurations = [
-    {
-      configuration_name = "Donald"
-      start_date_time    = "2021-08-21 04:00"
-      recur_every        = "1Day"
-    },
-    {
-      configuration_name = "Hammer"
-      start_date_time    = "1900-01-01 03:00"
-      recur_every        = "1Week"
-    }
-  ]
-}
-
 module "vm" {
   source  = "claranet/windows-vm/azurerm"
   version = "x.x.x"
@@ -276,17 +235,17 @@ module "vm" {
   admin_username = var.vm_administrator_login
   admin_password = var.vm_administrator_password
 
-  diagnostics_storage_account_name      = module.run_common.logs_storage_account_name
+  diagnostics_storage_account_name      = module.run.logs_storage_account_name
   diagnostics_storage_account_key       = null # used by legacy agent only
-  azure_monitor_data_collection_rule_id = module.az_monitor.data_collection_rule_id
-  log_analytics_workspace_guid          = module.run_common.log_analytics_workspace_guid
-  log_analytics_workspace_key           = module.run_common.log_analytics_workspace_primary_key
+  azure_monitor_data_collection_rule_id = module.run.data_collection_rule_id
+  log_analytics_workspace_guid          = module.run.log_analytics_workspace_guid
+  log_analytics_workspace_key           = module.run.log_analytics_workspace_primary_key
 
   # Set to null to deactivate backup
   backup_policy_id = module.az_vm_backup.vm_backup_policy_id
 
   patch_mode                    = "AutomaticByPlatform"
-  maintenance_configuration_ids = [module.update_management.maintenance_configurations["Donald"].id, module.update_management.maintenance_configurations["Hammer"].id]
+  maintenance_configuration_ids = [module.run.maintenance_configurations["Donald"].id, module.run.maintenance_configurations["Hammer"].id]
 
 
   availability_set_id = azurerm_availability_set.vm_avset.id
