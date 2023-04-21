@@ -18,11 +18,6 @@ variable "stack" {
   type        = string
 }
 
-variable "azure_tenant_id" {
-  description = "Tenant ID"
-  type        = string
-}
-
 variable "vm_administrator_login" {
   description = "Administrator login for Virtual Machine"
   type        = string

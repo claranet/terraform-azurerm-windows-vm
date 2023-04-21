@@ -182,6 +182,7 @@ module "run" {
   vm_backup_daily_policy_retention            = 31
 
   keyvault_enabled_for_deployment = true
+  keyvault_admin_objects_ids      = var.keyvault_admin_objects_ids
 }
 
 module "vm" {
