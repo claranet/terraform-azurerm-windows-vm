@@ -35,5 +35,5 @@ variable "keyvault_admin_objects_ids" {
 
 variable "admin_ip_addresses" {
   description = "IPs adresses to authorize to connect with WinRM"
-  type        = string
+  type        = list(string)
 }

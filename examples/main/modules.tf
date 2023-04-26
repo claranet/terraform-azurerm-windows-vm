@@ -59,7 +59,7 @@ module "network_security_group" {
   location_short      = module.azure_region.location_short
 
   winrm_inbound_allowed = true
-  allowed_winrm_source  = [var.admin_ip_addresses] # "*"
+  allowed_winrm_source  = var.admin_ip_addresses # "*"
 }
 
 module "azure_network_route_table" {
