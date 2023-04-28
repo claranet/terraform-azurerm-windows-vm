@@ -123,6 +123,9 @@ module "network_security_group" {
   resource_group_name = module.rg.resource_group_name
   location            = module.azure_region.location
   location_short      = module.azure_region.location_short
+
+  winrm_inbound_allowed = true
+  allowed_winrm_source  = var.admin_ip_addresses # "*"
 }
 
 module "azure_network_route_table" {
@@ -144,8 +147,8 @@ resource "azurerm_availability_set" "vm_avset" {
   managed             = true
 }
 
-module "run_common" {
-  source  = "claranet/run-common/azurerm"
+module "run" {
+  source  = "claranet/run/azurerm"
   version = "x.x.x"
 
   client_name         = var.client_name
@@ -155,97 +158,14 @@ module "run_common" {
   stack               = var.stack
   resource_group_name = module.rg.resource_group_name
 
-  tenant_id                        = var.azure_tenant_id
-  monitoring_function_splunk_token = null
-}
+  monitoring_function_enabled = false
+  vm_monitoring_enabled       = true
+  backup_vm_enabled           = true
+  update_center_enabled       = true
 
-module "key_vault" {
-  source  = "claranet/keyvault/azurerm"
-  version = "x.x.x"
-
-  client_name    = var.client_name
-  environment    = var.environment
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  stack          = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-
-  # Mandatory for use with VM deployment
-  enabled_for_deployment = "true"
-
-  admin_objects_ids = var.keyvault_admin_objects_ids
-
-  logs_destinations_ids = [
-    module.run_common.logs_storage_account_id,
-    module.run_common.log_analytics_workspace_id
-  ]
-}
-
-resource "azurerm_network_security_rule" "winrm" {
-  name = "Allow-winrm-rule"
-
-  resource_group_name         = module.rg.resource_group_name
-  network_security_group_name = module.network_security_group.network_security_group_name
-
-  priority                   = 100
-  direction                  = "Inbound"
-  access                     = "Allow"
-  protocol                   = "Tcp"
-  source_port_range          = "*"
-  destination_port_range     = "5986"
-  source_address_prefixes    = [var.admin_ip_addresses]
-  destination_address_prefix = "*"
-}
-
-module "az_vm_backup" {
-  source  = "claranet/run-iaas/azurerm//modules/backup"
-  version = "x.x.x"
-
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  client_name    = var.client_name
-  environment    = var.environment
-  stack          = var.stack
-
-  resource_group_name = module.rg.resource_group_name
-
-  logs_destinations_ids = [
-    module.run_common.logs_storage_account_id,
-    module.run_common.log_analytics_workspace_id
-  ]
-}
-
-module "az_monitor" {
-  source  = "claranet/run-iaas/azurerm//modules/vm-monitoring"
-  version = "x.x.x"
-
-  client_name    = var.client_name
-  location       = module.azure_region.location
-  location_short = module.azure_region.location_short
-  environment    = var.environment
-  stack          = var.stack
-
-  resource_group_name        = module.rg.resource_group_name
-  log_analytics_workspace_id = module.run_common.log_analytics_workspace_id
-
-  extra_tags = {
-    foo = "bar"
-  }
-}
-
-module "update_management" {
-  source  = "claranet/run/azurerm//modules/update-center"
-  version = "x.x.x"
-
-  resource_group_name = module.rg.resource_group_name
-  stack               = var.stack
-  environment         = var.environment
-  location            = module.azure_region.location
-
-  auto_assessment_enabled = true
-  auto_assessment_scopes  = [module.rg.resource_group_id]
-  maintenance_configurations = [
+  update_center_periodic_assessment_enabled = true
+  update_center_periodic_assessment_scopes  = [module.rg.resource_group_id]
+  update_center_maintenance_configurations = [
     {
       configuration_name = "Donald"
       start_date_time    = "2021-08-21 04:00"
@@ -257,6 +177,12 @@ module "update_management" {
       recur_every        = "1Week"
     }
   ]
+
+  recovery_vault_cross_region_restore_enabled = true
+  vm_backup_daily_policy_retention            = 31
+
+  keyvault_enabled_for_deployment = true
+  keyvault_admin_objects_ids      = var.keyvault_admin_objects_ids
 }
 
 module "vm" {
@@ -270,23 +196,23 @@ module "vm" {
   stack               = var.stack
   resource_group_name = module.rg.resource_group_name
 
-  key_vault_id   = module.key_vault.key_vault_id
+  key_vault_id   = module.run.keyvault_id
   subnet_id      = module.azure_network_subnet.subnet_id
   vm_size        = "Standard_B2s"
   admin_username = var.vm_administrator_login
   admin_password = var.vm_administrator_password
 
-  diagnostics_storage_account_name      = module.run_common.logs_storage_account_name
+  diagnostics_storage_account_name      = module.run.logs_storage_account_name
   diagnostics_storage_account_key       = null # used by legacy agent only
-  azure_monitor_data_collection_rule_id = module.az_monitor.data_collection_rule_id
-  log_analytics_workspace_guid          = module.run_common.log_analytics_workspace_guid
-  log_analytics_workspace_key           = module.run_common.log_analytics_workspace_primary_key
+  azure_monitor_data_collection_rule_id = module.run.data_collection_rule_id
+  log_analytics_workspace_guid          = module.run.log_analytics_workspace_guid
+  log_analytics_workspace_key           = module.run.log_analytics_workspace_primary_key
 
   # Set to null to deactivate backup
-  backup_policy_id = module.az_vm_backup.vm_backup_policy_id
+  backup_policy_id = module.run.vm_backup_policy_id
 
   patch_mode                    = "AutomaticByPlatform"
-  maintenance_configuration_ids = [module.update_management.maintenance_configurations["Donald"].id, module.update_management.maintenance_configurations["Hammer"].id]
+  maintenance_configuration_ids = [module.run.maintenance_configurations["Donald"].id, module.run.maintenance_configurations["Hammer"].id]
 
 
   availability_set_id = azurerm_availability_set.vm_avset.id

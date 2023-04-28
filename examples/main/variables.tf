@@ -18,11 +18,6 @@ variable "stack" {
   type        = string
 }
 
-variable "azure_tenant_id" {
-  description = "Tenant ID"
-  type        = string
-}
-
 variable "vm_administrator_login" {
   description = "Administrator login for Virtual Machine"
   type        = string
@@ -40,5 +35,5 @@ variable "keyvault_admin_objects_ids" {
 
 variable "admin_ip_addresses" {
   description = "IPs adresses to authorize to connect with WinRM"
-  type        = string
+  type        = list(string)
 }
