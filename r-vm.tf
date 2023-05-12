@@ -11,8 +11,6 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
   source_image_id = var.vm_image_id
 
-  user_data = var.user_data
-
   dynamic "source_image_reference" {
     for_each = var.vm_image_id == null ? ["fake"] : []
     content {
@@ -23,25 +21,45 @@ resource "azurerm_windows_virtual_machine" "vm" {
     }
   }
 
+  dynamic "plan" {
+    for_each = var.vm_plan[*]
+    content {
+      name      = var.vm_plan.name
+      product   = var.vm_plan.product
+      publisher = var.vm_plan.publisher
+    }
+  }
+
   availability_set_id = var.availability_set_id
 
-  zone = var.zone_id == null ? null : var.zone_id
+  zone = var.zone_id
 
   boot_diagnostics {
     storage_account_uri = "https://${var.diagnostics_storage_account_name}.blob.core.windows.net"
   }
 
   os_disk {
-    name                 = lookup(var.storage_os_disk_config, "name", local.vm_os_disk_name)
-    caching              = lookup(var.storage_os_disk_config, "caching", "ReadWrite")
-    storage_account_type = lookup(var.storage_os_disk_config, "storage_account_type", "Premium_ZRS")
-    disk_size_gb         = lookup(var.storage_os_disk_config, "disk_size_gb", null)
+    name                 = local.vm_os_disk_name
+    caching              = var.os_disk_caching
+    storage_account_type = var.os_disk_storage_account_type
+    disk_size_gb         = var.os_disk_size_gb
+  }
+
+  dynamic "identity" {
+    for_each = var.identity != null ? ["fake"] : []
+    content {
+      type         = var.identity.type
+      identity_ids = var.identity.identity_ids
+    }
   }
 
   computer_name  = local.vm_hostname
   admin_username = var.admin_username
   admin_password = var.admin_password
-  custom_data    = base64encode(local.custom_data_content)
+
+  custom_data = base64encode(local.custom_data_content)
+  user_data   = var.user_data
+
 
   secret {
     key_vault_id = var.key_vault_id
@@ -67,9 +85,9 @@ resource "azurerm_windows_virtual_machine" "vm" {
     content = file(format("%s/files/FirstLogonCommands.xml", path.module))
   }
 
-  identity {
-    type = "SystemAssigned"
-  }
+  priority        = var.spot_instance ? "Spot" : "Regular"
+  max_bid_price   = var.spot_instance ? var.spot_instance_max_bid_price : null
+  eviction_policy = var.spot_instance ? var.spot_instance_eviction_policy : null
 
   patch_mode            = var.patch_mode
   patch_assessment_mode = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
@@ -117,7 +135,7 @@ module "vm_os_disk_tagging" {
 
   nb_resources = var.os_disk_tagging_enabled ? 1 : 0
   resource_ids = [data.azurerm_managed_disk.vm_os_disk.id]
-  behavior     = "merge" # Must be "merge" or "overwrite"
+  behavior     = var.os_disk_overwrite_tags ? "overwrite" : "merge"
 
   tags = merge(local.default_tags, var.extra_tags, var.os_disk_extra_tags)
 }
@@ -128,23 +146,55 @@ resource "azurerm_managed_disk" "disk" {
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  name = lookup(each.value, "name", var.use_caf_naming ? data.azurecaf_name.disk[each.key].result : "${local.vm_name}-datadisk${each.key}")
+  name = coalesce(each.value.name, var.use_caf_naming ? data.azurecaf_name.disk[each.key].result : format("%s-datadisk%s", local.vm_name, each.key))
 
-  zone                 = var.zone_id
-  storage_account_type = lookup(each.value, "storage_account_type", "Standard_LRS")
+  zone = var.zone_id
 
-  create_option = lookup(each.value, "create_option", "Empty")
-  disk_size_gb  = lookup(each.value, "disk_size_gb", null)
+  storage_account_type = each.value.storage_account_type
+  create_option        = each.value.create_option
+  disk_size_gb         = each.value.disk_size_gb
+  source_resource_id   = contains(["Copy", "Restore"], each.value.create_option) ? each.value.source_resource_id : null
 
-  tags = merge(local.default_tags, var.extra_tags, lookup(each.value, "extra_tags", {}))
+  tags = merge(local.default_tags, var.extra_tags, each.value.extra_tags)
 }
 
-resource "azurerm_virtual_machine_data_disk_attachment" "disk_attach" {
+resource "azurerm_virtual_machine_data_disk_attachment" "data_disk_attachment" {
   for_each = var.storage_data_disk_config
 
   managed_disk_id    = azurerm_managed_disk.disk[each.key].id
   virtual_machine_id = azurerm_windows_virtual_machine.vm.id
 
-  lun     = lookup(each.value, "lun")
-  caching = lookup(each.value, "caching", "ReadWrite")
+  lun     = coalesce(each.value.lun, index(keys(var.storage_data_disk_config), each.key))
+  caching = each.value.caching
+}
+
+resource "azapi_update_resource" "set_bypassplatformsafetychecksonuserschedule" {
+  count = var.patch_mode == "AutomaticByPlatform" ? 1 : 0
+
+  type        = "Microsoft.Compute/virtualMachines@2023-03-01"
+  resource_id = resource.azurerm_windows_virtual_machine.vm.id
+
+  body = jsonencode({
+    location = module.azure_region.location_cli
+    properties = {
+      osProfile = {
+        windowsConfiguration = {
+          provisionVMAgent       = true
+          enableAutomaticUpdates = true
+          patchSettings = {
+            patchMode = "AutomaticByPlatform"
+            automaticByPlatformSettings = {
+              bypassPlatformSafetyChecksOnUserSchedule = true
+            }
+          }
+        }
+      }
+    }
+  })
+}
+
+# To be iso as linux-vm
+moved {
+  from = azurerm_virtual_machine_data_disk_attachment.disk_attach
+  to   = azurerm_virtual_machine_data_disk_attachment.data_disk_attachment
 }

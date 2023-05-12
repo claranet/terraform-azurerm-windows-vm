@@ -1,21 +1,26 @@
 output "vm_id" {
-  description = "Id of the Virtual machine"
+  description = "ID of the Virtual Machine"
   value       = azurerm_windows_virtual_machine.vm.id
 }
 
 output "vm_name" {
-  description = "Name of the Virtual machine"
+  description = "Name of the Virtual Machine"
   value       = azurerm_windows_virtual_machine.vm.name
 }
 
 output "vm_hostname" {
-  description = "Hostname of the Virtual machine"
+  description = "Hostname of the Virtual Machine"
   value       = azurerm_windows_virtual_machine.vm.computer_name
 }
 
 output "vm_public_ip_address" {
-  description = "Public IP address of the Virtual machine"
+  description = "Public IP address of the Virtual Machine"
   value       = one(azurerm_public_ip.public_ip[*].ip_address)
+}
+
+output "vm_public_ip_id" {
+  description = "Public IP ID of the Virtual Machine"
+  value       = one(azurerm_public_ip.public_ip[*].id)
 }
 
 output "vm_public_domain_name_label" {
@@ -24,7 +29,7 @@ output "vm_public_domain_name_label" {
 }
 
 output "vm_private_ip_address" {
-  description = "Private IP address of the Virtual machine"
+  description = "Private IP address of the Virtual Machine"
   value       = azurerm_network_interface.nic.private_ip_address
 }
 
@@ -56,6 +61,11 @@ output "vm_nic_id" {
 output "vm_nic_ip_configuration_name" {
   description = "Name of the IP Configuration for the Network Interface Configuration attached to the Virtual Machine"
   value       = local.ip_configuration_name
+}
+
+output "vm_identity" {
+  description = "Identity block with principal ID"
+  value       = azurerm_windows_virtual_machine.vm.identity
 }
 
 output "vm_admin_username" {

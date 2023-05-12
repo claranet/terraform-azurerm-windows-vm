@@ -51,10 +51,16 @@ variable "key_vault_certificates_store_name" {
   default     = "MY"
 }
 
+### Network inputs
 variable "subnet_id" {
-  description = "Id of the Subnet in which create the Virtual Machine."
+  description = "ID of the Subnet in which create the Virtual Machine."
   type        = string
-  default     = null
+}
+
+variable "nic_enable_accelerated_networking" {
+  description = "Should Accelerated Networking be enabled? Defaults to `false`."
+  type        = bool
+  default     = false
 }
 
 variable "nic_nsg_id" {
@@ -69,10 +75,17 @@ variable "static_private_ip" {
   default     = null
 }
 
-variable "nic_enable_accelerated_networking" {
-  description = "Should Accelerated Networking be enabled? Defaults to `false`."
-  type        = bool
-  default     = false
+### VM inputs
+variable "custom_data" {
+  description = "The Base64-Encoded Custom Data which should be used for this Virtual Machine. Changing this forces a new resource to be created."
+  type        = string
+  default     = null
+}
+
+variable "user_data" {
+  description = "The Base64-Encoded User Data which should be used for this Virtual Machine."
+  type        = string
+  default     = null
 }
 
 variable "admin_username" {
@@ -120,22 +133,29 @@ variable "vm_image_id" {
   default     = null
 }
 
-variable "storage_os_disk_config" {
-  description = "Map to configure OS storage disk. (Caching, size, storage account type...)."
-  type        = map(string)
-  default     = {}
+variable "vm_plan" {
+  description = "Virtual Machine plan image information. See https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine#plan. This variable has to be used for BYOS image. Before using BYOS image, you need to accept legal plan terms. See https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az_vm_image_accept_terms."
+  type = object({
+    name      = string
+    product   = string
+    publisher = string
+  })
+  default = null
 }
 
 variable "storage_data_disk_config" {
-  description = "Map of data disks to attach to the Virtual Machine. Map attributes: `storage_account_type` (optional, defaults to `Standard_LRS`), `create_option` (optional, defaults to `Empty`), `disk_size_gb`, `lun` & `caching` (optional, defaults to `ReadWrite`). See [virtual_machine_data_disk_attachment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) & [managed_disk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_disk)."
-  type        = map(any)
-  default     = {}
-}
-
-variable "os_disk_tagging_enabled" {
-  description = "Should OS disk tagging be enabled? Defaults to `true`."
-  type        = bool
-  default     = true
+  description = "Map of objects to configure storage data disk(s)."
+  type = map(object({
+    name                 = optional(string)
+    create_option        = optional(string, "Empty")
+    disk_size_gb         = number
+    lun                  = optional(number)
+    caching              = optional(string, "ReadWrite")
+    storage_account_type = optional(string, "StandardSSD_ZRS")
+    source_resource_id   = optional(string)
+    extra_tags           = optional(map(string), {})
+  }))
+  default = {}
 }
 
 variable "certificate_validity_in_months" {
@@ -192,11 +212,63 @@ variable "license_type" {
   default     = null
 }
 
+variable "os_disk_size_gb" {
+  description = "Specifies the size of the OS disk in gigabytes."
+  type        = string
+  default     = null
+}
+
+variable "os_disk_storage_account_type" {
+  description = "The Type of Storage Account which should back this the Internal OS Disk. Possible values are `Standard_LRS`, `StandardSSD_LRS`, `Premium_LRS`, `StandardSSD_ZRS` and `Premium_ZRS`."
+  type        = string
+  default     = "Premium_ZRS"
+}
+
+variable "os_disk_caching" {
+  description = "Specifies the caching requirements for the OS Disk."
+  type        = string
+  default     = "ReadWrite"
+}
+
+## Identity variables
+variable "identity" {
+  description = "Map with identity block informations as described here https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine#identity."
+  type = object({
+    type         = string
+    identity_ids = list(string)
+  })
+  default = {
+    type         = "SystemAssigned"
+    identity_ids = []
+  }
+}
+
+## Spot variables
+variable "spot_instance" {
+  description = "True to deploy VM as a Spot Instance"
+  type        = bool
+  default     = false
+}
+
+variable "spot_instance_max_bid_price" {
+  description = "The maximum price you're willing to pay for this VM in US Dollars; must be greater than the current spot price. `-1` If you don't want the VM to be evicted for price reasons."
+  type        = number
+  default     = -1
+}
+
+variable "spot_instance_eviction_policy" {
+  description = "Specifies what should happen when the Virtual Machine is evicted for price reasons when using a Spot instance. At this time the only supported value is `Deallocate`. Changing this forces a new resource to be created."
+  type        = string
+  default     = "Deallocate"
+}
+
+## Backup variable
 variable "backup_policy_id" {
   description = "Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup)."
   type        = string
 }
 
+## Patching variables
 variable "patch_mode" {
   description = "Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are Manual, `AutomaticByOS` and `AutomaticByPlatform`. It also active path assessment when set to `AutomaticByPlatform`"
   type        = string
@@ -207,12 +279,6 @@ variable "hotpatching_enabled" {
   description = "Should the VM be patched without requiring a reboot? Possible values are `true` or `false`."
   type        = bool
   default     = false
-}
-
-variable "user_data" {
-  description = "The Base64-Encoded User Data which should be used for this Virtual Machine."
-  type        = string
-  default     = null
 }
 
 variable "maintenance_configuration_ids" {

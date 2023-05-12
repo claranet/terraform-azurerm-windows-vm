@@ -18,11 +18,13 @@ variable "use_legacy_monitoring_agent" {
 variable "log_analytics_workspace_guid" {
   description = "GUID of the Log Analytics Workspace to link with."
   type        = string
+  default     = null
 }
 
 variable "log_analytics_workspace_key" {
   description = "Access key of the Log Analytics Workspace to link with."
   type        = string
+  default     = null
 }
 
 variable "azure_monitor_data_collection_rule_id" {
@@ -31,13 +33,19 @@ variable "azure_monitor_data_collection_rule_id" {
 }
 
 variable "azure_monitor_agent_version" {
-  description = "Azure Monitor Agent extension version (https://docs.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions)."
+  description = "Azure Monitor Agent extension version (https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions)."
   type        = string
-  default     = "1.7" # July 2022
+  default     = "1.13" # May 2023
 }
 
 variable "azure_monitor_agent_auto_upgrade_enabled" {
   description = "Automatically update agent when publisher releases a new version of the agent."
+  type        = bool
+  default     = false
+}
+
+variable "log_analytics_agent_enabled" {
+  description = "Deploy Log Analytics VM extension - depending of OS (cf. https://docs.microsoft.com/fr-fr/azure/azure-monitor/agents/agents-overview#linux)"
   type        = bool
   default     = false
 }
