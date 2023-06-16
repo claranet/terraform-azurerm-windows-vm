@@ -130,7 +130,7 @@ resource "azurerm_managed_disk" "disk" {
 
   name = lookup(each.value, "name", var.use_caf_naming ? data.azurecaf_name.disk[each.key].result : "${local.vm_name}-datadisk${each.key}")
 
-  zone                 = var.zone_id
+  zone                 = can(regex("_zrs$", lower(each.value.storage_account_type))) ? null : var.zone_id
   storage_account_type = lookup(each.value, "storage_account_type", "Standard_LRS")
 
   create_option = lookup(each.value, "create_option", "Empty")
