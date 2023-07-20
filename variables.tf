@@ -29,7 +29,7 @@ variable "resource_group_name" {
 }
 
 variable "key_vault_id" {
-  description = "Id of the Azure Key Vault to use for VM certificate."
+  description = "Id of the Azure Key Vault to use for VM certificate (value to `null` to disable winrm certificate)."
   type        = string
 }
 
