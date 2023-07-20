@@ -44,7 +44,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   custom_data    = base64encode(local.custom_data_content)
 
   dynamic "secret" {
-    for_each = var.key_vault_id == null ? []: ["enabled"]
+    for_each = var.key_vault_id == null ? [] : ["enabled"]
     content {
       key_vault_id = var.key_vault_id
 
