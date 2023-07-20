@@ -35,17 +35,17 @@ output "vm_private_ip_address" {
 
 output "vm_winrm_certificate_key_vault_id" {
   description = "Id of the generated certificate in the input Key Vault"
-  value       = azurerm_key_vault_certificate.winrm_certificate.id
+  value       = var.key_vault_id == null ? null : azurerm_key_vault_certificate.winrm_certificate[*].id
 }
 
 output "vm_winrm_certificate_data" {
   description = "The raw Key Vault Certificate."
-  value       = azurerm_key_vault_certificate.winrm_certificate.certificate_data
+  value       = var.key_vault_id == null ? null : azurerm_key_vault_certificate.winrm_certificate[*].certificate_data
 }
 
 output "vm_winrm_certificate_thumbprint" {
   description = "The X509 Thumbprint of the Key Vault Certificate returned as hex string."
-  value       = azurerm_key_vault_certificate.winrm_certificate.thumbprint
+  value       = var.key_vault_id == null ? null : azurerm_key_vault_certificate.winrm_certificate[*].thumbprint
 }
 
 output "vm_nic_name" {

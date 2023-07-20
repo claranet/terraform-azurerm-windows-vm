@@ -61,33 +61,34 @@ resource "azurerm_windows_virtual_machine" "vm" {
   user_data   = var.user_data
 
 
-  secret {
-    key_vault_id = var.key_vault_id
+  dynamic "secret" {
+    for_each = var.key_vault_id == null ? []: ["enabled"]
+    content {
+      key_vault_id = var.key_vault_id
 
-    certificate {
-      url   = azurerm_key_vault_certificate.winrm_certificate.secret_id
-      store = "My"
+      certificate {
+        url   = azurerm_key_vault_certificate.winrm_certificate.secret_id
+        store = "My"
+      }
     }
   }
 
-  provision_vm_agent       = true
-  enable_automatic_updates = true
+  dynamic "additional_unattend_content" {
+    for_each = local.additional_unattend_content
 
-  # Auto-Login's required to configure WinRM
-  additional_unattend_content {
-    setting = "AutoLogon"
-    content = "<AutoLogon><Password><Value>${local.admin_password_encoded}</Value></Password><Enabled>true</Enabled><LogonCount>1</LogonCount><Username>${var.admin_username}</Username></AutoLogon>"
-  }
-
-  # Unattend config is to enable basic auth in WinRM, required for the provisioner stage.
-  additional_unattend_content {
-    setting = "FirstLogonCommands"
-    content = file(format("%s/files/FirstLogonCommands.xml", path.module))
+    content {
+      setting = additional_unattend_content.key
+      content = additional_unattend_content.value
+    }
   }
 
   priority        = var.spot_instance ? "Spot" : "Regular"
   max_bid_price   = var.spot_instance ? var.spot_instance_max_bid_price : null
   eviction_policy = var.spot_instance ? var.spot_instance_eviction_policy : null
+
+  provision_vm_agent       = true
+  enable_automatic_updates = true
+
 
   patch_mode            = var.patch_mode
   patch_assessment_mode = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
@@ -96,7 +97,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
 }
 
 resource "null_resource" "winrm_connection_test" {
-  count = var.public_ip_sku == null ? 0 : 1
+  count = (var.public_ip_sku == null || var.key_vault_id == null) ? 0 : 1
 
   depends_on = [
     azurerm_network_interface.nic,
