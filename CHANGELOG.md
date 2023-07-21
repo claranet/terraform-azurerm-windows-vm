@@ -1,4 +1,6 @@
 # Unreleased:
+
+Added
   * AZ-1122: Adding the possibility to disable the WinRM deployment with `key_vault_id` variable to null
   
 # v7.6.0 - 2023-08-18
