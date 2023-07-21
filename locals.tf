@@ -7,7 +7,7 @@ locals {
   backup_resource_group_name = var.backup_policy_id != null ? split("/", var.backup_policy_id)[4] : null
   backup_recovery_vault_name = var.backup_policy_id != null ? split("/", var.backup_policy_id)[8] : null
 
-  key_vault_name = var.key_vault_id != null ? split("/", var.key_vault_id)[8] : null
+  key_vault_name = var.key_vault_id != null ? reverse(split("/", var.key_vault_id))[0] : null
 
   additional_unattend_content = {
     # Auto-Login's required to configure WinRM
