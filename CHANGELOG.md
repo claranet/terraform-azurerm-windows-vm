@@ -14,6 +14,11 @@ Added
     * `custom_data` parameter
     * `spot_instance`, `spot_instance_eviction_policy`, `spot_instance_max_bid_price` parameters
 
+# v7.5.1 - 2023-06-16
+
+Fixed
+  * AZ-1102: Fix the managed data disks zone parameter if the storage type is `ZRS`
+
 # v7.5.0 - 2023-03-03
 
 Changed

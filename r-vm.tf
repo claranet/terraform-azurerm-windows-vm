@@ -148,8 +148,7 @@ resource "azurerm_managed_disk" "disk" {
 
   name = coalesce(each.value.name, var.use_caf_naming ? data.azurecaf_name.disk[each.key].result : format("%s-datadisk%s", local.vm_name, each.key))
 
-  zone = var.zone_id
-
+  zone                 = can(regex("_zrs$", lower(each.value.storage_account_type))) ? null : var.zone_id
   storage_account_type = each.value.storage_account_type
   create_option        = each.value.create_option
   disk_size_gb         = each.value.disk_size_gb
