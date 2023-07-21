@@ -1,5 +1,5 @@
 resource "azurerm_key_vault_certificate" "winrm_certificate" {
-  for_each     = var.key_vault_id == null ? toset([]) : toset(["enabled"])
+  for_each     = toset(var.key_vault_id == null ? [] : ["enabled"])
   name         = "winrm-${local.vm_name}-cert"
   key_vault_id = var.key_vault_id
 
