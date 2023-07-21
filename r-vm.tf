@@ -62,7 +62,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
 
   dynamic "secret" {
-    for_each = var.key_vault_id == null ? [] : ["enabled"]
+    for_each = var.key_vault_id[*]
     content {
       key_vault_id = var.key_vault_id
 
