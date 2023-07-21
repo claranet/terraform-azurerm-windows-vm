@@ -347,7 +347,7 @@ data "azuread_group" "vm_users_group" {
 | key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM. | `list(string)` | `null` | no |
 | key\_vault\_certificates\_polling\_rate | Polling rate (in seconds) for Key Vault certificates retrieval. | `number` | `300` | no |
 | key\_vault\_certificates\_store\_name | Name of the cetrificate store on which install the Key Vault certificates. | `string` | `"MY"` | no |
-| key\_vault\_id | Id of the Azure Key Vault to use for VM certificate. | `string` | n/a | yes |
+| key\_vault\_id | Id of the Azure Key Vault to use for VM certificate (value to `null` to disable winrm certificate). | `string` | n/a | yes |
 | license\_type | Specifies the BYOL Type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server` if set. | `string` | `null` | no |
 | load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | `string` | `null` | no |
 | location | Azure location. | `string` | n/a | yes |
