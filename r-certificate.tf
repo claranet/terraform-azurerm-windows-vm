@@ -50,7 +50,7 @@ resource "azurerm_key_vault_certificate" "winrm_certificate" {
 }
 
 resource "azurerm_key_vault_access_policy" "vm" {
-  for_each     = var.key_vault_id == null ? toset([]) : toset(["enabled"])
+  for_each     = toset(var.key_vault_id == null ? [] : ["enabled"])
   key_vault_id = var.key_vault_id
 
   object_id = azurerm_windows_virtual_machine.vm.identity[0].principal_id
