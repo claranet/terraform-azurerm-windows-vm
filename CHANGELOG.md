@@ -1,4 +1,4 @@
-# Unreleased
+# v7.6.0 - 2023-08-18
 
 Changed
   * AZ-1052 : Resync with `linux-vm`
