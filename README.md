@@ -228,10 +228,8 @@ module "vm" {
 
   # Use unmanaged disk if needed
   # If those blocks are not defined, it will use managed_disks
-  storage_os_disk_config = {
-    disk_size_gb = "150" # At least 127 Gb
-    caching      = "ReadWrite"
-  }
+  os_disk_size_gb = "150" # At least 127 Gb
+  os_disk_caching = "ReadWrite"
 
   storage_data_disk_config = {
     app = {
@@ -264,6 +262,7 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Version |
 |------|---------|
+| azapi | ~> 1.6 |
 | azurecaf | ~> 1.2, >= 1.2.22 |
 | azurerm | ~> 3.39 |
 | null | ~> 3.0 |
@@ -272,12 +271,14 @@ data "azuread_group" "vm_users_group" {
 
 | Name | Source | Version |
 |------|--------|---------|
+| azure\_region | claranet/regions/azurerm | ~> 6.1.0 |
 | vm\_os\_disk\_tagging | claranet/tagging/azurerm | 6.0.1 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [azapi_update_resource.set_bypassplatformsafetychecksonuserschedule](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/update_resource) | resource |
 | [azurerm_backup_protected_vm.backup](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/backup_protected_vm) | resource |
 | [azurerm_key_vault_access_policy.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_certificate.winrm_certificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
@@ -291,7 +292,7 @@ data "azuread_group" "vm_users_group" {
 | [azurerm_public_ip.public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_role_assignment.rbac_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.rbac_user_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_virtual_machine_data_disk_attachment.disk_attach](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) | resource |
+| [azurerm_virtual_machine_data_disk_attachment.data_disk_attachment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) | resource |
 | [azurerm_virtual_machine_extension.aad_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension) | resource |
 | [azurerm_virtual_machine_extension.azure_monitor_agent](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension) | resource |
 | [azurerm_virtual_machine_extension.diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension) | resource |
@@ -322,12 +323,13 @@ data "azuread_group" "vm_users_group" {
 | attach\_load\_balancer | True to attach this VM to a Load Balancer. | `bool` | `false` | no |
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `null` | no |
 | azure\_monitor\_agent\_auto\_upgrade\_enabled | Automatically update agent when publisher releases a new version of the agent. | `bool` | `false` | no |
-| azure\_monitor\_agent\_version | Azure Monitor Agent extension version (https://docs.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions). | `string` | `"1.7"` | no |
+| azure\_monitor\_agent\_version | Azure Monitor Agent extension version (https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions). | `string` | `"1.13"` | no |
 | azure\_monitor\_data\_collection\_rule\_id | Data Collection Rule ID from Azure Monitor for metrics and logs collection. Used with new monitoring agent, set to `null` if legacy agent is used. | `string` | n/a | yes |
 | backup\_policy\_id | Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup). | `string` | n/a | yes |
 | certificate\_validity\_in\_months | The created certificate validity in months | `number` | `48` | no |
 | client\_name | Client name/account used in naming. | `string` | n/a | yes |
 | custom\_computer\_name | Custom name for the Virtual Machine Hostname. Based on `custom_name` if not set. | `string` | `""` | no |
+| custom\_data | The Base64-Encoded Custom Data which should be used for this Virtual Machine. Changing this forces a new resource to be created. | `string` | `null` | no |
 | custom\_dcr\_name | Custom name for Data collection rule association | `string` | `null` | no |
 | custom\_dns\_label | The DNS label to use for public access. VM name if not set. DNS will be <label>.westeurope.cloudapp.azure.com. | `string` | `""` | no |
 | custom\_ipconfig\_name | Custom name for the IP config of the NIC. Generated if not set. | `string` | `null` | no |
@@ -341,6 +343,7 @@ data "azuread_group" "vm_users_group" {
 | extensions\_extra\_tags | Extra tags to set on the VM extensions. | `map(string)` | `{}` | no |
 | extra\_tags | Extra tags to set on each created resource. | `map(string)` | `{}` | no |
 | hotpatching\_enabled | Should the VM be patched without requiring a reboot? Possible values are `true` or `false`. | `bool` | `false` | no |
+| identity | Map with identity block informations as described here https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine#identity. | <pre>object({<br>    type         = string<br>    identity_ids = list(string)<br>  })</pre> | <pre>{<br>  "identity_ids": [],<br>  "type": "SystemAssigned"<br>}</pre> | no |
 | key\_vault\_certificates\_names | List of Azure Key Vault certificates names to install in the VM. | `list(string)` | `null` | no |
 | key\_vault\_certificates\_polling\_rate | Polling rate (in seconds) for Key Vault certificates retrieval. | `number` | `300` | no |
 | key\_vault\_certificates\_store\_name | Name of the cetrificate store on which install the Key Vault certificates. | `string` | `"MY"` | no |
@@ -349,33 +352,41 @@ data "azuread_group" "vm_users_group" {
 | load\_balancer\_backend\_pool\_id | Id of the Load Balancer Backend Pool to attach the VM. | `string` | `null` | no |
 | location | Azure location. | `string` | n/a | yes |
 | location\_short | Short string for Azure location. | `string` | n/a | yes |
+| log\_analytics\_agent\_enabled | Deploy Log Analytics VM extension - depending of OS (cf. https://docs.microsoft.com/fr-fr/azure/azure-monitor/agents/agents-overview#linux) | `bool` | `false` | no |
 | log\_analytics\_agent\_version | Azure Log Analytics extension version. | `string` | `"1.0"` | no |
-| log\_analytics\_workspace\_guid | GUID of the Log Analytics Workspace to link with. | `string` | n/a | yes |
-| log\_analytics\_workspace\_key | Access key of the Log Analytics Workspace to link with. | `string` | n/a | yes |
+| log\_analytics\_workspace\_guid | GUID of the Log Analytics Workspace to link with. | `string` | `null` | no |
+| log\_analytics\_workspace\_key | Access key of the Log Analytics Workspace to link with. | `string` | `null` | no |
 | maintenance\_configuration\_ids | List of maintenance configurations to attach to this VM. | `list(string)` | `[]` | no |
 | name\_prefix | Optional prefix for the generated name. | `string` | `""` | no |
 | name\_suffix | Optional suffix for the generated name. | `string` | `""` | no |
 | nic\_enable\_accelerated\_networking | Should Accelerated Networking be enabled? Defaults to `false`. | `bool` | `false` | no |
 | nic\_extra\_tags | Extra tags to set on the network interface. | `map(string)` | `{}` | no |
 | nic\_nsg\_id | NSG ID to associate on the Network Interface. No association if null. | `string` | `null` | no |
+| os\_disk\_caching | Specifies the caching requirements for the OS Disk. | `string` | `"ReadWrite"` | no |
 | os\_disk\_custom\_name | Custom name for OS disk. Generated if not set. | `string` | `null` | no |
 | os\_disk\_extra\_tags | Extra tags to set on the OS disk. | `map(string)` | `{}` | no |
+| os\_disk\_overwrite\_tags | True to overwrite existing OS disk tags instead of merging. | `bool` | `false` | no |
+| os\_disk\_size\_gb | Specifies the size of the OS disk in gigabytes. | `string` | `null` | no |
+| os\_disk\_storage\_account\_type | The Type of Storage Account which should back this the Internal OS Disk. Possible values are `Standard_LRS`, `StandardSSD_LRS`, `Premium_LRS`, `StandardSSD_ZRS` and `Premium_ZRS`. | `string` | `"Premium_ZRS"` | no |
 | os\_disk\_tagging\_enabled | Should OS disk tagging be enabled? Defaults to `true`. | `bool` | `true` | no |
 | patch\_mode | Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are Manual, `AutomaticByOS` and `AutomaticByPlatform`. It also active path assessment when set to `AutomaticByPlatform` | `string` | `"AutomaticByOS"` | no |
-| public\_ip\_extra\_tags | Extra tags to set on the Public IP. | `map(string)` | `{}` | no |
+| public\_ip\_extra\_tags | Extra tags to set on the public IP resource. | `map(string)` | `{}` | no |
 | public\_ip\_sku | Sku for the public IP attached to the VM. Can be `null` if no public IP needed. | `string` | `"Standard"` | no |
 | public\_ip\_zones | Zones for public IP attached to the VM. Can be `null` if no zone distpatch. | `list(number)` | <pre>[<br>  1,<br>  2,<br>  3<br>]</pre> | no |
 | resource\_group\_name | Resource group name. | `string` | n/a | yes |
+| spot\_instance | True to deploy VM as a Spot Instance | `bool` | `false` | no |
+| spot\_instance\_eviction\_policy | Specifies what should happen when the Virtual Machine is evicted for price reasons when using a Spot instance. At this time the only supported value is `Deallocate`. Changing this forces a new resource to be created. | `string` | `"Deallocate"` | no |
+| spot\_instance\_max\_bid\_price | The maximum price you're willing to pay for this VM in US Dollars; must be greater than the current spot price. `-1` If you don't want the VM to be evicted for price reasons. | `number` | `-1` | no |
 | stack | Project stack name. | `string` | n/a | yes |
 | static\_private\_ip | Static private IP. Private IP is dynamic if not set. | `string` | `null` | no |
-| storage\_data\_disk\_config | Map of data disks to attach to the Virtual Machine. Map attributes: `storage_account_type` (optional, defaults to `Standard_LRS`), `create_option` (optional, defaults to `Empty`), `disk_size_gb`, `lun` & `caching` (optional, defaults to `ReadWrite`). See [virtual\_machine\_data\_disk\_attachment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) & [managed\_disk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_disk). | `map(any)` | `{}` | no |
-| storage\_os\_disk\_config | Map to configure OS storage disk. (Caching, size, storage account type...). | `map(string)` | `{}` | no |
-| subnet\_id | Id of the Subnet in which create the Virtual Machine. | `string` | `null` | no |
+| storage\_data\_disk\_config | Map of objects to configure storage data disk(s). | <pre>map(object({<br>    name                 = optional(string)<br>    create_option        = optional(string, "Empty")<br>    disk_size_gb         = number<br>    lun                  = optional(number)<br>    caching              = optional(string, "ReadWrite")<br>    storage_account_type = optional(string, "StandardSSD_ZRS")<br>    source_resource_id   = optional(string)<br>    extra_tags           = optional(map(string), {})<br>  }))</pre> | `{}` | no |
+| subnet\_id | ID of the Subnet in which create the Virtual Machine. | `string` | n/a | yes |
 | use\_caf\_naming | Use the Azure CAF naming provider to generate default resource name. `custom_name` override this if set. Legacy default name is used if this is set to `false`. | `bool` | `true` | no |
 | use\_legacy\_monitoring\_agent | True to use the legacy monitoring agent instead of Azure Monitor Agent. | `bool` | `false` | no |
 | user\_data | The Base64-Encoded User Data which should be used for this Virtual Machine. | `string` | `null` | no |
 | vm\_image | Virtual Machine source image information. See https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html#source_image_reference. | `map(string)` | <pre>{<br>  "offer": "WindowsServer",<br>  "publisher": "MicrosoftWindowsServer",<br>  "sku": "2019-Datacenter",<br>  "version": "latest"<br>}</pre> | no |
 | vm\_image\_id | The ID of the Image which this Virtual Machine should be created from. This variable supersedes the `vm_image` variable if not null. | `string` | `null` | no |
+| vm\_plan | Virtual Machine plan image information. See https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine#plan. This variable has to be used for BYOS image. Before using BYOS image, you need to accept legal plan terms. See https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az_vm_image_accept_terms. | <pre>object({<br>    name      = string<br>    product   = string<br>    publisher = string<br>  })</pre> | `null` | no |
 | vm\_size | Size (SKU) of the Virtual Machine to create. | `string` | n/a | yes |
 | zone\_id | Index of the Availability Zone which the Virtual Machine should be allocated in. | `number` | `null` | no |
 
@@ -387,15 +398,17 @@ data "azuread_group" "vm_users_group" {
 | terraform\_module | Information about this Terraform module |
 | vm\_admin\_password | Windows Virtual Machine administrator account password |
 | vm\_admin\_username | Windows Virtual Machine administrator account username |
-| vm\_hostname | Hostname of the Virtual machine |
-| vm\_id | Id of the Virtual machine |
-| vm\_name | Name of the Virtual machine |
+| vm\_hostname | Hostname of the Virtual Machine |
+| vm\_id | ID of the Virtual Machine |
+| vm\_identity | Identity block with principal ID |
+| vm\_name | Name of the Virtual Machine |
 | vm\_nic\_id | ID of the Network Interface Configuration attached to the Virtual Machine |
 | vm\_nic\_ip\_configuration\_name | Name of the IP Configuration for the Network Interface Configuration attached to the Virtual Machine |
 | vm\_nic\_name | Name of the Network Interface Configuration attached to the Virtual Machine |
-| vm\_private\_ip\_address | Private IP address of the Virtual machine |
+| vm\_private\_ip\_address | Private IP address of the Virtual Machine |
 | vm\_public\_domain\_name\_label | Public DNS of the Virtual machine |
-| vm\_public\_ip\_address | Public IP address of the Virtual machine |
+| vm\_public\_ip\_address | Public IP address of the Virtual Machine |
+| vm\_public\_ip\_id | Public IP ID of the Virtual Machine |
 | vm\_winrm\_certificate\_data | The raw Key Vault Certificate. |
 | vm\_winrm\_certificate\_key\_vault\_id | Id of the generated certificate in the input Key Vault |
 | vm\_winrm\_certificate\_thumbprint | The X509 Thumbprint of the Key Vault Certificate returned as hex string. |

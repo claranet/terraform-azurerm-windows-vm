@@ -162,10 +162,8 @@ module "vm" {
 
   # Use unmanaged disk if needed
   # If those blocks are not defined, it will use managed_disks
-  storage_os_disk_config = {
-    disk_size_gb = "150" # At least 127 Gb
-    caching      = "ReadWrite"
-  }
+  os_disk_size_gb = "150" # At least 127 Gb
+  os_disk_caching = "ReadWrite"
 
   storage_data_disk_config = {
     app = {

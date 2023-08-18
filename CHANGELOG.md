@@ -1,3 +1,19 @@
+# Unreleased
+
+Changed
+  * AZ-1052 : Resync with `linux-vm`
+    * `storage_os_disk_config` is now `os_disk_caching`, `os_disk_size_gb`,  `os_disk_storage_account_type`
+    * `log_analytics_agent_enabled` is now disabled by default
+    * `azure_monitor_agent_version` upgrade to 1.13
+    * `identity` parameter, will remove systemassigned identity if not configured
+    * if patchmode is AutomaticByPlatform configure needed flag
+
+Added
+  * AZ-1052 :
+    * `vm_plan` parameter
+    * `custom_data` parameter
+    * `spot_instance`, `spot_instance_eviction_policy`, `spot_instance_max_bid_price` parameters
+
 # v7.5.1 - 2023-06-16
 
 Fixed
