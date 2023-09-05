@@ -60,7 +60,6 @@ resource "azurerm_windows_virtual_machine" "vm" {
   custom_data = base64encode(local.custom_data_content)
   user_data   = var.user_data
 
-
   dynamic "secret" {
     for_each = var.key_vault_id[*]
     content {
@@ -75,6 +74,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
 
   dynamic "additional_unattend_content" {
     for_each = var.key_vault_id != null ? local.additional_unattend_content : {}
+<<<<<<< HEAD
 
     content {
       setting = additional_unattend_content.key
@@ -89,6 +89,22 @@ resource "azurerm_windows_virtual_machine" "vm" {
   provision_vm_agent       = true
   enable_automatic_updates = true
 
+=======
+
+    content {
+      setting = additional_unattend_content.key
+      content = additional_unattend_content.value
+    }
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  provision_vm_agent       = true
+  enable_automatic_updates = true
+
+>>>>>>> bbfab009d41e999c7d35eb8db3d29d66e2944f70
   patch_mode            = var.patch_mode
   patch_assessment_mode = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
   hotpatching_enabled   = var.hotpatching_enabled
