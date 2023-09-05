@@ -74,7 +74,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 
   dynamic "additional_unattend_content" {
-    for_each = local.additional_unattend_content
+    for_each = var.key_vault_id ? local.additional_unattend_content : {}
 
     content {
       setting = additional_unattend_content.key
