@@ -1,7 +1,11 @@
 # Unreleased:
+
 Added
   * AZ-1122: Adding the possibility to disable the WinRM deployment with `key_vault_id` variable to null
   
+Changed
+  * AZ-1165: Change `bypass_platform_safety_checks_on_user_schedule_enabled` implementation from azapi provider to native azurerm
+
 # v7.6.0 - 2023-08-18
 
 Changed
