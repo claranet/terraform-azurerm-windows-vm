@@ -88,10 +88,11 @@ resource "azurerm_windows_virtual_machine" "vm" {
   provision_vm_agent       = true
   enable_automatic_updates = true
 
-  patch_mode            = var.patch_mode
-  patch_assessment_mode = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
-  hotpatching_enabled   = var.hotpatching_enabled
-
+  patch_mode                                             = var.patch_mode
+  patch_assessment_mode                                  = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
+  hotpatching_enabled                                    = var.hotpatching_enabled
+  bypass_platform_safety_checks_on_user_schedule_enabled = var.patch_mode == "AutomaticByPlatform"
+  reboot_setting                                         = var.patch_mode == "AutomaticByPlatform" ? var.patching_reboot_setting : null
 }
 
 resource "null_resource" "winrm_connection_test" {
@@ -164,31 +165,6 @@ resource "azurerm_virtual_machine_data_disk_attachment" "data_disk_attachment" {
 
   lun     = coalesce(each.value.lun, index(keys(var.storage_data_disk_config), each.key))
   caching = each.value.caching
-}
-
-resource "azapi_update_resource" "set_bypassplatformsafetychecksonuserschedule" {
-  count = var.patch_mode == "AutomaticByPlatform" ? 1 : 0
-
-  type        = "Microsoft.Compute/virtualMachines@2023-03-01"
-  resource_id = resource.azurerm_windows_virtual_machine.vm.id
-
-  body = jsonencode({
-    location = module.azure_region.location_cli
-    properties = {
-      osProfile = {
-        windowsConfiguration = {
-          provisionVMAgent       = true
-          enableAutomaticUpdates = true
-          patchSettings = {
-            patchMode = "AutomaticByPlatform"
-            automaticByPlatformSettings = {
-              bypassPlatformSafetyChecksOnUserSchedule = true
-            }
-          }
-        }
-      }
-    }
-  })
 }
 
 # To be iso as linux-vm
