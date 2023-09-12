@@ -137,17 +137,13 @@ module "vm" {
   admin_password = var.vm_administrator_password
 
   diagnostics_storage_account_name      = module.run.logs_storage_account_name
-  diagnostics_storage_account_key       = null # used by legacy agent only
   azure_monitor_data_collection_rule_id = module.run.data_collection_rule_id
-  log_analytics_workspace_guid          = module.run.log_analytics_workspace_guid
-  log_analytics_workspace_key           = module.run.log_analytics_workspace_primary_key
 
   # Set to null to deactivate backup
   backup_policy_id = module.run.vm_backup_policy_id
 
   patch_mode                    = "AutomaticByPlatform"
   maintenance_configuration_ids = [module.run.maintenance_configurations["Donald"].id, module.run.maintenance_configurations["Hammer"].id]
-
 
   availability_set_id = azurerm_availability_set.vm_avset.id
   # or use Availability Zone

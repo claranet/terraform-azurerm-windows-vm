@@ -23,6 +23,13 @@ resource "azurerm_virtual_machine_extension" "diagnostics" {
 SETTINGS
 
   tags = merge(local.default_tags, var.extra_tags, var.extensions_extra_tags)
+
+  lifecycle {
+    precondition {
+      condition     = var.diagnostics_storage_account_key != null
+      error_message = "Variable diagnostics_storage_account_key must be set when legacy monitoring agent is enabled."
+    }
+  }
 }
 
 resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {

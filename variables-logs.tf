@@ -1,11 +1,13 @@
 variable "diagnostics_storage_account_name" {
-  description = "Name of the Storage Account in which store vm diagnostics."
+  description = "Name of the Storage Account in which store boot diagnostics and for legacy monitoring agent."
   type        = string
+  default     = null
 }
 
 variable "diagnostics_storage_account_key" {
   description = "Access key of the Storage Account used for Virtual Machine diagnostics. Used only with legacy monitoring agent, set to `null` if not needed."
   type        = string
+  default     = null
 }
 
 ## Logs & monitoring variables

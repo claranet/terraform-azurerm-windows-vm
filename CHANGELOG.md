@@ -1,3 +1,8 @@
+# Unreleased
+
+Changed
+  * AZ-1052: Improved legacy agent configuration
+
 # v7.7.0 - 2023-09-08
 
 Added
