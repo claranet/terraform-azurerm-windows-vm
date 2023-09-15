@@ -1,4 +1,4 @@
-# Unreleased
+# v7.8.0 - 2023-09-15
 
 Changed
   * AZ-1052: Improved legacy agent configuration
