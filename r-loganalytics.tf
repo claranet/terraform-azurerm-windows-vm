@@ -23,4 +23,11 @@ SETTINGS
 SETTINGS
 
   tags = merge(local.default_tags, var.extra_tags, var.extensions_extra_tags)
+
+  lifecycle {
+    precondition {
+      condition     = var.log_analytics_workspace_guid != null && var.log_analytics_workspace_key != null
+      error_message = "Variables log_analytics_workspace_guid and log_analytics_workspace_key must be set when Log Analytics agent is enabled."
+    }
+  }
 }
