@@ -1,4 +1,4 @@
-# Unreleased
+# v7.8.1 - 2023-09-29
 
 Fixed
   * AZ-1186: Fix Key Vault certificate reference
