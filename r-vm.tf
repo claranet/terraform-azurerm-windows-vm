@@ -66,7 +66,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
       key_vault_id = var.key_vault_id
 
       certificate {
-        url   = azurerm_key_vault_certificate.winrm_certificate.secret_id
+        url   = one(azurerm_key_vault_certificate.winrm_certificate[*].secret_id)
         store = "My"
       }
     }
