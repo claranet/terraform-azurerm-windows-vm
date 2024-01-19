@@ -179,10 +179,11 @@ module "vm" {
   ]
 }
 
+# Retrieve the existing AAD groups to which we want to assign login access on this Windows VM.
 data "azuread_group" "vm_admins_group" {
-  display_name = "Virtual Machines Admins"
+  display_name = "Virtual Machines Administrators"
 }
 
 data "azuread_group" "vm_users_group" {
-  display_name = "Virtual Machines Users"
+  display_name = "Virtual Machines Basic Users"
 }

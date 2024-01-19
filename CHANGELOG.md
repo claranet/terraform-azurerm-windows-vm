@@ -1,3 +1,8 @@
+# Unreleased
+
+Fixed
+  * [GH-2](https://github.com/claranet/terraform-azurerm-windows-vm/issues/2): Update example and README about AAD groups usage for VM sso login.
+
 # v7.8.1 - 2023-09-29
 
 Fixed
