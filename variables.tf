@@ -230,6 +230,12 @@ variable "os_disk_caching" {
   default     = "ReadWrite"
 }
 
+variable "encryption_at_host_enabled" {
+  description = "Should all disks (including the temporary disk) attached to the Virtual Machine be encrypted by enabling Encryption at Host? List of compatible VM sizes: https://learn.microsoft.com/en-us/azure/virtual-machines/linux/disks-enable-host-based-encryption-cli#finding-supported-vm-sizes."
+  type        = bool
+  default     = false
+}
+
 ## Identity variables
 variable "identity" {
   description = "Map with identity block informations as described here https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine#identity."

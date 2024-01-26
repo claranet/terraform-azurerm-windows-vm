@@ -156,6 +156,10 @@ module "vm" {
     version   = "latest"
   }
 
+  # The feature must be activated upstream:
+  # az feature register --namespace Microsoft.Compute --name EncryptionAtHost --subscription <subscription_id_or_name>
+  encryption_at_host_enabled = true
+
   # Use unmanaged disk if needed
   # If those blocks are not defined, it will use managed_disks
   os_disk_size_gb = "150" # At least 127 Gb
