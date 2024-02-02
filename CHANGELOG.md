@@ -1,4 +1,4 @@
-# Unreleased
+# v7.9.0 - 2024-02-02
 
 Added
   * AZ-1342: Add `encryption_at_host_enabled` parameter
