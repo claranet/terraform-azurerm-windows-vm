@@ -45,6 +45,8 @@ resource "azurerm_windows_virtual_machine" "vm" {
     disk_size_gb         = var.os_disk_size_gb
   }
 
+  encryption_at_host_enabled = var.encryption_at_host_enabled
+
   dynamic "identity" {
     for_each = var.identity != null ? ["fake"] : []
     content {
