@@ -57,7 +57,7 @@ variable "subnet_id" {
   type        = string
 }
 
-variable "nic_enable_accelerated_networking" {
+variable "nic_accelerated_networking_enabled" {
   description = "Should Accelerated Networking be enabled? Defaults to `false`."
   type        = bool
   default     = false
