@@ -46,6 +46,12 @@ variable "azure_monitor_agent_auto_upgrade_enabled" {
   default     = false
 }
 
+variable "azure_monitor_agent_user_assigned_identity" {
+  description = "User Assigned Identity to use with Azure Monitor Agent."
+  type        = string
+  default     = null
+}
+
 variable "log_analytics_agent_enabled" {
   description = "Deploy Log Analytics VM extension - depending of OS (cf. https://docs.microsoft.com/fr-fr/azure/azure-monitor/agents/agents-overview#linux)"
   type        = bool

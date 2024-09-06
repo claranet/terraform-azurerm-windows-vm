@@ -48,10 +48,10 @@ resource "azurerm_windows_virtual_machine" "vm" {
   encryption_at_host_enabled = var.encryption_at_host_enabled
 
   dynamic "identity" {
-    for_each = var.identity != null ? ["fake"] : []
+    for_each = local.identity != null ? ["fake"] : []
     content {
-      type         = var.identity.type
-      identity_ids = var.identity.identity_ids
+      type         = local.identity.type
+      identity_ids = local.identity.identity_ids
     }
   }
 
