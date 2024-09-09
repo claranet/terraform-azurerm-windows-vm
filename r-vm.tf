@@ -12,7 +12,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   source_image_id = var.vm_image_id
 
   dynamic "source_image_reference" {
-    for_each = var.vm_image_id == null ? ["fake"] : []
+    for_each = var.vm_image_id == null ? ["enabled"] : []
     content {
       offer     = lookup(var.vm_image, "offer", null)
       publisher = lookup(var.vm_image, "publisher", null)
@@ -48,7 +48,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   encryption_at_host_enabled = var.encryption_at_host_enabled
 
   dynamic "identity" {
-    for_each = local.identity != null ? ["fake"] : []
+    for_each = local.identity[*]
     content {
       type         = local.identity.type
       identity_ids = local.identity.identity_ids
