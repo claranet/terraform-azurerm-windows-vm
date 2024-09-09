@@ -19,7 +19,7 @@ locals {
 
 
   identity = var.azure_monitor_agent_user_assigned_identity != null || var.identity.type == "UserAssigned" ? {
-    type         = "UserAssigned"
+    type         = "SystemAssigned, UserAssigned"
     identity_ids = compact(concat(var.identity.identity_ids, [var.azure_monitor_agent_user_assigned_identity]))
   } : var.identity
 
