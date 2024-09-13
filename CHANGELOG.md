@@ -1,3 +1,38 @@
+## 7.10.0 (2024-09-13)
+
+### Features
+
+* **AZ-1453:** add user assigned identity to AMA settings 16fb1a2
+
+### Miscellaneous Chores
+
+* **AZ-1453:** fix regression on identities 61b38fd
+* **AZ-1453:** handle all combinaison for identity type 536807b
+* **AZ-1453:** improve for_each syntax 11eb060
+* **deps:** update dependency opentofu to v1.7.3 49b44a7
+* **deps:** update dependency opentofu to v1.8.0 a529cfb
+* **deps:** update dependency opentofu to v1.8.1 a29ab86
+* **deps:** update dependency opentofu to v1.8.2 9c35c72
+* **deps:** update dependency pre-commit to v3.8.0 b9bc59e
+* **deps:** update dependency tflint to v0.51.2 c542160
+* **deps:** update dependency tflint to v0.52.0 dfa3f56
+* **deps:** update dependency trivy to v0.53.0 a959b28
+* **deps:** update dependency trivy to v0.54.1 561ba53
+* **deps:** update dependency trivy to v0.55.0 c8aca15
+* **deps:** update dependency trivy to v0.55.1 300372d
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.17.0 aa42ca6
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.18.0 7802ce1
+* **deps:** update pre-commit hook antonbabenko/pre-commit-terraform to v1.92.1 ab8a71b
+* **deps:** update pre-commit hook antonbabenko/pre-commit-terraform to v1.92.3 6d8e07c
+* **deps:** update pre-commit hook antonbabenko/pre-commit-terraform to v1.93.0 ab54b19
+* **deps:** update pre-commit hook antonbabenko/pre-commit-terraform to v1.94.0 10f6fd7
+* **deps:** update pre-commit hook antonbabenko/pre-commit-terraform to v1.94.1 2bd25d4
+* **deps:** update pre-commit hook antonbabenko/pre-commit-terraform to v1.94.2 208763a
+* **deps:** update pre-commit hook antonbabenko/pre-commit-terraform to v1.94.3 dbd2464
+* **deps:** update pre-commit hook antonbabenko/pre-commit-terraform to v1.95.0 f66884c
+* **deps:** update terraform claranet/regions/azurerm to ~> 7.2.0 7cadc6c
+* **deps:** update tools 3383cd4
+
 ## 7.9.2 (2024-06-21)
 
 
