@@ -322,6 +322,7 @@ data "azuread_group" "vm_users_group" {
 | attach\_load\_balancer | True to attach this VM to a Load Balancer. | `bool` | `false` | no |
 | availability\_set\_id | Id of the availability set in which host the Virtual Machine. | `string` | `null` | no |
 | azure\_monitor\_agent\_auto\_upgrade\_enabled | Automatically update agent when publisher releases a new version of the agent. | `bool` | `false` | no |
+| azure\_monitor\_agent\_user\_assigned\_identity | User Assigned Identity to use with Azure Monitor Agent. | `string` | `null` | no |
 | azure\_monitor\_agent\_version | Azure Monitor Agent extension version (https://learn.microsoft.com/en-us/azure/azure-monitor/agents/azure-monitor-agent-extension-versions). | `string` | `"1.13"` | no |
 | azure\_monitor\_data\_collection\_rule\_id | Data Collection Rule ID from Azure Monitor for metrics and logs collection. Used with new monitoring agent, set to `null` if legacy agent is used. | `string` | n/a | yes |
 | backup\_policy\_id | Backup policy ID from the Recovery Vault to attach the Virtual Machine to (value to `null` to disable backup). | `string` | n/a | yes |

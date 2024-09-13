@@ -45,6 +45,8 @@ resource "azurerm_virtual_machine_extension" "azure_monitor_agent" {
 
   virtual_machine_id = azurerm_windows_virtual_machine.vm.id
 
+  settings = local.ama_settings
+
   tags = merge(local.default_tags, var.extra_tags, var.extensions_extra_tags)
 }
 

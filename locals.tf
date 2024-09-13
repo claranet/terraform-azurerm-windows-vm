@@ -16,4 +16,20 @@ locals {
     # Unattend config is to enable basic auth in WinRM, required for the provisioner stage.
     FirstLogonCommands = file(format("%s/files/FirstLogonCommands.xml", path.module))
   }
+
+
+  identity = var.azure_monitor_agent_user_assigned_identity != null || try(var.identity.type == "UserAssigned", false) ? {
+    type         = join(", ", toset(compact(["UserAssigned", try(var.identity.type, "")])))
+    identity_ids = compact(concat(try(var.identity.identity_ids, []), [var.azure_monitor_agent_user_assigned_identity]))
+  } : var.identity
+
+  ama_settings = var.azure_monitor_agent_user_assigned_identity != null ? jsonencode({
+    authentication = {
+      managedIdentity = {
+        identitier-name  = "mi_res_id"
+        identifier-value = var.azure_monitor_agent_user_assigned_identity
+      }
+    }
+  }) : null
+
 }
