@@ -1,9 +1,10 @@
-resource "azurerm_windows_virtual_machine" "vm" {
-  name                = local.vm_name
-  location            = var.location
+resource "azurerm_windows_virtual_machine" "main" {
+  name     = local.name
+  location = var.location
+
   resource_group_name = var.resource_group_name
 
-  network_interface_ids = [azurerm_network_interface.nic.id]
+  network_interface_ids = [azurerm_network_interface.main.id]
   size                  = var.vm_size
   license_type          = var.license_type
 
@@ -12,12 +13,12 @@ resource "azurerm_windows_virtual_machine" "vm" {
   source_image_id = var.vm_image_id
 
   dynamic "source_image_reference" {
-    for_each = var.vm_image_id == null ? ["enabled"] : []
+    for_each = var.vm_image_id == null ? [0] : []
     content {
-      offer     = lookup(var.vm_image, "offer", null)
-      publisher = lookup(var.vm_image, "publisher", null)
-      sku       = lookup(var.vm_image, "sku", null)
-      version   = lookup(var.vm_image, "version", null)
+      offer     = var.vm_image.offer
+      publisher = var.vm_image.publisher
+      sku       = var.vm_image.sku
+      version   = var.vm_image.version
     }
   }
 
@@ -30,7 +31,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
     }
   }
 
-  availability_set_id = var.availability_set_id
+  availability_set_id = var.availability_set != null ? var.availability_set.id : null
 
   zone = var.zone_id
 
@@ -39,7 +40,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   }
 
   os_disk {
-    name                 = local.vm_os_disk_name
+    name                 = local.os_disk_name
     caching              = var.os_disk_caching
     storage_account_type = var.os_disk_storage_account_type
     disk_size_gb         = var.os_disk_size_gb
@@ -55,7 +56,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
     }
   }
 
-  computer_name  = local.vm_hostname
+  computer_name  = local.hostname
   admin_username = var.admin_username
   admin_password = var.admin_password
 
@@ -63,29 +64,27 @@ resource "azurerm_windows_virtual_machine" "vm" {
   user_data   = var.user_data
 
   dynamic "secret" {
-    for_each = var.key_vault_id[*]
+    for_each = var.key_vault[*]
     content {
-      key_vault_id = var.key_vault_id
-
+      key_vault_id = var.key_vault.id
       certificate {
-        url   = one(azurerm_key_vault_certificate.winrm_certificate[*].secret_id)
+        url   = one(azurerm_key_vault_certificate.main[*].secret_id)
         store = "My"
       }
     }
   }
 
   dynamic "additional_unattend_content" {
-    for_each = var.key_vault_id != null ? local.additional_unattend_content : {}
-
+    for_each = var.key_vault != null ? local.additional_unattend_content : {}
     content {
       setting = additional_unattend_content.key
       content = additional_unattend_content.value
     }
   }
 
-  priority        = var.spot_instance ? "Spot" : "Regular"
-  max_bid_price   = var.spot_instance ? var.spot_instance_max_bid_price : null
-  eviction_policy = var.spot_instance ? var.spot_instance_eviction_policy : null
+  priority        = var.spot_instance_enabled ? "Spot" : "Regular"
+  max_bid_price   = var.spot_instance_enabled ? var.spot_instance_max_bid_price : null
+  eviction_policy = var.spot_instance_enabled ? var.spot_instance_eviction_policy : null
 
   provision_vm_agent       = true
   enable_automatic_updates = true
@@ -97,22 +96,21 @@ resource "azurerm_windows_virtual_machine" "vm" {
   reboot_setting                                         = var.patch_mode == "AutomaticByPlatform" ? var.patching_reboot_setting : null
 }
 
-resource "null_resource" "winrm_connection_test" {
-  count = (var.public_ip_sku == null || var.key_vault_id == null) ? 0 : 1
+moved {
+  from = azurerm_windows_virtual_machine.vm
+  to   = azurerm_windows_virtual_machine.main
+}
 
-  depends_on = [
-    azurerm_network_interface.nic,
-    azurerm_public_ip.public_ip,
-    azurerm_windows_virtual_machine.vm,
+resource "terraform_data" "winrm_connection_test" {
+  count = !(var.public_ip_sku == null || var.key_vault == null) ? 1 : 0
+
+  triggers_replace = [
+    azurerm_windows_virtual_machine.main.id,
   ]
-
-  triggers = {
-    uuid = azurerm_windows_virtual_machine.vm.id
-  }
 
   connection {
     type     = "winrm"
-    host     = join("", azurerm_public_ip.public_ip[*].ip_address)
+    host     = one(azurerm_public_ip.main[*].ip_address)
     port     = 5986
     https    = true
     user     = var.admin_username
@@ -129,28 +127,40 @@ resource "null_resource" "winrm_connection_test" {
       "dir",
     ]
   }
+
+  depends_on = [
+    azurerm_public_ip.main,
+    azurerm_network_interface.main,
+    azurerm_windows_virtual_machine.main,
+  ]
 }
 
-module "vm_os_disk_tagging" {
+module "os_disk_tagging" {
   source  = "claranet/tagging/azurerm"
   version = "6.0.2"
 
   nb_resources = var.os_disk_tagging_enabled ? 1 : 0
   resource_ids = [data.azurerm_managed_disk.vm_os_disk.id]
-  behavior     = var.os_disk_overwrite_tags ? "overwrite" : "merge"
+  behavior     = var.os_disk_tags_overwrote ? "overwrite" : "merge"
 
   tags = merge(local.default_tags, var.extra_tags, var.os_disk_extra_tags)
 }
 
-resource "azurerm_managed_disk" "disk" {
+moved {
+  from = module.vm_os_disk_tagging
+  to   = module.os_disk_tagging
+}
+
+resource "azurerm_managed_disk" "main" {
   for_each = var.storage_data_disk_config
 
   location            = var.location
   resource_group_name = var.resource_group_name
 
-  name = coalesce(each.value.name, var.use_caf_naming ? data.azurecaf_name.disk[each.key].result : format("%s-datadisk%s", local.vm_name, each.key))
+  name = coalesce(each.value.name, data.azurecaf_name.disk[each.key].result)
 
-  zone                 = can(regex("_zrs$", lower(each.value.storage_account_type))) ? null : var.zone_id
+  zone = can(regex("_zrs$", lower(each.value.storage_account_type))) ? null : var.zone_id
+
   storage_account_type = each.value.storage_account_type
   create_option        = each.value.create_option
   disk_size_gb         = each.value.disk_size_gb
@@ -159,18 +169,28 @@ resource "azurerm_managed_disk" "disk" {
   tags = merge(local.default_tags, var.extra_tags, each.value.extra_tags)
 }
 
-resource "azurerm_virtual_machine_data_disk_attachment" "data_disk_attachment" {
+moved {
+  from = azurerm_managed_disk.disk
+  to   = azurerm_managed_disk.main
+}
+
+resource "azurerm_virtual_machine_data_disk_attachment" "main" {
   for_each = var.storage_data_disk_config
 
-  managed_disk_id    = azurerm_managed_disk.disk[each.key].id
-  virtual_machine_id = azurerm_windows_virtual_machine.vm.id
+  managed_disk_id    = azurerm_managed_disk.main[each.key].id
+  virtual_machine_id = azurerm_windows_virtual_machine.main.id
 
   lun     = coalesce(each.value.lun, index(keys(var.storage_data_disk_config), each.key))
   caching = each.value.caching
 }
 
-# To be iso as linux-vm
+# To be consistent with `linux-vm`
 moved {
   from = azurerm_virtual_machine_data_disk_attachment.disk_attach
   to   = azurerm_virtual_machine_data_disk_attachment.data_disk_attachment
+}
+
+moved {
+  from = azurerm_virtual_machine_data_disk_attachment.data_disk_attachment
+  to   = azurerm_virtual_machine_data_disk_attachment.main
 }
