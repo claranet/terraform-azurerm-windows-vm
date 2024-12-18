@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "main" {
-  count = var.public_ip_sku != null ? 1 : 0
+  count = var.public_ip_enabled ? 1 : 0
 
   name     = local.public_ip_name
   location = var.location
@@ -41,18 +41,6 @@ resource "azurerm_network_interface" "main" {
 moved {
   from = azurerm_network_interface.nic
   to   = azurerm_network_interface.main
-}
-
-resource "azurerm_network_interface_security_group_association" "main" {
-  count = var.nic_nsg != null ? 1 : 0
-
-  network_interface_id      = azurerm_network_interface.main.id
-  network_security_group_id = var.nic_nsg.id
-}
-
-moved {
-  from = azurerm_network_interface_security_group_association.nic_nsg_association[0]
-  to   = azurerm_network_interface_security_group_association.main[0]
 }
 
 resource "azurerm_network_interface_backend_address_pool_association" "main" {

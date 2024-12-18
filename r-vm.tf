@@ -46,7 +46,17 @@ resource "azurerm_windows_virtual_machine" "main" {
     disk_size_gb         = var.os_disk_size_gb
   }
 
-  encryption_at_host_enabled = var.encryption_at_host_enabled
+  encryption_at_host_enabled        = var.encryption_at_host_enabled
+  vm_agent_platform_updates_enabled = var.vm_agent_platform_updates_enabled
+  vtpm_enabled                      = var.vtpm_enabled
+  disk_controller_type              = var.disk_controller_type
+
+  dynamic "additional_capabilities" {
+    for_each = var.ultra_ssd_enabled[*]
+    content {
+      ultra_ssd_enabled = var.ultra_ssd_enabled
+    }
+  }
 
   dynamic "identity" {
     for_each = local.identity[*]
@@ -135,20 +145,16 @@ resource "terraform_data" "winrm_connection_test" {
   ]
 }
 
-module "os_disk_tagging" {
-  source  = "claranet/tagging/azurerm"
-  version = "6.0.2"
+resource "azapi_resource_action" "main" {
+  count = var.os_disk_tagging_enabled ? 1 : 0
 
-  nb_resources = var.os_disk_tagging_enabled ? 1 : 0
-  resource_ids = [data.azurerm_managed_disk.vm_os_disk.id]
-  behavior     = var.os_disk_tags_overwrote ? "overwrite" : "merge"
+  type        = "Microsoft.Compute/disks@2022-03-02"
+  resource_id = data.azurerm_managed_disk.vm_os_disk.id
+  method      = "PATCH"
 
-  tags = merge(local.default_tags, var.extra_tags, var.os_disk_extra_tags)
-}
-
-moved {
-  from = module.vm_os_disk_tagging
-  to   = module.os_disk_tagging
+  body = {
+    tags = merge(local.default_tags, var.extra_tags, var.os_disk_extra_tags)
+  }
 }
 
 resource "azurerm_managed_disk" "main" {

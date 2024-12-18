@@ -65,7 +65,7 @@ output "public_ip_name" {
 }
 
 output "public_domain_name_label" {
-  description = "Public domain name of the Virtual machine."
+  description = "Public domain name of the Virtual Machine."
   value       = one(azurerm_public_ip.main[*].domain_name_label)
 }
 

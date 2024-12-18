@@ -11,18 +11,6 @@ variable "monitoring_agent_enabled" {
   nullable    = false
 }
 
-variable "log_analytics_workspace_guid" {
-  description = "GUID of the Log Analytics Workspace to link with."
-  type        = string
-  default     = null
-}
-
-variable "log_analytics_workspace_key" {
-  description = "Access key of the Log Analytics Workspace to link with."
-  type        = string
-  default     = null
-}
-
 variable "azure_monitor_data_collection_rule" {
   description = "Data Collection Rule ID from Azure Monitor for metrics and logs collection. Used with new monitoring agent, set to `null` to disable."
   type = object({
@@ -46,16 +34,4 @@ variable "azure_monitor_agent_user_assigned_identity" {
   description = "User Assigned Identity to use with Azure Monitor Agent."
   type        = string
   default     = null
-}
-
-variable "log_analytics_agent_enabled" {
-  description = "Deploy Log Analytics Virtual Machine extension, depending on the OS. See [documentation](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#linux)."
-  type        = bool
-  default     = false
-}
-
-variable "log_analytics_agent_version" {
-  description = "Azure Log Analytics extension version."
-  type        = string
-  default     = "1.0"
 }

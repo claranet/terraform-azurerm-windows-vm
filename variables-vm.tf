@@ -37,17 +37,9 @@ variable "subnet" {
 }
 
 variable "nic_accelerated_networking_enabled" {
-  description = "Should accelerated networking be enabled? Defaults to `false`."
+  description = "Should accelerated networking be enabled? Defaults to `true`."
   type        = bool
-  default     = false
-}
-
-variable "nic_nsg" {
-  description = "ID of the Network Security Group to associate with the network interface. No association if `null`."
-  type = object({
-    id = string
-  })
-  default = null
+  default     = true
 }
 
 variable "static_private_ip" {
@@ -104,7 +96,7 @@ variable "vm_image" {
     publisher = string
     offer     = string
     sku       = string
-    version   = string
+    version   = optional(string, "latest")
   })
   default = {
     publisher = "MicrosoftWindowsServer"
@@ -152,14 +144,22 @@ variable "custom_dns_label" {
 }
 
 variable "public_ip_sku" {
-  description = "SKU of the Public IP attached to the Virtual Machine. No Public IP deployed by default."
+  description = "SKU of the Public IP attached to the Virtual Machine."
   type        = string
-  default     = null
+  default     = "Standard"
+  nullable    = false
 
   validation {
-    condition     = var.public_ip_sku == null || can(regex("^(Basic|Standard)$", var.public_ip_sku))
+    condition     = can(regex("^(Basic|Standard)$", var.public_ip_sku))
     error_message = "`var.public_ip_sku` must be either `Basic` or `Standard`."
   }
+}
+
+variable "public_ip_enabled" {
+  description = "Should a Public IP be attached to the Virtual Machine?"
+  type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "public_ip_zones" {
@@ -214,6 +214,30 @@ variable "encryption_at_host_enabled" {
   default     = true
 }
 
+variable "vm_agent_platform_updates_enabled" {
+  description = "Specifies whether VMAgent Platform Updates is enabled. Defaults to `false`."
+  type        = bool
+  default     = false
+}
+
+variable "vtpm_enabled" {
+  description = "Specifies if vTPM (virtual Trusted Platform Module) and Trusted Launch is enabled for the Virtual Machine. Defaults to `true`. Changing this forces a new resource to be created."
+  type        = bool
+  default     = true
+}
+
+variable "ultra_ssd_enabled" {
+  description = "Should the capacity to enable data disks of the `UltraSSD_LRS` Storage Account type be supported on this Virtual Machine? Defaults to `false`."
+  type        = bool
+  default     = null
+}
+
+variable "disk_controller_type" {
+  description = "Specifies the Disk Controller Type used for this Virtual Machine. Possible values are `SCSI` and `NVMe`."
+  type        = string
+  default     = null
+}
+
 ## Identity variable
 variable "identity" {
   description = "Identity block. See [documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine#identity)."
@@ -261,7 +285,7 @@ variable "backup_policy" {
 variable "patch_mode" {
   description = "Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are `Manual`, `AutomaticByOS` and `AutomaticByPlatform`."
   type        = string
-  default     = "AutomaticByOS"
+  default     = "AutomaticByPlatform"
   nullable    = false
 
   validation {

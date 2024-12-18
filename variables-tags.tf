@@ -39,9 +39,3 @@ variable "os_disk_tagging_enabled" {
   type        = bool
   default     = true
 }
-
-variable "os_disk_tags_overwrote" {
-  description = "`true` to overwrite existing OS disk tags instead of merging."
-  type        = bool
-  default     = false
-}

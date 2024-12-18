@@ -29,9 +29,8 @@ module "vm" {
   key_vault = {
     id = module.run.key_vault_id
   }
-  subnet = {
-    id = module.subnet.id
-  }
+
+  subnet = module.subnet
 
   vm_size        = "Standard_B2s"
   admin_username = var.vm_admin_login
@@ -53,9 +52,7 @@ module "vm" {
     module.run.maintenance_configurations["Hammer"].id,
   ]
 
-  availability_set = {
-    id = azurerm_availability_set.main.id
-  }
+  availability_set = azurerm_availability_set.main
   # or use Availability Zone
   # zone_id = 1
 
