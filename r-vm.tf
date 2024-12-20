@@ -112,7 +112,7 @@ moved {
 }
 
 resource "terraform_data" "winrm_connection_test" {
-  count = !(var.public_ip_sku == null || var.key_vault == null) ? 1 : 0
+  count = var.public_ip_enabled && var.key_vault != null ? 1 : 0
 
   triggers_replace = [
     azurerm_windows_virtual_machine.main.id,
