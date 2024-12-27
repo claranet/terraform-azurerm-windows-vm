@@ -227,7 +227,7 @@ variable "vtpm_enabled" {
 }
 
 variable "ultra_ssd_enabled" {
-  description = "Should the capacity to enable data disks of the `UltraSSD_LRS` Storage Account type be supported on this Virtual Machine? Defaults to `false`."
+  description = "Specifies whether Ultra Disks is enabled (`UltraSSD_LRS` storage type for data disks)."
   type        = bool
   default     = null
 }
