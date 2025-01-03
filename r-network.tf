@@ -6,9 +6,9 @@ resource "azurerm_public_ip" "main" {
 
   resource_group_name = var.resource_group_name
 
+  sku               = "Standard"
   allocation_method = "Static"
   domain_name_label = coalesce(var.custom_dns_label, local.name)
-  sku               = var.public_ip_sku
   zones             = var.public_ip_zones
 
   tags = merge(local.default_tags, var.extra_tags, var.public_ip_extra_tags)

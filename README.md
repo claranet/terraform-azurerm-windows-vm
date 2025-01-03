@@ -6,7 +6,7 @@ This module creates a [Windows Virtual Machine](https://docs.microsoft.com/en-us
 
 The Windows Virtual Machine comes with:
 * [Azure Monitor Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/azure-monitor-agent-overview) activated and configured
-* A link to a [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) for [logging](https://docs.microsoft.com/en-us/azure/azure-monitor/learn/quick-collect-azurevm) and [patching](https://learn.microsoft.com/en-us/azure/update-manager/workflow-update-manager?tabs=azure-vms%2Cupdate-win) management
+* A link to an [Azure Monitor Data Collection Rule](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/data-collection-rule-overview) for logging
 * An optional link to a [Load Balancer](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview) or [Application Gateway](https://docs.microsoft.com/en-us/azure/application-gateway/overview)
 * A link to the [Recovery Vault](https://docs.microsoft.com/en-us/azure/backup/backup-azure-recovery-services-vault-overview) and one of its policies to back up the Virtual Machine
 * Optional certificates [retrieved from Azure Key Vault](https://docs.microsoft.com/en-us/azure/virtual-machines/extensions/key-vault-windows#extension-schema)
@@ -25,7 +25,6 @@ Following tags are automatically set with default values: `env`, `stack`, `os_fa
 * [Azure PowerShell module](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps) installed
 * The port 5986 must be reachable
 * An [Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/) configured with Virtual Machine deployment enabled will be used
-* An existing [Log Analytics Workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/overview) is mandatory for patching management
 * An existing [Azure Monitor Data Collection Rule](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collection-rule-overview) is mandatory for monitoring ang logging management with Azure Monitor Agent
 
 ## Ansible usage
@@ -263,7 +262,6 @@ module "vm" {
 | public\_ip\_custom\_name | Custom name for the Public IP. Generated if not set. | `string` | `null` | no |
 | public\_ip\_enabled | Should a Public IP be attached to the Virtual Machine? | `bool` | `false` | no |
 | public\_ip\_extra\_tags | Extra tags to set on the Public IP. | `map(string)` | `{}` | no |
-| public\_ip\_sku | SKU of the Public IP attached to the Virtual Machine. | `string` | `"Standard"` | no |
 | public\_ip\_zones | Availability Zones of the Public IP attached to the Virtual Machine. Can be `null` if no zone distpatch. | `list(number)` | <pre>[<br/>  1,<br/>  2,<br/>  3<br/>]</pre> | no |
 | resource\_group\_name | Resource Group name. | `string` | n/a | yes |
 | spot\_instance\_enabled | `true` to deploy the Virtual Machine as a Spot Instance. | `bool` | `false` | no |

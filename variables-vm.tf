@@ -143,18 +143,6 @@ variable "custom_dns_label" {
   default     = ""
 }
 
-variable "public_ip_sku" {
-  description = "SKU of the Public IP attached to the Virtual Machine."
-  type        = string
-  default     = "Standard"
-  nullable    = false
-
-  validation {
-    condition     = can(regex("^(Basic|Standard)$", var.public_ip_sku))
-    error_message = "`var.public_ip_sku` must be either `Basic` or `Standard`."
-  }
-}
-
 variable "public_ip_enabled" {
   description = "Should a Public IP be attached to the Virtual Machine?"
   type        = bool
@@ -200,6 +188,12 @@ variable "os_disk_storage_account_type" {
   description = "The type of Storage Account used to store the operating system disk. Possible values are `Standard_LRS`, `StandardSSD_LRS`, `Premium_LRS`, `StandardSSD_ZRS` and `Premium_ZRS`."
   type        = string
   default     = "Premium_ZRS"
+  nullable    = false
+
+  validation {
+    condition     = contains(["Standard_LRS", "StandardSSD_LRS", "Premium_LRS", "StandardSSD_ZRS", "Premium_ZRS"], var.os_disk_storage_account_type)
+    error_message = "`var.os_disk_storage_account_type` must be one of `Standard_LRS`, `StandardSSD_LRS`, `Premium_LRS`, `StandardSSD_ZRS` or `Premium_ZRS`."
+  }
 }
 
 variable "os_disk_caching" {
@@ -289,7 +283,7 @@ variable "patch_mode" {
   nullable    = false
 
   validation {
-    condition     = can(index(["Manual", "AutomaticByOS", "AutomaticByPlatform"], var.patch_mode))
+    condition     = contains(["Manual", "AutomaticByOS", "AutomaticByPlatform"], var.patch_mode)
     error_message = "`var.patch_mode` must be either `Manual`, `AutomaticByOS` or `AutomaticByPlatform`."
   }
 }
@@ -313,7 +307,7 @@ variable "patching_reboot_setting" {
   nullable    = false
 
   validation {
-    condition     = can(index(["Always", "IfRequired", "Never"], var.patching_reboot_setting))
+    condition     = contains(["Always", "IfRequired", "Never"], var.patching_reboot_setting)
     error_message = "`var.patching_reboot_setting` must be either `Always`, `IfRequired` or `Never`."
   }
 }
