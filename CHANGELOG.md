@@ -1,3 +1,17 @@
+## 8.0.1 (2025-01-24)
+
+### Bug Fixes
+
+* terraform version constraint for `terraform_data` resource d79b02f
+
+### Miscellaneous Chores
+
+* **deps:** update dependency opentofu to v1.9.0 42b00b7
+* **deps:** update dependency pre-commit to v4.1.0 ac8aebc
+* **deps:** update dependency tflint to v0.55.0 e1389b6
+* **deps:** update dependency trivy to v0.58.2 6e6eb17
+* update tflint config for v0.55.0 94fff95
+
 ## 8.0.0 (2025-01-03)
 
 ### ⚠ BREAKING CHANGES
