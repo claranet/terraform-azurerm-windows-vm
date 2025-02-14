@@ -220,6 +220,12 @@ variable "vtpm_enabled" {
   default     = true
 }
 
+variable "secure_boot_enabled" {
+  description = "Specifies if Secure Boot is enabled for the Virtual Machine. Defaults to `true`. Changing this forces a new resource to be created."
+  type        = bool
+  default     = true
+}
+
 variable "ultra_ssd_enabled" {
   description = "Specifies whether Ultra Disks is enabled (`UltraSSD_LRS` storage type for data disks)."
   type        = bool
