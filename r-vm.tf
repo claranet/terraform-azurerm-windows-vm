@@ -49,6 +49,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   encryption_at_host_enabled        = var.encryption_at_host_enabled
   vm_agent_platform_updates_enabled = var.vm_agent_platform_updates_enabled
   vtpm_enabled                      = var.vtpm_enabled
+  secure_boot_enabled               = var.secure_boot_enabled
   disk_controller_type              = var.disk_controller_type
 
   dynamic "additional_capabilities" {

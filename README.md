@@ -264,6 +264,7 @@ module "vm" {
 | public\_ip\_extra\_tags | Extra tags to set on the Public IP. | `map(string)` | `{}` | no |
 | public\_ip\_zones | Availability Zones of the Public IP attached to the Virtual Machine. Can be `null` if no zone distpatch. | `list(number)` | <pre>[<br/>  1,<br/>  2,<br/>  3<br/>]</pre> | no |
 | resource\_group\_name | Resource Group name. | `string` | n/a | yes |
+| secure\_boot\_enabled | Specifies if Secure Boot is enabled for the Virtual Machine. Defaults to `true`. Changing this forces a new resource to be created. | `bool` | `true` | no |
 | spot\_instance\_enabled | `true` to deploy the Virtual Machine as a Spot Instance. | `bool` | `false` | no |
 | spot\_instance\_eviction\_policy | Specifies what should happen when the Virtual Machine is evicted for price reasons. At this time, the only supported value is `Deallocate`. Changing this forces a new resource to be created. | `string` | `"Deallocate"` | no |
 | spot\_instance\_max\_bid\_price | The maximum price you're willing to pay for this Virtual Machine in US dollars; must be greater than the current spot price. `-1` if you don't want the Virtual Machine to be evicted for price reasons. | `number` | `-1` | no |
