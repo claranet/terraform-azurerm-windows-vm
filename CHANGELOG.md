@@ -1,3 +1,16 @@
+## 8.1.0 (2025-02-21)
+
+### Features
+
+* **AZ-1518:** add secure boot option 0be58be
+
+### Miscellaneous Chores
+
+* **deps:** update dependency trivy to v0.59.1 4cbccc9
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.21.0 af7da9a
+* **deps:** update tools c70adac
+* update Github templates 5d29992
+
 ## 8.0.1 (2025-01-24)
 
 ### Bug Fixes
