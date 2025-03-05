@@ -40,10 +40,11 @@ resource "azurerm_windows_virtual_machine" "main" {
   }
 
   os_disk {
-    name                 = local.os_disk_name
-    caching              = var.os_disk_caching
-    storage_account_type = var.os_disk_storage_account_type
-    disk_size_gb         = var.os_disk_size_gb
+    name                   = local.os_disk_name
+    caching                = var.os_disk_caching
+    storage_account_type   = var.os_disk_storage_account_type
+    disk_size_gb           = var.os_disk_size_gb
+    disk_encryption_set_id = var.disk_encryption_set_id
   }
 
   encryption_at_host_enabled        = var.encryption_at_host_enabled
@@ -168,10 +169,11 @@ resource "azurerm_managed_disk" "main" {
 
   zone = can(regex("_zrs$", lower(each.value.storage_account_type))) ? null : var.zone_id
 
-  storage_account_type = each.value.storage_account_type
-  create_option        = each.value.create_option
-  disk_size_gb         = each.value.disk_size_gb
-  source_resource_id   = contains(["Copy", "Restore"], each.value.create_option) ? each.value.source_resource_id : null
+  storage_account_type   = each.value.storage_account_type
+  create_option          = each.value.create_option
+  disk_size_gb           = each.value.disk_size_gb
+  source_resource_id     = contains(["Copy", "Restore"], each.value.create_option) ? each.value.source_resource_id : null
+  disk_encryption_set_id = var.disk_encryption_set_id
 
   tags = merge(local.default_tags, var.extra_tags, each.value.extra_tags)
 }
