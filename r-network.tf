@@ -35,6 +35,8 @@ resource "azurerm_network_interface" "main" {
     public_ip_address_id          = one(azurerm_public_ip.main[*].id)
   }
 
+  dns_servers = var.dns_servers
+
   tags = merge(local.default_tags, var.extra_tags, var.nic_extra_tags)
 }
 

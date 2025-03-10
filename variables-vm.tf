@@ -48,6 +48,12 @@ variable "static_private_ip" {
   default     = null
 }
 
+variable "dns_servers" {
+  description = "A list of IP Addresses defining the DNS Servers which should be used for this Network Interface."
+  type        = list(string)
+  default     = null
+}
+
 ## Virtual Machine variables
 variable "custom_data" {
   description = "The base64-encoded custom data which should be used for this Virtual Machine. Changing this forces a new resource to be created."
