@@ -1,3 +1,15 @@
+## 8.3.1 (2025-04-01)
+
+### Bug Fixes
+
+* disable bypass_platform_safety_checks_on_user_schedule_enabled when hotpatching_enabled is true 9677ef5
+
+### Miscellaneous Chores
+
+* **deps:** update dependency pre-commit to v4.2.0 a0b0efa
+* **deps:** update pre-commit hook tofuutils/pre-commit-opentofu to v2.2.0 8d9485e
+* **deps:** update tools 5d30045
+
 ## 8.3.0 (2025-03-14)
 
 ### Features
