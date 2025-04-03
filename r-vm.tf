@@ -93,7 +93,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   patch_mode                                             = var.patch_mode
   patch_assessment_mode                                  = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
   hotpatching_enabled                                    = var.hotpatching_enabled
-  bypass_platform_safety_checks_on_user_schedule_enabled = var.patch_mode == "AutomaticByPlatform"
+  bypass_platform_safety_checks_on_user_schedule_enabled = var.hotpatching_enabled ? false : var.patch_mode == "AutomaticByPlatform"
   reboot_setting                                         = var.patch_mode == "AutomaticByPlatform" ? var.patching_reboot_setting : null
 }
 
