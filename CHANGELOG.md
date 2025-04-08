@@ -1,3 +1,34 @@
+## 7.11.1 (2025-04-08)
+
+### Bug Fixes
+
+* disable bypass_platform_safety_checks_on_user_schedule_enabled when hotpatching_enabled is true b0e51c0, closes #4
+
+### Miscellaneous Chores
+
+* **ci:** enable release on `legacy/v7` branch 7435c33
+* **deps:** update dependency claranet/tagging/azurerm to v6.0.2 e8cb078
+* **deps:** update dependency opentofu to v1.8.3 fc10bae
+* **deps:** update dependency opentofu to v1.8.4 7f9622e
+* **deps:** update dependency opentofu to v1.8.6 a096d15
+* **deps:** update dependency opentofu to v1.8.8 57c2840
+* **deps:** update dependency pre-commit to v4 b783587
+* **deps:** update dependency pre-commit to v4.0.1 3f52c87
+* **deps:** update dependency tflint to v0.54.0 1434746
+* **deps:** update dependency trivy to v0.56.1 3a7e99e
+* **deps:** update dependency trivy to v0.56.2 2bd24b0
+* **deps:** update dependency trivy to v0.57.1 755c9f6
+* **deps:** update dependency trivy to v0.58.1 599f639
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.19.0 c6f66f3
+* **deps:** update pre-commit hook alessandrojcm/commitlint-pre-commit-hook to v9.20.0 12c8c54
+* **deps:** update pre-commit hook pre-commit/pre-commit-hooks to v5 ba9d896
+* **deps:** update pre-commit hook tofuutils/pre-commit-opentofu to v2.1.0 21bdffd
+* **deps:** update tools d01081b
+* **deps:** update tools c56a5d5
+* pin release for `legacy/v7` branch 51757d6
+* prepare for new examples structure eb1421d
+* update examples structure 67cba58
+
 ## 7.11.0 (2024-10-03)
 
 ### Features
