@@ -164,7 +164,7 @@ module "vm" {
 |------|---------|
 | azapi | ~> 2.0 |
 | azurecaf | ~> 1.2.28 |
-| azurerm | ~> 4.0 |
+| azurerm | ~> 4.26 |
 | terraform | n/a |
 
 ## Modules
@@ -276,7 +276,6 @@ module "vm" {
 | subnet | ID of the Subnet in which to create the Virtual Machine. | <pre>object({<br/>    id = string<br/>  })</pre> | n/a | yes |
 | ultra\_ssd\_enabled | Specifies whether Ultra Disks is enabled (`UltraSSD_LRS` storage type for data disks). | `bool` | `null` | no |
 | user\_data | The base64-encoded user data which should be used for this Virtual Machine. | `string` | `null` | no |
-| vm\_agent\_platform\_updates\_enabled | Specifies whether VMAgent Platform Updates is enabled. Defaults to `false`. | `bool` | `false` | no |
 | vm\_image | Virtual Machine source image information. See [documentation](https://www.terraform.io/docs/providers/azurerm/r/windows_virtual_machine.html#source_image_reference). | <pre>object({<br/>    publisher = string<br/>    offer     = string<br/>    sku       = string<br/>    version   = optional(string, "latest")<br/>  })</pre> | <pre>{<br/>  "offer": "WindowsServer",<br/>  "publisher": "MicrosoftWindowsServer",<br/>  "sku": "2022-datacenter-g2",<br/>  "version": "latest"<br/>}</pre> | no |
 | vm\_image\_id | ID of the source image which this Virtual Machine should be created from. This variable supersedes `var.vm_image` if not `null`. | `string` | `null` | no |
 | vm\_plan | Virtual Machine plan image information. See [documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine#plan). This variable has to be used for BYOS image. Before using BYOS image, you need to accept legal plan terms. See [documentation](https://docs.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az_vm_image_accept_terms). | <pre>object({<br/>    name      = string<br/>    product   = string<br/>    publisher = string<br/>  })</pre> | `null` | no |

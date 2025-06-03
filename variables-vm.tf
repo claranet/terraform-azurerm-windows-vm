@@ -214,12 +214,6 @@ variable "encryption_at_host_enabled" {
   default     = true
 }
 
-variable "vm_agent_platform_updates_enabled" {
-  description = "Specifies whether VMAgent Platform Updates is enabled. Defaults to `false`."
-  type        = bool
-  default     = false
-}
-
 variable "vtpm_enabled" {
   description = "Specifies if vTPM (virtual Trusted Platform Module) and Trusted Launch is enabled for the Virtual Machine. Defaults to `true`. Changing this forces a new resource to be created."
   type        = bool
