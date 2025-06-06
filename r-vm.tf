@@ -47,11 +47,10 @@ resource "azurerm_windows_virtual_machine" "main" {
     disk_encryption_set_id = var.disk_encryption_set_id
   }
 
-  encryption_at_host_enabled        = var.encryption_at_host_enabled
-  vm_agent_platform_updates_enabled = var.vm_agent_platform_updates_enabled
-  vtpm_enabled                      = var.vtpm_enabled
-  secure_boot_enabled               = var.secure_boot_enabled
-  disk_controller_type              = var.disk_controller_type
+  encryption_at_host_enabled = var.encryption_at_host_enabled
+  vtpm_enabled               = var.vtpm_enabled
+  secure_boot_enabled        = var.secure_boot_enabled
+  disk_controller_type       = var.disk_controller_type
 
   dynamic "additional_capabilities" {
     for_each = var.ultra_ssd_enabled[*]
