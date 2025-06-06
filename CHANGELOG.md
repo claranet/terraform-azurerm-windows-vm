@@ -1,3 +1,18 @@
+## 8.4.0 (2025-06-06)
+
+### Features
+
+* ✨ remove `vm_agent_platform_updates_enabled` variable a76cead
+
+### Miscellaneous Chores
+
+* **deps:** update dependency opentofu to v1.9.1 fcc6e02
+* **deps:** update dependency terraform-docs to v0.20.0 88efb25
+* **deps:** update dependency tflint to v0.58.0 fc19b46
+* **deps:** update dependency trivy to v0.61.1 3334320
+* **deps:** update dependency trivy to v0.63.0 3f57c98
+* **deps:** update tools bf8a020
+
 ## 8.3.1 (2025-04-01)
 
 ### Bug Fixes
