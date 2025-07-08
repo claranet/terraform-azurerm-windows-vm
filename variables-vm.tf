@@ -285,9 +285,10 @@ variable "spot_instance_eviction_policy" {
 
 ## Backup variable
 variable "backup_policy" {
-  description = "Backup policy ID from the Recovery Vault to attach the Virtual Machine to. Can be `null` to disable backup."
+  description = "Backup policy parameters from the Recovery Vault to attach the Virtual Machine to. Can be `null` to disable backup."
   type = object({
-    id = string
+    id                = string
+    exclude_disk_luns = optional(list(number), [])
   })
 }
 
