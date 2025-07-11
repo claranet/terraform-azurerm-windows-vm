@@ -1,3 +1,19 @@
+## 8.5.0 (2025-07-11)
+
+### Features
+
+* **AZ-1581:** allow to exclude disks from backup 42af4d7
+* **AZ-1582:** add Premiumv2_LRS/UltraSSD_LRS disk support cf34cff
+
+### Miscellaneous Chores
+
+* **⚙️:** ✏️ update template identifier for MR review bea214c
+* 🗑️ remove old commitlint configuration files 1b10411
+* **deps:** update dependency opentofu to v1.10.0 a1f7a84
+* **deps:** update dependency opentofu to v1.10.1 d42832c
+* **deps:** update pre-commit hook tofuutils/pre-commit-opentofu to v2.2.1 4e84db8
+* **deps:** update tools 492d4d3
+
 ## 8.4.0 (2025-06-06)
 
 ### Features
