@@ -133,6 +133,10 @@ variable "storage_data_disk_config" {
   type = map(object({
     name                 = optional(string)
     create_option        = optional(string, "Empty")
+    disk_iops_read_only  = optional(number)
+    disk_mbps_read_only  = optional(number)
+    disk_iops_read_write = optional(number)
+    disk_mbps_read_write = optional(number)
     disk_size_gb         = number
     lun                  = optional(number)
     caching              = optional(string, "ReadWrite")

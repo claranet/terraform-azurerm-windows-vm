@@ -174,7 +174,24 @@ resource "azurerm_managed_disk" "main" {
   source_resource_id     = contains(["Copy", "Restore"], each.value.create_option) ? each.value.source_resource_id : null
   disk_encryption_set_id = var.disk_encryption_set_id
 
+  disk_iops_read_write = each.value.disk_iops_read_write
+  disk_mbps_read_write = each.value.disk_mbps_read_write
+  disk_iops_read_only  = each.value.disk_iops_read_only
+  disk_mbps_read_only  = each.value.disk_mbps_read_only
+
   tags = merge(local.default_tags, var.extra_tags, each.value.extra_tags)
+
+  lifecycle {
+    precondition {
+      condition     = (each.value.disk_iops_read_write == null && each.value.disk_mbps_read_write == null) || contains(["UltraSSD_LRS", "PremiumV2_LRS"], each.value.storage_account_type)
+      error_message = "disk_iops_read_write or/and disk_mbps_read_write can only be set for UltraSSD_LRS or PremiumV2_LRS disks."
+    }
+
+    precondition {
+      condition     = (each.value.disk_iops_read_only == null && each.value.disk_mbps_read_only == null) || contains(["UltraSSD_LRS", "PremiumV2_LRS"], each.value.storage_account_type)
+      error_message = "disk_iops_read_only or/and disk_mbps_read_only can only be set for UltraSSD_LRS or PremiumV2_LRS disks."
+    }
+  }
 }
 
 moved {
