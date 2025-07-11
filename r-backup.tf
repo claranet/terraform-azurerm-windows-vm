@@ -5,6 +5,7 @@ resource "azurerm_backup_protected_vm" "main" {
   recovery_vault_name = local.backup_recovery_vault_name
   source_vm_id        = azurerm_windows_virtual_machine.main.id
   backup_policy_id    = var.backup_policy.id
+  exclude_disk_luns   = var.backup_policy.exclude_disk_luns
 }
 
 moved {
