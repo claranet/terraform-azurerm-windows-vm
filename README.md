@@ -164,7 +164,7 @@ module "vm" {
 |------|---------|
 | azapi | ~> 2.0 |
 | azurecaf | ~> 1.2.28 |
-| azurerm | ~> 4.26 |
+| azurerm | ~> 4.31 |
 | terraform | n/a |
 
 ## Modules
