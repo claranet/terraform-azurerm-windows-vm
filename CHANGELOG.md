@@ -1,3 +1,9 @@
+## 7.11.2 (2025-09-18)
+
+### Code Refactoring
+
+* **tagging:** ♻️ replace outdated tagging module `with azapi_resource_action` 7f982e1, closes #7
+
 ## 7.11.1 (2025-04-08)
 
 ### Bug Fixes
