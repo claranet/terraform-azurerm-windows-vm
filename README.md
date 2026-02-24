@@ -188,6 +188,7 @@ module "vm" {
 | [azurerm_network_interface_application_gateway_backend_address_pool_association.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_application_gateway_backend_address_pool_association) | resource |
 | [azurerm_network_interface_backend_address_pool_association.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_backend_address_pool_association) | resource |
 | [azurerm_public_ip.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
+| [azurerm_role_assignment.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.rbac_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.rbac_user_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_virtual_machine_data_disk_attachment.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_data_disk_attachment) | resource |
@@ -241,7 +242,7 @@ module "vm" {
 | hotpatching\_enabled | Should the Virtual Machine be patched without requiring a reboot? | `bool` | `false` | no |
 | identity | Identity block. See [documentation](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine#identity). | <pre>object({<br/>    type         = string<br/>    identity_ids = list(string)<br/>  })</pre> | <pre>{<br/>  "identity_ids": [],<br/>  "type": "SystemAssigned"<br/>}</pre> | no |
 | ip\_configuration\_custom\_name | Custom name for the IP configuration of the network interface. Generated if not set. | `string` | `null` | no |
-| key\_vault | ID of the Key Vault to use for Virtual Machine certificate (value to `null` to disable WinRM certificate). | <pre>object({<br/>    id = string<br/>  })</pre> | n/a | yes |
+| key\_vault | ID of the Key Vault to use for Virtual Machine certificate (value to `null` to disable WinRM certificate). | <pre>object({<br/>    id                         = string<br/>    rbac_authorization_enabled = optional(bool, true)<br/>  })</pre> | n/a | yes |
 | key\_vault\_certificates | Key Vault certificates object.<pre>names        = List of Key Vault certificates names to install in the Virtual Machine.<br/>store_name   = Name of the certificate store in which to install the Key Vault certificates.<br/>polling_rate = Polling rate (in seconds) for Key Vault certificates retrieval.</pre> | <pre>object({<br/>    names        = optional(list(string))<br/>    store_name   = optional(string, "MY")<br/>    polling_rate = optional(number, 300)<br/>  })</pre> | `{}` | no |
 | license\_type | Specifies the BYOL type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server`. | `string` | `null` | no |
 | load\_balancer\_attachment | ID of the Load Balancer Backend Pool to attach the Virtual Machine to. | <pre>object({<br/>    id = string<br/>  })</pre> | `null` | no |
