@@ -293,6 +293,13 @@ variable "backup_policy" {
 }
 
 ## Patching variables
+variable "automatic_updates_enabled" {
+  description = "Should automatic updates be enabled for the Virtual Machine?"
+  type        = bool
+  default     = true
+  nullable    = false
+}
+
 variable "patch_mode" {
   description = "Specifies the mode of in-guest patching to this Windows Virtual Machine. Possible values are `Manual`, `AutomaticByOS` and `AutomaticByPlatform`."
   type        = string

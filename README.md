@@ -211,6 +211,7 @@ module "vm" {
 | admin\_password | Password for the Virtual Machine administrator account. | `string` | n/a | yes |
 | admin\_username | Username for the Virtual Machine administrator account. | `string` | n/a | yes |
 | application\_gateway\_attachment | ID of the Application Gateway Backend Pool to attach the Virtual Machine to. | <pre>object({<br/>    id = string<br/>  })</pre> | `null` | no |
+| automatic\_updates\_enabled | Should automatic updates be enabled for the Virtual Machine? | `bool` | `true` | no |
 | availability\_set | ID of the Availability Set in which to locate the Virtual Machine. | <pre>object({<br/>    id = string<br/>  })</pre> | `null` | no |
 | azure\_monitor\_agent\_auto\_upgrade\_enabled | Automatically update agent when publisher releases a new version of the agent. | `bool` | `false` | no |
 | azure\_monitor\_agent\_user\_assigned\_identity | User Assigned Identity to use with Azure Monitor Agent. | `string` | `null` | no |
