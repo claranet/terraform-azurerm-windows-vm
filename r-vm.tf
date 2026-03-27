@@ -98,7 +98,7 @@ resource "azurerm_windows_virtual_machine" "main" {
   eviction_policy = var.spot_instance_enabled ? var.spot_instance_eviction_policy : null
 
   provision_vm_agent       = true
-  enable_automatic_updates = true
+  enable_automatic_updates = var.automatic_updates_enabled
 
   patch_mode                                             = var.patch_mode
   patch_assessment_mode                                  = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
