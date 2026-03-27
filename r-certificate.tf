@@ -52,7 +52,7 @@ moved {
 }
 
 resource "azurerm_key_vault_access_policy" "main" {
-  count = var.key_vault != null ? 1 : 0
+  count = var.key_vault != null && !var.key_vault.rbac_authorization_enabled ? 1 : 0
 
   key_vault_id = var.key_vault.id
 
@@ -65,6 +65,14 @@ resource "azurerm_key_vault_access_policy" "main" {
 moved {
   from = azurerm_key_vault_access_policy.vm[0]
   to   = azurerm_key_vault_access_policy.main[0]
+}
+
+resource "azurerm_role_assignment" "main" {
+  count = var.key_vault != null && var.key_vault.rbac_authorization_enabled ? 1 : 0
+
+  scope                = azurerm_key_vault_certificate.main[0].resource_manager_versionless_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_windows_virtual_machine.main.identity[0].principal_id
 }
 
 resource "azurerm_virtual_machine_extension" "key_vault_certificates" {
