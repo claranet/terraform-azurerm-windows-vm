@@ -1,3 +1,26 @@
+## 8.6.0 (2026-03-27)
+
+### Features
+
+* ✨ add `automatic_updates_enabled` variable 4027168
+* ✨ add RBAC support for Key Vault access policies a6529d4
+
+### Bug Fixes
+
+* **trivy:** 🐛 drop unsafe trivy pre-commit 🔒️ 4f39e0e
+
+### Code Refactoring
+
+* update module structure and Github actions 👷 c1ce43b
+
+### Miscellaneous Chores
+
+* **AI:** 🤖 add AI Agents instructions for Contributing cfe3d07
+* **deps:** 🔗 bump tflint rules version 6ab945c
+* **deps:** update dependency trivy to v0.69.2 8d4d18b
+* **deps:** update dependency trivy to v0.69.3 581a9ac
+* **deps:** update pre-commit hook crate-ci/committed to v1.1.11 62b329e
+
 ## 8.5.2 (2026-02-13)
 
 ### Code Refactoring
