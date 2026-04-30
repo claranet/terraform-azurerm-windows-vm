@@ -161,7 +161,7 @@ module "vm" {
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | azapi | ~> 2.0 |
 | azurecaf | >= 1.2.28 |
 | azurerm | ~> 4.31 |
@@ -170,13 +170,13 @@ module "vm" {
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | azure\_region | claranet/regions/azurerm | >= 7.2.0 |
 
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azapi_resource_action.main](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource_action) | resource |
 | [azurerm_backup_protected_vm.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/backup_protected_vm) | resource |
 | [azurerm_key_vault_access_policy.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -208,7 +208,7 @@ module "vm" {
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | admin\_password | Password for the Virtual Machine administrator account. | `string` | n/a | yes |
 | admin\_username | Username for the Virtual Machine administrator account. | `string` | n/a | yes |
 | application\_gateway\_attachment | ID of the Application Gateway Backend Pool to attach the Virtual Machine to. | <pre>object({<br/>    id = string<br/>  })</pre> | `null` | no |
@@ -288,7 +288,7 @@ module "vm" {
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | admin\_password | Administrator password of the Virtual Machine. |
 | admin\_username | Administrator username of the Virtual Machine. |
 | hostname | Hostname of the Virtual Machine. |
