@@ -1,6 +1,7 @@
 output "resource" {
   description = "Windows Virtual Machine resource object."
   value       = azurerm_windows_virtual_machine.main
+  sensitive   = true
 }
 
 output "resource_public_ip" {
@@ -11,6 +12,7 @@ output "resource_public_ip" {
 output "resource_network_interface" {
   description = "Network interface resource object."
   value       = azurerm_network_interface.main
+  sensitive   = true
 }
 
 output "resource_key_vault_certificate" {
@@ -21,6 +23,7 @@ output "resource_key_vault_certificate" {
 output "resource_maintenance_configuration_assignment" {
   description = "Maintenance configuration assignment resource object."
   value       = azurerm_maintenance_assignment_virtual_machine.main
+  sensitive   = true
 }
 
 output "id" {
