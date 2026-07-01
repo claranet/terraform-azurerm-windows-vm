@@ -1,8 +1,9 @@
 variable "key_vault" {
-  description = "ID of the Key Vault to use for Virtual Machine certificate (value to `null` to disable WinRM certificate)."
+  description = "Key Vault configuration for Virtual Machine WinRM certificate. Set to `null` to disable WinRM certificate entirely."
   type = object({
     id                         = string
     rbac_authorization_enabled = optional(bool, true)
+    winrm_certificate_enabled  = optional(bool, true)
   })
 }
 

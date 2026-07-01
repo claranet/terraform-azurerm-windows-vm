@@ -1,5 +1,5 @@
 resource "azurerm_key_vault_certificate" "main" {
-  count = var.key_vault != null ? 1 : 0
+  count = var.key_vault != null && var.key_vault.winrm_certificate_enabled ? 1 : 0
 
   name = "winrm-${local.name}-cert"
 
@@ -52,7 +52,7 @@ moved {
 }
 
 resource "azurerm_key_vault_access_policy" "main" {
-  count = var.key_vault != null && !var.key_vault.rbac_authorization_enabled ? 1 : 0
+  count = var.key_vault != null && var.key_vault.winrm_certificate_enabled && !var.key_vault.rbac_authorization_enabled ? 1 : 0
 
   key_vault_id = var.key_vault.id
 
@@ -68,7 +68,7 @@ moved {
 }
 
 resource "azurerm_role_assignment" "main" {
-  count = var.key_vault != null && var.key_vault.rbac_authorization_enabled ? 1 : 0
+  count = var.key_vault != null && var.key_vault.winrm_certificate_enabled && var.key_vault.rbac_authorization_enabled ? 1 : 0
 
   scope                = azurerm_key_vault_certificate.main[0].resource_manager_versionless_id
   role_definition_name = "Key Vault Secrets User"
