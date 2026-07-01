@@ -4,7 +4,7 @@ variable "key_vault" {
     id                         = string
     rbac_authorization_enabled = optional(bool, true)
     winrm_certificate_enabled  = optional(bool, true)
-    scopes                     = optional(list(string), [])
+    scopes                     = optional(map(string), {})
   })
 }
 

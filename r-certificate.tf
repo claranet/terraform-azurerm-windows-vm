@@ -76,7 +76,7 @@ resource "azurerm_role_assignment" "main" {
 }
 
 resource "azurerm_role_assignment" "scopes" {
-  for_each = var.key_vault != null ? toset(var.key_vault.scopes) : toset([])
+  for_each = var.key_vault != null ? var.key_vault.scopes : {}
 
   scope                = each.value
   role_definition_name = "Key Vault Secrets User"
