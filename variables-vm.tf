@@ -1,9 +1,10 @@
 variable "key_vault" {
-  description = "Key Vault configuration for Virtual Machine WinRM certificate. Set to `null` to disable WinRM certificate entirely."
+  description = "Key Vault configuration for Virtual Machine access. It also manages WinRM certificate. Set `winrm_certificate_enabled` to `false` to disable WinRM certificate creation. Set `scopes` to assign the `Key Vault Secrets User` role to additional resource scopes."
   type = object({
     id                         = string
     rbac_authorization_enabled = optional(bool, true)
     winrm_certificate_enabled  = optional(bool, true)
+    scopes                     = optional(list(string), [])
   })
 }
 

@@ -75,6 +75,14 @@ resource "azurerm_role_assignment" "main" {
   principal_id         = azurerm_windows_virtual_machine.main.identity[0].principal_id
 }
 
+resource "azurerm_role_assignment" "scopes" {
+  for_each = var.key_vault != null ? toset(var.key_vault.scopes) : toset([])
+
+  scope                = each.value
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_windows_virtual_machine.main.identity[0].principal_id
+}
+
 resource "azurerm_virtual_machine_extension" "key_vault_certificates" {
   count = var.key_vault_certificates.names != null ? 1 : 0
 
