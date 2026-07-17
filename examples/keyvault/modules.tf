@@ -46,7 +46,7 @@ module "vm" {
     id = module.subnet.id
   }
 
-  vm_size        = "Standard_B2s"
+  vm_size        = "Standard_B2als_v2"
   admin_username = var.vm_administrator_login
   admin_password = var.vm_administrator_password
 
