@@ -1,3 +1,30 @@
+## 8.7.0 (2026-07-17)
+
+### Features
+
+* **keyvault:** add `winrm_certificate_enabled` attribute to `key_vault` variable 6e541c4
+* **keyvault:** add scopes attribute and role assignment for extra scopes e4d3e0c
+
+### Bug Fixes
+
+* 🐛 use map instead of toset for for_each cb37e28
+* **tflint:** 🐛 bump Azure rules version, fix signature bug 72ed49a
+
+### Documentation
+
+* **examples:** 📚️ add keyvault example for windows-vm 3af5e10
+
+### Miscellaneous Chores
+
+* **ci:** 🔧 👷 fix default CI validate values 0d84112
+* **deps:** update dependency opentofu to v1.12.1 64c961b
+* **deps:** update dependency opentofu to v1.12.2 d9af55f
+* **deps:** update dependency opentofu to v1.12.3 570f218
+* **deps:** update dependency tflint to v0.63.1 edb2237
+* **deps:** update pre-commit hook tofuutils/pre-commit-opentofu to v2.4.0 a6ea1e0
+* **deps:** update pre-commit hook tofuutils/pre-commit-opentofu to v2.4.1 11eb5ee
+* **deps:** update pre-commit hook tofuutils/pre-commit-opentofu to v2.4.2 03e0cd9
+
 ## 8.6.1 (2026-06-02)
 
 ### Bug Fixes
