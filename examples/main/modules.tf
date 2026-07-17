@@ -32,7 +32,7 @@ module "vm" {
 
   subnet = module.subnet
 
-  vm_size        = "Standard_B2s"
+  vm_size        = "Standard_B2als_v2"
   admin_username = var.vm_admin_login
   admin_password = var.vm_admin_password
 
