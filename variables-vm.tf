@@ -145,6 +145,8 @@ variable "storage_data_disk_config" {
     caching              = optional(string, "ReadWrite")
     storage_account_type = optional(string, "StandardSSD_ZRS")
     source_resource_id   = optional(string)
+    storage_account_id   = optional(string)
+    source_uri           = optional(string)
     extra_tags           = optional(map(string), {})
   }))
   default = {}
@@ -187,6 +189,12 @@ variable "application_gateway_attachment" {
 
 variable "license_type" {
   description = "Specifies the BYOL type for this Virtual Machine. Possible values are `Windows_Client` and `Windows_Server`."
+  type        = string
+  default     = null
+}
+
+variable "os_disk_id" {
+  description = "ID of the existing Managed Disk to use as the OS disk for this Virtual Machine. When specifying an existing Managed Disk it is not currently possible to subsequently manage the OS profile properties: `admin_username`, `admin_password`, `bypass_platform_safety_checks_on_user_schedule_enabled`, `computer_name`, `custom_data`, `provision_vm_agent`, `patch_mode`, `patch_assessment_mode`, or `reboot_setting`."
   type        = string
   default     = null
 }

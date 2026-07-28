@@ -10,10 +10,10 @@ resource "azurerm_windows_virtual_machine" "main" {
 
   tags = merge(local.default_tags, local.default_vm_tags, var.extra_tags)
 
-  source_image_id = var.vm_image_id
+  source_image_id = !local.use_existing_os_disk ? var.vm_image_id : null
 
   dynamic "source_image_reference" {
-    for_each = var.vm_image_id == null ? [0] : []
+    for_each = !local.use_existing_os_disk && var.vm_image_id == null ? [0] : []
     content {
       offer     = var.vm_image.offer
       publisher = var.vm_image.publisher
@@ -40,12 +40,14 @@ resource "azurerm_windows_virtual_machine" "main" {
   }
 
   os_disk {
-    name                   = local.os_disk_name
+    name                   = !local.use_existing_os_disk ? local.os_disk_name : null
     caching                = var.os_disk_caching
-    storage_account_type   = var.os_disk_storage_account_type
+    storage_account_type   = !local.use_existing_os_disk ? var.os_disk_storage_account_type : null
     disk_size_gb           = var.os_disk_size_gb
     disk_encryption_set_id = var.disk_encryption_set_id
   }
+
+  os_managed_disk_id = var.os_disk_id
 
   encryption_at_host_enabled = var.encryption_at_host_enabled
   vtpm_enabled               = var.vtpm_enabled
@@ -67,11 +69,11 @@ resource "azurerm_windows_virtual_machine" "main" {
     }
   }
 
-  computer_name  = local.hostname
-  admin_username = var.admin_username
-  admin_password = var.admin_password
+  computer_name  = !local.use_existing_os_disk ? local.hostname : null
+  admin_username = !local.use_existing_os_disk ? var.admin_username : null
+  admin_password = !local.use_existing_os_disk ? var.admin_password : null
 
-  custom_data = base64encode(local.custom_data_content)
+  custom_data = !local.use_existing_os_disk ? base64encode(local.custom_data_content) : null
   user_data   = var.user_data
 
   dynamic "secret" {
@@ -97,14 +99,14 @@ resource "azurerm_windows_virtual_machine" "main" {
   max_bid_price   = var.spot_instance_enabled ? var.spot_instance_max_bid_price : null
   eviction_policy = var.spot_instance_enabled ? var.spot_instance_eviction_policy : null
 
-  provision_vm_agent       = true
-  enable_automatic_updates = var.automatic_updates_enabled
+  provision_vm_agent       = !local.use_existing_os_disk ? true : null
+  enable_automatic_updates = !local.use_existing_os_disk ? var.automatic_updates_enabled : null
 
-  patch_mode                                             = var.patch_mode
-  patch_assessment_mode                                  = var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault"
-  hotpatching_enabled                                    = var.hotpatching_enabled
-  bypass_platform_safety_checks_on_user_schedule_enabled = var.hotpatching_enabled ? false : var.patch_mode == "AutomaticByPlatform"
-  reboot_setting                                         = var.patch_mode == "AutomaticByPlatform" ? var.patching_reboot_setting : null
+  patch_mode                                             = !local.use_existing_os_disk ? var.patch_mode : null
+  patch_assessment_mode                                  = !local.use_existing_os_disk ? var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault" : null
+  hotpatching_enabled                                    = !local.use_existing_os_disk ? var.hotpatching_enabled : null
+  bypass_platform_safety_checks_on_user_schedule_enabled = !local.use_existing_os_disk ? var.hotpatching_enabled ? false : var.patch_mode == "AutomaticByPlatform" : null
+  reboot_setting                                         = !local.use_existing_os_disk && var.patch_mode == "AutomaticByPlatform" ? var.patching_reboot_setting : null
 }
 
 moved {
@@ -172,6 +174,8 @@ resource "azurerm_managed_disk" "main" {
   create_option          = each.value.create_option
   disk_size_gb           = each.value.disk_size_gb
   source_resource_id     = contains(["Copy", "Restore"], each.value.create_option) ? each.value.source_resource_id : null
+  storage_account_id     = contains(["Import", "ImportSecure"], each.value.create_option) ? each.value.storage_account_id : null
+  source_uri             = contains(["Import", "ImportSecure"], each.value.create_option) ? each.value.source_uri : null
   disk_encryption_set_id = var.disk_encryption_set_id
 
   disk_iops_read_write = each.value.disk_iops_read_write
@@ -186,7 +190,6 @@ resource "azurerm_managed_disk" "main" {
       condition     = (each.value.disk_iops_read_write == null && each.value.disk_mbps_read_write == null) || contains(["UltraSSD_LRS", "PremiumV2_LRS"], each.value.storage_account_type)
       error_message = "disk_iops_read_write or/and disk_mbps_read_write can only be set for UltraSSD_LRS or PremiumV2_LRS disks."
     }
-
     precondition {
       condition     = (each.value.disk_iops_read_only == null && each.value.disk_mbps_read_only == null) || contains(["UltraSSD_LRS", "PremiumV2_LRS"], each.value.storage_account_type)
       error_message = "disk_iops_read_only or/and disk_mbps_read_only can only be set for UltraSSD_LRS or PremiumV2_LRS disks."
