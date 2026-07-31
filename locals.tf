@@ -29,4 +29,6 @@ locals {
       }
     }
   }) : null
+
+  use_existing_os_disk = var.os_disk_id != null
 }

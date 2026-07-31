@@ -12,6 +12,10 @@ resource "azurerm_maintenance_assignment_virtual_machine" "main" {
       condition     = var.patch_mode == "AutomaticByPlatform"
       error_message = "`var.patch_mode` must be set to `AutomaticByPlatform` to use maintenance configurations."
     }
+    precondition {
+      condition     = !local.use_existing_os_disk
+      error_message = "`var.os_disk_id` must be set to `null` to use maintenance configurations."
+    }
   }
 }
 
