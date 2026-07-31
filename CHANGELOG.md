@@ -1,3 +1,15 @@
+## 8.8.0 (2026-07-31)
+
+### Features
+
+* ✨ support attaching existing managed disks 7162f7c
+
+### Miscellaneous Chores
+
+* **deps:** update dependency opentofu to v1.12.4 e8d0272
+* **deps:** update dependency opentofu to v1.12.5 1b78be4
+* **deps:** update dependency tflint to v0.64.0 58c9d95
+
 ## 8.7.0 (2026-07-17)
 
 ### Features
