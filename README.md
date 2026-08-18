@@ -164,15 +164,15 @@ module "vm" {
 | Name | Version |
 | ---- | ------- |
 | azapi | ~> 2.0 |
-| azurecaf | >= 1.2.28 |
-| azurerm | ~> 4.31 |
+| azurecaf | ~> 1.3.0 |
+| azurerm | ~> 5.0 |
 | terraform | n/a |
 
 ## Modules
 
 | Name | Source | Version |
 | ---- | ------ | ------- |
-| azure\_region | claranet/regions/azurerm | >= 7.2.0 |
+| azure\_region | claranet/regions/azurerm | ~> 9.0 |
 
 ## Resources
 

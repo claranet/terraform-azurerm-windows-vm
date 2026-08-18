@@ -99,8 +99,8 @@ resource "azurerm_windows_virtual_machine" "main" {
   max_bid_price   = var.spot_instance_enabled ? var.spot_instance_max_bid_price : null
   eviction_policy = var.spot_instance_enabled ? var.spot_instance_eviction_policy : null
 
-  provision_vm_agent       = !local.use_existing_os_disk ? true : null
-  enable_automatic_updates = !local.use_existing_os_disk ? var.automatic_updates_enabled : null
+  provision_vm_agent        = !local.use_existing_os_disk ? true : null
+  automatic_updates_enabled = !local.use_existing_os_disk ? var.automatic_updates_enabled : null
 
   patch_mode                                             = !local.use_existing_os_disk ? var.patch_mode : null
   patch_assessment_mode                                  = !local.use_existing_os_disk ? var.patch_mode == "AutomaticByPlatform" ? var.patch_mode : "ImageDefault" : null
