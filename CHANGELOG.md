@@ -1,3 +1,25 @@
+## 9.0.0 (2026-08-25)
+
+### ⚠ BREAKING CHANGES
+
+* **SREAA-368:** the minimum OpenTofu version is raised to `1.12` and the AzureRM provider is
+constrained to `~> 5.0`, so consumers must upgrade both before using this release.
+`vm_agent_platform_updates_enabled` is now read-only on `azurerm_windows_virtual_machine` and
+can no longer be set. Two provider-level behaviour changes shipped with AzureRM 5.0 also apply:
+`resource_provider_registrations` now defaults to `none` instead of `legacy`, so no resource
+provider is registered automatically anymore, and the `enhanced_validation` block moved inside
+`features` with location and resource provider validation now disabled by default, which defers
+those errors from plan time to apply time.
+
+### Features
+
+* **SREAA-368:** upgrade module to v9 (OpenTofu >= 1.12, AzureRM ~> 5.0) f8ad026
+
+### Miscellaneous Chores
+
+* **SREAA-368:** synchronize committed.toml and AGENTS.md from the ci template d5ab812
+* **v9:** 🐛 synchronize common files and docs 3fb4516
+
 ## 8.8.0 (2026-07-31)
 
 ### Features
