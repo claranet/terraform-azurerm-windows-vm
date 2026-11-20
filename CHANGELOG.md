@@ -1,3 +1,25 @@
+## 9.0.1 (2026-11-20)
+
+### Bug Fixes
+
+* **vm:** remove the winrm connection test unsupported by OpenTofu 1.13 580fc00
+
+### Continuous Integration
+
+* **release:** drop semantic-release-slack-bot, the receiver posts releases 09bfd01
+
+### Miscellaneous Chores
+
+* **deps:** ⬆️ update tools 🔗 311c9cd
+* **deps:** update dependency opentofu to v1.13.0 4f09314
+* **deps:** update dependency opentofu to v1.13.1 595c293
+* **deps:** update dependency opentofu to v1.13.2 54aadbb
+* **deps:** update dependency opentofu to v1.13.9 2bbfc52
+* **deps:** update dependency terraform-docs to v0.25.1 a2a702e
+* **deps:** update dependency tflint to v0.65.0 5bdf87d
+* **deps:** update dependency tflint to v0.66.0 2da3ef4
+* **deps:** update pre-commit hook crate-ci/committed to v1.1.12 32aa230
+
 ## 9.0.0 (2026-08-25)
 
 ### ⚠ BREAKING CHANGES
