@@ -114,38 +114,16 @@ moved {
   to   = azurerm_windows_virtual_machine.main
 }
 
-resource "terraform_data" "winrm_connection_test" {
-  count = var.public_ip_enabled && var.key_vault != null ? 1 : 0
+# OpenTofu 1.13 removed the "winrm" provisioner connection type, so the WinRM connection test made
+# every apply creating or replacing a VM with a public IP fail. The WinRM listener configured on the
+# VM itself (files/winrm.ps1, Key Vault certificate) is unchanged. Existing instances are dropped
+# from the state without being destroyed: terraform_data has no remote object.
+removed {
+  from = terraform_data.winrm_connection_test
 
-  triggers_replace = [
-    azurerm_windows_virtual_machine.main.id,
-  ]
-
-  connection {
-    type     = "winrm"
-    host     = one(azurerm_public_ip.main[*].ip_address)
-    port     = 5986
-    https    = true
-    user     = var.admin_username
-    password = var.admin_password
-    timeout  = "3m"
-
-    # NOTE: if you're using a real certificate, rather than a self-signed one, you'll want this set to `false`/to remove this.
-    insecure = true
+  lifecycle {
+    destroy = false
   }
-
-  provisioner "remote-exec" {
-    inline = [
-      "cd C:\\claranet",
-      "dir",
-    ]
-  }
-
-  depends_on = [
-    azurerm_public_ip.main,
-    azurerm_network_interface.main,
-    azurerm_windows_virtual_machine.main,
-  ]
 }
 
 resource "azapi_resource_action" "main" {
